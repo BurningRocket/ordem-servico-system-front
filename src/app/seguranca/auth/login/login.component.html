@@ -1,0 +1,71 @@
+<div
+    class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden"
+>
+<p-toast></p-toast>
+    <div class="flex flex-column align-items-center justify-content-center">
+        <div
+            style="
+                border-radius: 56px;
+                padding: 0.3rem;
+                background: linear-gradient(
+                    180deg,
+                    #4eb4e0 10%,
+                    rgba(33, 150, 243, 0) 30%
+                );
+            "
+        >
+            <div
+                class="w-full surface-card py-8 px-5 sm:px-8"
+                style="border-radius: 53px"
+            >
+                <div class="text-center mb-5">
+                    <img
+                        src="assets/layout/images/logo-argos.png"
+                        alt="Image"
+                        height="50"
+                        class="mb-3"
+                    />
+                </div>
+
+                <div>
+                    <form [formGroup]="formulario" (ngSubmit)="login()">
+                        <span class="p-float-label block text-900">
+                            <input
+                                id="float-input"
+                                type="email"
+                                pInputText
+                                class="w-full"
+                                style="padding: 1rem"
+                                formControlName="login"
+                            />
+                            <label for="float-input">Email</label>
+                        </span>
+                        <br /><br />
+                        <span class="p-float-label block text-900">
+                            <input
+                                id="password1"
+                                formControlName="senha"
+                                placeholder="Senha"
+                                type="password"
+                                pInputText
+                                style="padding: 1rem"
+                                class="w-full"
+                            />
+                            <label for="float-input">Senha</label>
+                        </span>
+                        <br /><br />
+                        <button
+                            pButton
+                            pRipple
+                            label="Logar"
+                            class="w-full p-3 text-xl"
+                           type="submit"
+                           [loading]="loginLoading"
+                        ></button>
+                    </form>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

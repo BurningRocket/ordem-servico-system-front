@@ -1,0 +1,114 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toast></p-toast>
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                    <div class="my-2">
+                        <button pButton pRipple label="Nova Atividade" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNewAtividade()"></button>
+                        <button pButton pRipple label="Tipos de atividade" icon="pi pi-plus" class="p-button-success mr-2" (click)="createTipoAtividade()"></button>
+                    </div>
+                </ng-template>
+            </p-toolbar>
+
+            <p-table #dt [value]="atividades" [columns]="cols" responsiveLayout="scroll" [globalFilterFields]="['nome']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Monstrando {first} até {last} de {totalRecords} atividades" [rowHover]="true" dataKey="id">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h5 class="m-0">Atividades</h5>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."  class="w-full sm:w-auto"/>
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="nome">Nome <p-sortIcon field="nome"></p-sortIcon></th>
+                        <th pSortableColumn="valor">Valor <p-sortIcon field="valor"></p-sortIcon></th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-atividade>
+                    <tr>
+                        <td style="width:50%; min-width:12rem;">
+                            <span class="p-column-title">Nome</span>
+                            {{atividade.nome}}
+                        </td>
+                        <td style="width:50%; min-width:6rem;">
+                            <span class="p-column-title">Valor</span>
+                            {{atividade.valorReferencia | currency:'BRL'}}
+                        </td>
+                        <td>
+                            <div class="flex">
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteAtividade(atividade)"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <p-dialog [(visible)]="atividadeDialog" [style]="{width: '900px'}" header="Detalhes da atividade" [modal]="true" class="p-fluid">
+            <ng-template pTemplate="content">
+                <div class="formgrid grid mt-4">
+                    <div class="field col-5">
+                        <span class="p-float-label">
+                            <input type="text" id="inputtext" pInputText [(ngModel)]="atividade.nome" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !atividade.nome}">
+                            <label for="inputtext">Nome</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !atividade.nome">Insira um nome</small>
+                    </div>
+                    <div class="field col-5">
+                        <span class="p-float-label">
+                            <p-dropdown inputId="dropdownTipoAtividade" [autoDisplayFirst]="false" appendTo="body" [options]="tipoAtividades" [(ngModel)]="atividade.tipoAtividade" optionLabel="descricao"></p-dropdown>
+                            <label for="dropdownTipoAtividade">Tipos de Atividade</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !atividade.tipoAtividade">Insira um tipo de atividade</small>
+                    </div>
+                    <div class="field col-2">
+                        <span class="p-float-label">
+                            <p-inputNumber inputId="inputnumber" [(ngModel)]="atividade.valorReferencia" mode="currency" currency="BRL" locale="pt-BR"  [ngClass]="{'ng-invalid ng-dirty' : submitted && !atividade.valorReferencia}"></p-inputNumber>
+                            <label for="inputnumber">Valor</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !atividade.valorReferencia">Insira um valor</small>
+                    </div>
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text p-button-secondary" (click)="hideDialog()"></button>
+                <button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-text p-button-success" (click)="saveAtividade()"></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog [(visible)]="tipoAtividadeDialog" [style]="{width: '450px'}" header="Novo tipo de atividade" [modal]="true" class="p-fluid">
+            <ng-template pTemplate="content">
+                <div class="formgrid grid mt-4">
+                    <div class="field col">
+                        <span class="p-float-label">
+                            <input type="text" id="inputtext" pInputText [(ngModel)]="tipoAtividade.descricao" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !tipoAtividade.descricao}">
+                            <label for="inputtext">Nome do tipo de atividade</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !tipoAtividade.descricao">Insira um nome</small>
+                    </div>
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text p-button-secondary" (click)="hideDialog()"></button>
+                <button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-text p-button-success" (click)="saveTipoAtividade()"></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog [(visible)]="deleteAtividadeDialog" header="Confirme" [modal]="true" [style]="{width:'450px'}" [dismissableMask]="true">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span *ngIf="atividade">Deseja realmente deletar <b>{{atividade.nome}}</b>?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text p-button-secondary" label="Cancelar" (click)="deleteAtividadeDialog = false"></button>
+                <button pButton pRipple icon="pi pi-trash" class="p-button-text p-button-danger" label="Deletar" (click)="confirmDeleteAtividade()"></button>
+            </ng-template>
+        </p-dialog>
+    </div>
+</div>

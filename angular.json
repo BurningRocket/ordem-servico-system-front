@@ -56,6 +56,14 @@
               ],
               "outputHashing": "all"
             },
+            "qas": {
+                "fileReplacements": [
+                    {
+                    "replace": "src/environments/environment.ts",
+                    "with": "src/environments/environment.qas.ts"
+                  }
+                ]
+            },
             "development": {
               "buildOptimizer": false,
               "optimization": false,
@@ -115,7 +123,6 @@
       }
     }
   },
-  "defaultProject": "sakai-ng",
   "cli": {
     "analytics": false,
     "schematicCollections": [
