@@ -29,7 +29,7 @@ export class AuthService  extends BaseAdminService {
         return localStorage.getItem('token')!;
     }
 
-    public pegarToken(token: string) {
+    public setToken(token: string) {
         localStorage.setItem('token', token);
         this.getToken();
     }

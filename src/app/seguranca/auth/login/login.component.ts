@@ -29,6 +29,8 @@ export class LoginComponent implements OnInit {
 
     loginLoading = false;
 
+    submitted = false;
+
     formulario!: FormGroup;
 
     constructor(
@@ -49,16 +51,16 @@ export class LoginComponent implements OnInit {
 
     public login() {
         this.loginLoading = true;
+        this.submitted = true;
+
         this.service.login(this.formulario.value).subscribe((data: any) => {
-            console.log(data);
             const tokenPayload: TokenPayloadDto = this.tokenService.parseToken(data.token);
 
             this.router.navigate(['/']);
-            this.service.pegarToken(data.token);
+            this.service.setToken(data.token);
         }, (error) => {
-            this.messageService.add({ severity: 'error', summary: 'Erro', detail: error });
+            this.messageService.add({ severity: 'error', summary: 'Erro', detail: "Erro ao realizar login" });
         });
         this.loginLoading = false;
-
     }
 }

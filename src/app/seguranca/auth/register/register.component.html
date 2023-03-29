@@ -29,7 +29,19 @@
                 </div>
 
                 <div>
-                    <form [formGroup]="formulario" (ngSubmit)="login()">
+                    <form [formGroup]="formulario" (ngSubmit)="register()">
+                        <span class="p-float-label block text-900">
+                            <input
+                                id="name-input"
+                                type="text"
+                                pInputText
+                                class="w-full d:w-30rem"
+                                style="padding: 1rem"
+                                formControlName="name"
+                            />
+                            <label for="name-input">Nome</label>
+                        </span>
+                        <br /><br />
                         <span class="p-float-label block text-900">
                             <input
                                 id="email-input"
@@ -43,22 +55,36 @@
                         </span>
                         <br /><br />
                         <span class="p-float-label block text-900">
-                            <p-password id="password-input" formControlName="password" [toggleMask]="true" inputStyleClass="w-full p-3 md:w-30rem" [feedback]="false"></p-password>
+                            <p-password id="password-input" formControlName="password" [toggleMask]="true" inputStyleClass="w-full p-3 md:w-30rem">
+                                <ng-template pTemplate="header">
+                                    <h6>Nível de segurança</h6>
+                                </ng-template>
+                                <ng-template pTemplate="footer">
+                                    <p-divider></p-divider>
+                                    <p class="mt-2">É nescessário:</p>
+                                    <ul class="pl-2 ml-2 mt-0" style="line-height: 1.5">
+                                        <li>Pelo menos uma minúscula</li>
+                                        <li>Pelo menos uma maiúscula</li>
+                                        <li>Pelo menos um número</li>
+                                        <li>No mínimo 6 caracteres</li>
+                                    </ul>
+                                </ng-template>
+                            </p-password>
                             <label for="password-input">Senha</label>
                         </span>
                         <br /><br />
                         <button
                             pButton
                             pRipple
-                            label="Logar"
+                            label="Registrar"
                             class="w-full p-3 text-xl"
                            type="submit"
-                           [loading]="loginLoading"
+                           [loading]="registerLoading"
                         ></button>
                     </form>
                     <br><br>
                     <div class="text-center">
-                        <a routerLink="/auth/register">Não possui um conta? Registre-se</a>
+                        <a routerLink="/auth/login">Já possui um conta? Login</a>
                     </div>
                 </div>
             </div>
