@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { NotfoundComponent } from './demo/components/notfound/notfound.component';
 import { AppLayoutComponent } from './layout/app.layout.component';
 import { AuthGuard } from './seguranca/auth.guard';
-import { RolesEnum } from './models/roles-enum';
 
 @NgModule({
     imports: [
@@ -21,7 +20,7 @@ import { RolesEnum } from './models/roles-enum';
                                     './solicitacao-servico/solicitacao-servico.module'
                                 ).then((m) => m.SolicitacaoServicoModule),
                             canActivate: [AuthGuard],
-                            data: { roles: [RolesEnum.ADMIN, RolesEnum.INSTALADOR] },
+                            // data: { roles: ["admin"] },
                         },
                     ],
                 },

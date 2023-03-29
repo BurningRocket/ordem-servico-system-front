@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
-import { RolesEnum } from '../models/roles-enum';
 import jwtDecode from 'jwt-decode';
 import { TokenPayloadDto } from '../models/token-payload-dto.model';
 
@@ -18,12 +17,12 @@ export class AuthGuard implements CanActivate{
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 
-        if (!this.hasToken() || !this.hasRoles([RolesEnum.ADMIN, RolesEnum.INSTALADOR])) {
+        if (!this.hasToken()) {
             this.router.navigate(['/auth/login']);
             return false;
         }
 
-        const requiredRoles = route.data['roles'] as number[];
+        const requiredRoles = route.data['roles'] as string[];
 
         if (requiredRoles) {
             if (!this.hasRoles(requiredRoles)) {
@@ -36,37 +35,19 @@ export class AuthGuard implements CanActivate{
 
     }
 
-    hasRoles(requiredRoles: number[]) {
+    hasRoles(requiredRoles: string[]) {
         const tokenPayload = this.getTokenPayload();
 
         if (!tokenPayload) {
             return false;
         }
 
-        tokenPayload.roles = tokenPayload.roles.map(role => Number(role));
-
-        if(tokenPayload.roles.includes(RolesEnum.ADMIN) || tokenPayload.roles.some(role => requiredRoles.includes(role))){
+        if(tokenPayload.role.name === 'admin' || requiredRoles.some(role => tokenPayload.role.name === role)){
             return true;
         }
 
         return false;
     }
-
-    hasPermissions(requiredPermission: string) {
-        const tokenPayload = this.getTokenPayload();
-
-        if (!tokenPayload) {
-            return false;
-        }
-
-        if(tokenPayload.permissions.some(permission => requiredPermission === permission)){
-            return true;
-        }
-
-        return false;
-
-    }
-
 
     hasToken() {
         return window.localStorage.getItem('token') !== null;

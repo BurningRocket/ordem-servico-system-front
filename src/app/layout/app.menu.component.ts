@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthGuard } from '../seguranca/auth.guard';
 import { LayoutService } from './service/app.layout.service';
-import { RolesEnum } from '../models/roles-enum';
 
 @Component({
     selector: 'app-menu',
@@ -21,11 +20,13 @@ export class AppMenuComponent implements OnInit {
                         label: 'Atividade',
                         icon: 'pi pi-fw pi-tag',
                         routerLink: ['/solicitacao-servico/atividade'],
-                        hasPermission: this.authService.hasRoles([RolesEnum.ADMIN]),
+                        hasPermission: true,
+                        // hasPermission: this.authService.hasRoles(["admin"]),
                     },
 
                 ],
-                hasPermission: this.authService.hasRoles([RolesEnum.ADMIN, RolesEnum.INSTALADOR]),
+                hasPermission: true,
+                // hasPermission: this.authService.hasRoles(["admin"]),
             },
         ];
     }
