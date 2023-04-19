@@ -14,12 +14,26 @@ export class AppMenuComponent implements OnInit {
     ngOnInit() {
         this.model = [
             {
-                label: 'Solicitações de Serviço',
+                label: 'Fluxo de serviço',
                 items: [
                     {
-                        label: 'Atividade',
+                        label: 'Visita',
+                        icon: 'pi pi-fw pi-car',
+                        routerLink: ['/solicitacao-servico/visita'],
+                        hasPermission: true,
+                        // hasPermission: this.authService.hasRoles(["admin"]),
+                    },
+                    {
+                        label: 'Orçamento',
+                        icon: 'pi pi-fw pi-dollar',
+                        routerLink: ['/solicitacao-servico/orcamento'],
+                        hasPermission: true,
+                        // hasPermission: this.authService.hasRoles(["admin"]),
+                    },
+                    {
+                        label: 'Instalação',
                         icon: 'pi pi-fw pi-tag',
-                        routerLink: ['/solicitacao-servico/atividade'],
+                        routerLink: ['/solicitacao-servico/instalacao'],
                         hasPermission: true,
                         // hasPermission: this.authService.hasRoles(["admin"]),
                     },

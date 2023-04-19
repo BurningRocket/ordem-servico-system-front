@@ -15,15 +15,17 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
 import { SolicitacaoServicoRoutingModule } from './solicitacao-servico-routing.module';
-import { AtividadePageComponent } from './atividade-page/atividade-page.component';
+import { VisitaPageComponent } from './visita-page/visita-page.component';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { CalendarModule } from 'primeng/calendar';
 import { TooltipModule } from 'primeng/tooltip';
 import { SharedModule } from '../shared/shared.module';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { OrcamentoPageComponent } from './orcamento-page/orcamento-page.component';
+import { InstalacaoPageComponent } from './instalacao-page/instalacao-page.component';
 @NgModule({
-    declarations: [AtividadePageComponent],
+    declarations: [VisitaPageComponent, OrcamentoPageComponent, InstalacaoPageComponent],
     imports: [
         CommonModule,
         SolicitacaoServicoRoutingModule,

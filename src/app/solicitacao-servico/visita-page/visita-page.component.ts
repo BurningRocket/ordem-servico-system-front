@@ -7,12 +7,12 @@ import { AtividadeService } from '../../services/atividade.service';
 import { TipoAtividadeService } from 'src/app/services/tipo-atividade.service';
 
 @Component({
-  selector: 'app-atividade-page',
-  templateUrl: './atividade-page.component.html',
-  styleUrls: ['./atividade-page.component.scss'],
+  selector: 'app-visita-page',
+  templateUrl: './visita-page.component.html',
+  styleUrls: ['./visita-page.component.scss'],
   providers: [MessageService]
 })
-export class AtividadePageComponent implements OnInit {
+export class VisitaPageComponent implements OnInit {
 
     atividadeDialog: boolean = false;
 
