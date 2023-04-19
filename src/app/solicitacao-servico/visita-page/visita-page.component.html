@@ -10,7 +10,7 @@
                 </ng-template>
             </p-toolbar>
 
-            <p-table #dt [value]="visitas" [columns]="cols" responsiveLayout="scroll" [globalFilterFields]="['nome']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Monstrando {first} até {last} de {totalRecords} visitas" [rowHover]="true" dataKey="id">
+            <p-table #dt [value]="visitas" [columns]="cols" responsiveLayout="scroll" [globalFilterFields]="['_id', 'cliente.nome', 'cliente.telefone', 'cliente.endereco', 'dataVisita', 'chegouSite', 'notificarWpp']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Monstrando {first} até {last} de {totalRecords} visitas" [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <h5 class="m-0">Visitas</h5>
@@ -22,24 +22,50 @@
                 </ng-template>
                 <ng-template pTemplate="header">
                     <tr>
-                        <th pSortableColumn="nome">Nome <p-sortIcon field="nome"></p-sortIcon></th>
-                        <th pSortableColumn="valor">Valor <p-sortIcon field="valor"></p-sortIcon></th>
+                        <th pSortableColumn="cliente.nome">Nome <p-sortIcon field="cliente.nome"></p-sortIcon></th>
+                        <th pSortableColumn="cliente.telefone">Telefone <p-sortIcon field="cliente.telefone"></p-sortIcon></th>
+                        <th pSortableColumn="cliente.endereco">Endereço <p-sortIcon field="cliente.endereco"></p-sortIcon></th>
+                        <th pSortableColumn="data">Data Agendamento <p-sortIcon field="data"></p-sortIcon></th>
+                        <th pSortableColumn="descricao">Descrição <p-sortIcon field="descricao"></p-sortIcon></th>
+                        <th pSortableColumn="chegouSite">Chegou pelo Site <p-sortIcon field="chegouSite"></p-sortIcon></th>
+                        <th pSortableColumn="notificarWpp">Notificar Wpp <p-sortIcon field="notificarWpp"></p-sortIcon></th>
                         <th></th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-visita>
                     <tr>
-                        <td style="width:50%; min-width:12rem;">
+                        <td style="width:14%; min-width:12rem;">
                             <span class="p-column-title">Nome</span>
-                            {{visita.nome}}
+                            {{visita.cliente.nome}}
                         </td>
-                        <td style="width:50%; min-width:6rem;">
-                            <span class="p-column-title">Valor</span>
-                            {{visita.valorReferencia | currency:'BRL'}}
+                        <td style="width:14%; min-width:12rem;">
+                            <span class="p-column-title">Telefone</span>
+                            {{visita.cliente.telefone}}
+                        </td>
+                        <td style="width:14%; min-width:12rem;">
+                            <span class="p-column-title">Endereço</span>
+                            {{visita.cliente.endereco}}
+                        </td>
+                        <td style="width:14%; min-width:12rem;">
+                            <span class="p-column-title">Data Agendamento</span>
+                            {{visita.dataVisita | date: 'dd/MM/yyyy'}}
+                        </td>
+                        <td style="width:14%; min-width:12rem;">
+                            <span class="p-column-title">Descrição</span>
+                            {{visita.descricao}}
+                        </td>
+                        <td style="width:14%; min-width:12rem;">
+                            <span class="p-column-title">Chegou pelo Site</span>
+                            <b>{{visita.chegouSite? 'Sim' : 'Não'}}</b>
+                        </td>
+                        <td style="width:14%; min-width:6rem;">
+                            <span class="p-column-title">>Notificar Wpp</span>
+                            <b>{{visita.notificarWpp ? 'Sim' : 'Não'}}</b>
                         </td>
                         <td>
+                            <!-- TODO: Trocar essa lógica para status depois que adicionar status nas visitas -->
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteVisita(visita)"></button>
+                                <button pButton pRipple icon="pi pi-check" class="p-button-rounded p-button-success" (click)="finalizarVisita(visita)" *ngIf="visita.descricao === null"></button>
                             </div>
                         </td>
                     </tr>
@@ -148,14 +174,18 @@
             </ng-template>
         </p-dialog>
 
-        <p-dialog [(visible)]="deleteVisitaDialog" header="Confirme" [modal]="true" [style]="{width:'450px'}" [dismissableMask]="true">
-            <div class="flex align-items-center justify-content-center">
-                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span *ngIf="visita">Deseja realmente deletar visita de Nº<b>{{visita.id}}</b>?</span>
+        <p-dialog [(visible)]="finalizaVisitaDialog" header="Finalizar visita" [modal]="true" [style]="{width:'900px'}">
+            <div class="formgrid grid">
+                <div class="field col-12 mt-4">
+                    <span class="p-float-label">
+                        <textarea inputId="descricaoVisita" rows="5" [(ngModel)]="visita.descricao" pInputTextarea style="width: 100%;"></textarea>
+                        <label for="descricaoVisita">Descrição</label>
+                    </span>
+                </div>
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text p-button-secondary" label="Cancelar" (click)="deleteVisitaDialog = false"></button>
-                <button pButton pRipple icon="pi pi-trash" class="p-button-text p-button-danger" label="Deletar" (click)="confirmDeleteVisita()"></button>
+                <button pButton pRipple icon="pi pi-times" class="p-button-text p-button-secondary" label="Cancelar" (click)="finalizaVisitaDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text p-button-success" label="Finalizar Visita" (click)="confirmFinalizarVisita()"></button>
             </ng-template>
         </p-dialog>
     </div>

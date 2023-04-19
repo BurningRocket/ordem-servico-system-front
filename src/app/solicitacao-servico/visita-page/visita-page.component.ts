@@ -15,10 +15,10 @@ import { EnderecoService } from 'src/app/services/endereco.service';
 })
 export class VisitaPageComponent implements OnInit {
 
-    //TODO: false
-    visitaDialog: boolean = true;
+    visitaDialog: boolean = false;
 
     deleteVisitaDialog: boolean = false;
+    finalizaVisitaDialog: boolean = false;
 
     visita: VisitaDto = {};
     cliente: ClienteDto = {};
@@ -36,15 +36,25 @@ export class VisitaPageComponent implements OnInit {
         private enderecoService: EnderecoService) { }
 
     ngOnInit() {
-        this.visitaService.buscarTodos().subscribe(({data}: any) => {
+        this.visitaService.buscarTodos().subscribe((data: any) => {
             this.visitas = data;
+
+            console.log(this.visitas);
+
+
         }, error => {
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao buscar visitas', life: 3000 });
         });
 
         this.cols = [
-            { field: 'nome', header: 'Nome' },
-            { field: 'valor', header: 'Valor' },
+            { field: '_id', header: 'ID' },
+            { field: 'cliente.nome', header: 'Nome' },
+            { field: 'cliente.telefone', header: 'Telefone' },
+            { field: 'cliente.endereco', header: 'Endereço' },
+            { field: 'dataVisita', header: 'Data' },
+            { field: 'descricao', header: 'Descrição'},
+            { field: 'chegouSite' , header: 'Chegou pelo Site' },
+            { field: 'notificarWpp' , header: 'Notificar Wpp' },
         ];
     }
 
@@ -54,30 +64,6 @@ export class VisitaPageComponent implements OnInit {
         this.visitaDialog = true;
     }
 
-    deleteVisita(visita: VisitaDto) {
-        this.deleteVisitaDialog = true;
-        this.visita = { ...visita };
-    }
-
-    confirmDeleteVisita() {
-        // this.deleteVisitaDialog = false;
-
-        // this.visitaService.deleteVisita(this.visita).subscribe(({data}: any) => {
-        //     this.visitas = this.visitas.filter((val: any) => val.id !== this.visita.id);
-        //     this.visita = {};
-        //     this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Visita Deletada', life: 3000 });
-        // }, error => {
-        //     this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao deletar visita', life: 3000 });
-        // });
-
-        // this.visitas = [...this.visitas];
-    }
-
-    hideDialog() {
-        this.visitaDialog = false;
-        this.submitted = false;
-    }
-
     saveVisita() {
         this.submitted = true;
 
@@ -85,7 +71,7 @@ export class VisitaPageComponent implements OnInit {
         this.visita.endereco = this.endereco.rua + ',' + this.endereco.numero + ',' + this.endereco.bairro + ',' + this.endereco.cidade + ',' + this.endereco.uf + ',' + this.endereco.cep;
         this.visita.cliente.endereco = this.visita.endereco;
 
-        this.visitaService.createVisita(this.visita).subscribe(({data}: any) => {
+        this.visitaService.createVisita(this.visita).subscribe((data: any) => {
             this.visita = data;
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Visita Criada', life: 3000 });
             this.visitaDialog = false;
@@ -93,6 +79,28 @@ export class VisitaPageComponent implements OnInit {
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao criar visita', life: 3000 });
         });
     }
+
+    finalizarVisita(visita: VisitaDto) {
+        this.visita = visita;
+        this.finalizaVisitaDialog = true;
+    }
+
+    confirmFinalizarVisita() {
+        this.visitaService.finalizarVisita(this.visita).subscribe((data: any) => {
+            this.visita = data;
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Visita Finalizada', life: 3000 });
+            this.finalizaVisitaDialog = false;
+            window.location.reload();
+        }, error => {
+            this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao finalizar visita', life: 3000 });
+        });
+    }
+
+    hideDialog() {
+        this.visitaDialog = false;
+        this.submitted = false;
+    }
+
 
     onGlobalFilter(table: Table, event: Event) {
         table.filterGlobal((event.target as HTMLInputElement).value, 'contains');

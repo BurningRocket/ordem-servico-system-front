@@ -8,4 +8,5 @@ export interface VisitaDto extends BaseDto{
     chegouSite?: boolean;
     notificarWpp?: boolean;
     endereco?: string;
+    descricao?: string;
 }
