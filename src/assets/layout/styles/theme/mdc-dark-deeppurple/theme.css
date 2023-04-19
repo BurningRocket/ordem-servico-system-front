@@ -3085,10 +3085,7 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
   padding: 0.75rem;
 }
 
-.fc {
-  /* FullCalendar 4 */
-  /* FullCalendar 5 */
-}
+
 .fc.fc-unthemed .fc-view-container th {
   background: #1e1e1e;
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -7128,10 +7125,7 @@ p-inputnumber.ng-dirty.ng-invalid .p-inputtext:enabled:focus {
   background: transparent;
 }
 
-.fc {
-  /* FullCalendar 4 */
-  /* FullCalendar 5 */
-}
+
 .fc.fc-unthemed .fc-toolbar .fc-button:focus {
   background: rgba(206, 147, 216, 0.76);
 }

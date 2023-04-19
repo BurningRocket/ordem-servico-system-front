@@ -3061,10 +3061,7 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
   padding: 1rem;
 }
 
-.fc {
-  /* FullCalendar 4 */
-  /* FullCalendar 5 */
-}
+
 .fc.fc-unthemed .fc-view-container th {
   background: #faf9f8;
   border: 1px solid #a19f9d;
