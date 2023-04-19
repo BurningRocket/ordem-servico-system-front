@@ -24,6 +24,8 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { OrcamentoPageComponent } from './orcamento-page/orcamento-page.component';
 import { InstalacaoPageComponent } from './instalacao-page/instalacao-page.component';
+import { CheckboxModule } from 'primeng/checkbox';
+import { InputMaskModule } from 'primeng/inputmask';
 @NgModule({
     declarations: [VisitaPageComponent, OrcamentoPageComponent, InstalacaoPageComponent],
     imports: [
@@ -48,7 +50,9 @@ import { InstalacaoPageComponent } from './instalacao-page/instalacao-page.compo
         TooltipModule,
         SharedModule,
         MultiSelectModule,
-        AutoCompleteModule
+        AutoCompleteModule,
+        CheckboxModule,
+        InputMaskModule
     ]
 })
 export class SolicitacaoServicoModule { }

@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { TipoAtividadeDto } from 'src/app/models/tipo-atividade-dto.model';
-import { AtividadeDto } from '../../models/atividade-dto.model';
-import { AtividadeService } from '../../services/atividade.service';
-import { TipoAtividadeService } from 'src/app/services/tipo-atividade.service';
+import { VisitaService } from '../../services/visita.service';
+import { VisitaDto } from 'src/app/models/visita-dto.model';
+import { ClienteDto } from 'src/app/models/cliente-dto.model';
+import { Endereco } from 'src/app/models/endereco.model';
+import { EnderecoService } from 'src/app/services/endereco.service';
 
 @Component({
   selector: 'app-visita-page',
@@ -14,16 +15,16 @@ import { TipoAtividadeService } from 'src/app/services/tipo-atividade.service';
 })
 export class VisitaPageComponent implements OnInit {
 
-    atividadeDialog: boolean = false;
+    //TODO: false
+    visitaDialog: boolean = true;
 
-    deleteAtividadeDialog: boolean = false;
-    tipoAtividadeDialog: boolean = false;
+    deleteVisitaDialog: boolean = false;
 
-    atividade: AtividadeDto = {};
-    tipoAtividade: TipoAtividadeDto = {};
+    visita: VisitaDto = {};
+    cliente: ClienteDto = {};
+    endereco: Endereco = {};
 
-    atividades: AtividadeDto[] = [];
-    tipoAtividades: TipoAtividadeDto[] = [];
+    visitas: VisitaDto[] = [];
 
     submitted: boolean = false;
 
@@ -31,20 +32,14 @@ export class VisitaPageComponent implements OnInit {
 
     rowsPerPageOptions = [5, 10, 20];
 
-    constructor(private messageService: MessageService, private atividadeService: AtividadeService,
-        private tipoAtividadeService:TipoAtividadeService) { }
+    constructor(private messageService: MessageService, private visitaService: VisitaService,
+        private enderecoService: EnderecoService) { }
 
     ngOnInit() {
-        this.atividadeService.buscarTodos().subscribe(({data}: any) => {
-            this.atividades = data;
+        this.visitaService.buscarTodos().subscribe(({data}: any) => {
+            this.visitas = data;
         }, error => {
-            this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao buscar atividades', life: 3000 });
-        });
-
-        this.tipoAtividadeService.buscarTodos().subscribe(({data}: any) => {
-            this.tipoAtividades = data;
-        }, error => {
-            this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao buscar tipos de atividades', life: 3000 });
+            this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao buscar visitas', life: 3000 });
         });
 
         this.cols = [
@@ -53,91 +48,73 @@ export class VisitaPageComponent implements OnInit {
         ];
     }
 
-    openNewAtividade() {
-        this.atividade = {};
+    openNewVisita() {
+        this.visita = {};
         this.submitted = false;
-        this.atividadeDialog = true;
+        this.visitaDialog = true;
     }
 
-    deleteAtividade(atividade: AtividadeDto) {
-        this.deleteAtividadeDialog = true;
-        this.atividade = { ...atividade };
+    deleteVisita(visita: VisitaDto) {
+        this.deleteVisitaDialog = true;
+        this.visita = { ...visita };
     }
 
-    confirmDeleteAtividade() {
-        this.deleteAtividadeDialog = false;
+    confirmDeleteVisita() {
+        // this.deleteVisitaDialog = false;
 
-        this.atividadeService.deleteAtividade(this.atividade).subscribe(({data}: any) => {
-            this.atividades = this.atividades.filter((val: any) => val.id !== this.atividade.id);
-            this.atividade = {};
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Atividade Deletada', life: 3000 });
-        }, error => {
-            this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao deletar atividade', life: 3000 });
-        });
+        // this.visitaService.deleteVisita(this.visita).subscribe(({data}: any) => {
+        //     this.visitas = this.visitas.filter((val: any) => val.id !== this.visita.id);
+        //     this.visita = {};
+        //     this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Visita Deletada', life: 3000 });
+        // }, error => {
+        //     this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao deletar visita', life: 3000 });
+        // });
 
-        this.atividades = [...this.atividades];
+        // this.visitas = [...this.visitas];
     }
 
     hideDialog() {
-        this.atividadeDialog = false;
-        this.tipoAtividadeDialog = false;
+        this.visitaDialog = false;
         this.submitted = false;
     }
 
-    saveAtividade() {
+    saveVisita() {
         this.submitted = true;
 
-        if(this.atividade.tipoAtividade && this.atividade.nome && this.atividade.valorReferencia){
-            if (this.atividade.id === undefined) {
-                this.atividadeService.createAtividade(this.atividade).subscribe(({data}: any) => {
-                    this.atividade = data;
-                    this.atividades.push(this.atividade);
-                    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Atividade Criada', life: 3000 });
-                }, error => {
-                    this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao criar atividade', life: 3000 });
-                });
-            }else{
-                this.atividadeService.updateAtividade(this.atividade).subscribe(({data}: any) => {
-                    this.atividade = data;
-                    this.atividades[this.atividades.findIndex((e: any) => e.id === this.atividade.id)] = this.atividade;
-                    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Atividade Atualizada', life: 3000 });
-                }, error => {
-                    this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao atualizar atividade', life: 3000 });
-                });
-            }
+        this.visita.cliente = this.cliente;
+        this.visita.endereco = this.endereco.rua + ',' + this.endereco.numero + ',' + this.endereco.bairro + ',' + this.endereco.cidade + ',' + this.endereco.uf + ',' + this.endereco.cep;
+        this.visita.cliente.endereco = this.visita.endereco;
 
-            this.atividades = [...this.atividades];
-            this.atividadeDialog = false;
-            this.atividade = {};
-        }
-    }
-
-    createTipoAtividade() {
-        this.tipoAtividade = {};
-        this.submitted = false;
-        this.tipoAtividadeDialog = true;
-    }
-
-    saveTipoAtividade() {
-        this.submitted = true;
-
-        if (this.tipoAtividade.descricao) {
-            this.tipoAtividadeService.createTipoAtividade(this.tipoAtividade).subscribe(({ data }: any) => {
-                this.tipoAtividade = data;
-                this.tipoAtividades.push(this.tipoAtividade);
-                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Tipo Atividade Criada', life: 3000 });
-            }, error => {
-                this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao criar tipo atividade', life: 3000 });
-            });
-
-            this.tipoAtividades = [...this.tipoAtividades];
-            this.tipoAtividadeDialog = false;
-            this.tipoAtividade = {};
-        }
+        this.visitaService.createVisita(this.visita).subscribe(({data}: any) => {
+            this.visita = data;
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Visita Criada', life: 3000 });
+            this.visitaDialog = false;
+        }, error => {
+            this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao criar visita', life: 3000 });
+        });
     }
 
     onGlobalFilter(table: Table, event: Event) {
         table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+    }
+
+    onCepSelected() {
+
+        if(!this.endereco.cep || this.endereco.cep?.length < 8){
+          return;
+        }
+
+        this.enderecoService.getEndereco(this.endereco.cep).subscribe((res:any)=> {
+          if(res.erro){
+            this.messageService.add({severity:'error', summary:'Erro', detail:'CEP não encontrado'});
+            return;
+          }else{
+            this.endereco.rua = res.logradouro;
+            this.endereco.bairro = res.bairro;
+            this.endereco.cidade = res.localidade;
+            this.endereco.uf = res.uf;
+          }
+        });
     }
 
 }

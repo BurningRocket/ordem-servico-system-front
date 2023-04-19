@@ -13,7 +13,7 @@ import { PhotoService } from './demo/service/photo.service';
 import { AuthGuard } from './seguranca/auth.guard';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpErrorsInterceptor } from './shared/http-errors/http-errors.interceptor';
-import { MessageService } from 'primeng/api';
+
 @NgModule({
     declarations: [AppComponent, NotfoundComponent],
     imports: [AppRoutingModule, AppLayoutModule],
