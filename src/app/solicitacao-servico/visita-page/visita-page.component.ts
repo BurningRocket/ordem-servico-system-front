@@ -20,6 +20,8 @@ export class VisitaPageComponent implements OnInit {
     deleteVisitaDialog: boolean = false;
     finalizaVisitaDialog: boolean = false;
 
+    visitaViewMode: boolean = false;
+
     visita: VisitaDto = {};
     cliente: ClienteDto = {};
     endereco: Endereco = {};
@@ -60,8 +62,11 @@ export class VisitaPageComponent implements OnInit {
 
     openNewVisita() {
         this.visita = {};
+        this.cliente = {};
+        this.endereco = {};
         this.submitted = false;
         this.visitaDialog = true;
+        this.visitaViewMode = false;
     }
 
     saveVisita() {
@@ -75,6 +80,7 @@ export class VisitaPageComponent implements OnInit {
             this.visita = data;
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Visita Criada', life: 3000 });
             this.visitaDialog = false;
+            window.location.reload();
         }, error => {
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao criar visita', life: 3000 });
         });
@@ -94,6 +100,25 @@ export class VisitaPageComponent implements OnInit {
         }, error => {
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao finalizar visita', life: 3000 });
         });
+    }
+
+    viewVisita(visita: VisitaDto) {
+        this.visita = visita;
+        this.cliente = visita.cliente ? visita.cliente : {};
+        if(this.visita.endereco)
+            this.populateEndereco(this.visita.endereco);
+        this.visitaDialog = true;
+        this.visitaViewMode = true;
+    }
+
+    populateEndereco(enderecoString: string) {
+        let enderecoArray = enderecoString.split(',');
+        this.endereco.rua = enderecoArray[0];
+        this.endereco.numero = enderecoArray[1];
+        this.endereco.bairro = enderecoArray[2];
+        this.endereco.cidade = enderecoArray[3];
+        this.endereco.uf = enderecoArray[4];
+        this.endereco.cep = enderecoArray[5];
     }
 
     hideDialog() {

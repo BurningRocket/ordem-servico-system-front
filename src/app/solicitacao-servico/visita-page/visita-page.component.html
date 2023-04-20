@@ -29,43 +29,52 @@
                         <th pSortableColumn="descricao">Descrição <p-sortIcon field="descricao"></p-sortIcon></th>
                         <th pSortableColumn="chegouSite">Chegou pelo Site <p-sortIcon field="chegouSite"></p-sortIcon></th>
                         <th pSortableColumn="notificarWpp">Notificar Wpp <p-sortIcon field="notificarWpp"></p-sortIcon></th>
+                        <th pSortableColumn="status">Status<p-sortIcon field="status"></p-sortIcon></th>
                         <th></th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-visita>
                     <tr>
-                        <td style="width:14%; min-width:12rem;">
+                        <td style="width:12%; min-width:12rem;">
                             <span class="p-column-title">Nome</span>
                             {{visita.cliente.nome}}
                         </td>
-                        <td style="width:14%; min-width:12rem;">
+                        <td style="width:12%; min-width:12rem;">
                             <span class="p-column-title">Telefone</span>
                             {{visita.cliente.telefone}}
                         </td>
-                        <td style="width:14%; min-width:12rem;">
+                        <td style="width:12%; min-width:12rem;">
                             <span class="p-column-title">Endereço</span>
-                            {{visita.cliente.endereco}}
+                            <a [href]="'http://maps.google.com/?q='+visita.endereco" target="_blank">
+                                {{visita.endereco}}
+                            </a>
                         </td>
-                        <td style="width:14%; min-width:12rem;">
+                        <td style="width:12%; min-width:12rem;">
                             <span class="p-column-title">Data Agendamento</span>
                             {{visita.dataVisita | date: 'dd/MM/yyyy'}}
                         </td>
-                        <td style="width:14%; min-width:12rem;">
+                        <td style="width:12%; min-width:12rem;">
                             <span class="p-column-title">Descrição</span>
                             {{visita.descricao}}
                         </td>
-                        <td style="width:14%; min-width:12rem;">
+                        <td style="width:12%; min-width:12rem;">
                             <span class="p-column-title">Chegou pelo Site</span>
                             <b>{{visita.chegouSite? 'Sim' : 'Não'}}</b>
                         </td>
-                        <td style="width:14%; min-width:6rem;">
-                            <span class="p-column-title">>Notificar Wpp</span>
+                        <td style="width:12%; min-width:6rem;">
+                            <span class="p-column-title">Notificar Wpp</span>
                             <b>{{visita.notificarWpp ? 'Sim' : 'Não'}}</b>
+                        </td>
+                        <td style="width:12%; min-width:6rem;">
+                            <span class="p-column-title">Status</span>
+                            <b>{{visita.status}}</b>
                         </td>
                         <td>
                             <!-- TODO: Trocar essa lógica para status depois que adicionar status nas visitas -->
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-check" class="p-button-rounded p-button-success" (click)="finalizarVisita(visita)" *ngIf="visita.descricao === null"></button>
+                                <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-info mr-2" (click)="viewVisita(visita)"></button>
+                                <button pButton pRipple icon="pi pi-check" class="p-button-rounded p-button-success" (click)="finalizarVisita(visita)" *ngIf="visita.status === 'PENDENTE'"></button>
+                                <button pButton pRipple icon="pi pi-calendar" class="p-button-rounded" (click)="finalizarVisita(visita)" *ngIf="visita.status === 'FINALIZADA'"></button>
                             </div>
                         </td>
                     </tr>
@@ -81,27 +90,27 @@
                     </div>
                     <div class="field col-6 mt-3 mt-3">
                         <span class="p-float-label">
-                            <input type="text" id="inputNome" pInputText [(ngModel)]="cliente.nome" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !cliente.nome}">
+                            <input type="text" id="inputNome" pInputText [(ngModel)]="cliente.nome" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !cliente.nome}" [disabled]="visitaViewMode">
                             <label for="inputNome">Nome do cliente*</label>
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !cliente.nome">Insira um nome</small>
                     </div>
                     <div class="field col-6 mt-3 mt-3">
                         <span class="p-float-label">
-                            <p-inputMask [unmask]="true" id="inputCpf" [(ngModel)]="cliente.cpf" placeholder="999.999.999-99" mask="999.999.999-99"></p-inputMask>
+                            <p-inputMask [unmask]="true" id="inputCpf" [(ngModel)]="cliente.cpf" placeholder="999.999.999-99" mask="999.999.999-99" [disabled]="visitaViewMode"></p-inputMask>
                             <label for="inputCpf">CPF</label>
                         </span>
                     </div>
                     <div class="field col-6 mt-3 mt-3">
                         <span class="p-float-label">
-                            <p-inputMask [unmask]="true" id="inputTelefone" [(ngModel)]="cliente.telefone" [required]=true laceholder="(99) 99999-9999" mask="(99) 99999-9999" [ngClass]="{'ng-invalid ng-dirty' : submitted && !cliente.telefone}"></p-inputMask>
+                            <p-inputMask [unmask]="true" id="inputTelefone" [(ngModel)]="cliente.telefone" [required]=true laceholder="(99) 99999-9999" mask="(99) 99999-9999" [ngClass]="{'ng-invalid ng-dirty' : submitted && !cliente.telefone}" [disabled]="visitaViewMode"></p-inputMask>
                             <label for="inputTelefone">Telefone*</label>
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !cliente.telefone">Insira um telefone</small>
                     </div>
                     <div class="field col-6 mt-3 mt-3">
                         <span class="p-float-label">
-                            <input type="text" id="inputEmail" pInputText [(ngModel)]="cliente.email" >
+                            <input type="text" id="inputEmail" pInputText [(ngModel)]="cliente.email" [disabled]="visitaViewMode">
                             <label for="inputEmail">Email</label>
                         </span>
                     </div>
@@ -110,41 +119,41 @@
                     </div>
                     <div class="field col-6 mt-3">
                         <span class="p-float-label">
-                            <input maxlength="8" type="text" id="CepVisitaInputEditDialog" pInputText [(ngModel)]="endereco.cep" (blur)="onCepSelected()">
+                            <input maxlength="9" type="text" id="CepVisitaInputEditDialog" pInputText [(ngModel)]="endereco.cep" (blur)="onCepSelected()" [disabled]="visitaViewMode">
                             <label for="CepVisitaInputEditDialog">CEP</label>
                         </span>
                     </div>
                     <div class="field col-6 mt-3">
                         <span class="p-float-label">
-                            <input type="text" id="RuaVisitaInputEditDialog" pInputText [(ngModel)]="endereco.rua" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.rua}">
+                            <input type="text" id="RuaVisitaInputEditDialog" pInputText [(ngModel)]="endereco.rua" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.rua}" [disabled]="visitaViewMode">
                             <label for="RuaVisitaInputEditDialog">Rua*</label>
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !endereco.rua">Defina uma rua para o atendimento.</small>
                     </div>
                     <div class="field col-6 mt-3">
                         <span class="p-float-label">
-                            <input maxlength="5" type="text" id="NúmeroVisitaInputEditDialog" pInputText [(ngModel)]="endereco.numero" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.rua}">
+                            <input maxlength="5" type="number" id="NúmeroVisitaInputEditDialog" pInputText [(ngModel)]="endereco.numero" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.rua}" [disabled]="visitaViewMode">
                             <label for="NúmeroVisitaInputEditDialog">Número*</label>
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !endereco.rua">Defina um número para o atendimento.</small>
                     </div>
                     <div class="field col-6 mt-3">
                         <span class="p-float-label">
-                            <input type="text" id="BairroVisitaInputEditDialog" pInputText [(ngModel)]="endereco.bairro" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.bairro}">
+                            <input type="text" id="BairroVisitaInputEditDialog" pInputText [(ngModel)]="endereco.bairro" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.bairro}" [disabled]="visitaViewMode">
                             <label for="BairroVisitaInputEditDialog">Bairro*</label>
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !endereco.bairro">Defina um bairro para o atendimento.</small>
                     </div>
                     <div class="field col-6 mt-3">
                         <span class="p-float-label">
-                            <input type="text" id="CidadeVisitaInputEditDialog" pInputText [(ngModel)]="endereco.cidade" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.cidade}">
+                            <input type="text" id="CidadeVisitaInputEditDialog" pInputText [(ngModel)]="endereco.cidade" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.cidade}" [disabled]="visitaViewMode">
                             <label for="CidadeVisitaInputEditDialog">Cidade*</label>
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !endereco.cidade">Defina uma cidade para o atendimento.</small>
                     </div>
                     <div class="field col-6 mt-3">
                         <span class="p-float-label">
-                            <input type="text" id="UfVisitaInputEditDialog" pInputText [(ngModel)]="endereco.uf" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.uf}">
+                            <input type="text" id="UfVisitaInputEditDialog" pInputText [(ngModel)]="endereco.uf" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.uf}" [disabled]="visitaViewMode">
                             <label for="UfVisitaInputEditDialog">UF*</label>
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !endereco.uf">Defina um estado para o atendimento.</small>
@@ -152,25 +161,32 @@
                     <div class="col-12 mt-3">
                         <h5>Detalhes Visita</h5>
                     </div>
-                    <div class="field col-6 mt-3">
+                    <div class="field col-6 mt-3" *ngIf="!visitaViewMode">
                         <span class="p-float-label">
-                            <p-calendar dateFormat="dd/mm/yy" [showIcon]="true" id="inputDataVisita" [(ngModel)]="visita.dataVisita" [required] = true [ngClass]="{'ng-invalid ng-dirty' : submitted && !visita.dataVisita}"></p-calendar>
+                            <p-calendar dateFormat="dd/mm/yy" [showIcon]="true" id="inputDataVisita" [(ngModel)]="visita.dataVisita" [required] = true [ngClass]="{'ng-invalid ng-dirty' : submitted && !visita.dataVisita}" [disabled]="visitaViewMode"></p-calendar>
+                            <label for="inputDataVisita">Data da visita*</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !visita.dataVisita">Insira uma data</small>
+                    </div>
+                    <div class="field col-6 mt-3" *ngIf="visitaViewMode">
+                        <span class="p-float-label">
+                            <input type="text" pInputText id="inputDataVisita" [ngModel]="visita.dataVisita | date: 'dd/MM/yyyy'" [required] = true [ngClass]="{'ng-invalid ng-dirty' : submitted && !visita.dataVisita}" [disabled]="visitaViewMode">
                             <label for="inputDataVisita">Data da visita*</label>
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !visita.dataVisita">Insira uma data</small>
                     </div>
                     <div class="field-checkbox col-3 mt-3">
-						<p-checkbox name="group1" [binary]="true" label="Cliente chegou pelo Site?" [(ngModel)]="visita.chegouSite" id="checkChegouSite"></p-checkbox>
+						<p-checkbox name="group1" [binary]="true" label="Cliente chegou pelo Site?" [(ngModel)]="visita.chegouSite" id="checkChegouSite" [disabled]="visitaViewMode"></p-checkbox>
 					</div>
                     <div class="field-checkbox col-3 mt-3">
-						<p-checkbox name="group1" [binary]="true" label="Enviar Notificações por WPP?" [(ngModel)]="visita.notificarWpp" id="checkNotificarWpp"></p-checkbox>
+						<p-checkbox name="group1" [binary]="true" label="Enviar Notificações por WPP?" [(ngModel)]="visita.notificarWpp" id="checkNotificarWpp" [disabled]="visitaViewMode"></p-checkbox>
 					</div>
                 </div>
             </ng-template>
 
             <ng-template pTemplate="footer">
-                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text p-button-secondary" (click)="hideDialog()"></button>
-                <button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-text p-button-success" (click)="saveVisita()"></button>
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text p-button-secondary" *ngIf="!visitaViewMode" (click)="hideDialog()"></button>
+                <button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-text p-button-success" *ngIf="!visitaViewMode" (click)="saveVisita()"></button>
             </ng-template>
         </p-dialog>
 
@@ -179,7 +195,7 @@
                 <div class="field col-12 mt-4">
                     <span class="p-float-label">
                         <textarea inputId="descricaoVisita" rows="5" [(ngModel)]="visita.descricao" pInputTextarea style="width: 100%;"></textarea>
-                        <label for="descricaoVisita">Descrição</label>
+                        <label for="descricaoVisita">Descreva a visita</label>
                     </span>
                 </div>
             </div>
