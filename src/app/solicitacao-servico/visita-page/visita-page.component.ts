@@ -6,6 +6,7 @@ import { VisitaDto } from 'src/app/models/visita-dto.model';
 import { ClienteDto } from 'src/app/models/cliente-dto.model';
 import { Endereco } from 'src/app/models/endereco.model';
 import { EnderecoService } from 'src/app/services/endereco.service';
+import { OrcamentoDto } from 'src/app/models/orcamento-dto';
 
 @Component({
   selector: 'app-visita-page',
@@ -19,12 +20,14 @@ export class VisitaPageComponent implements OnInit {
 
     deleteVisitaDialog: boolean = false;
     finalizaVisitaDialog: boolean = false;
+    orcamentoDialog: boolean = false;
 
     visitaViewMode: boolean = false;
 
     visita: VisitaDto = {};
     cliente: ClienteDto = {};
     endereco: Endereco = {};
+    orcamento:OrcamentoDto = {};
 
     visitas: VisitaDto[] = [];
 
@@ -120,6 +123,16 @@ export class VisitaPageComponent implements OnInit {
     hideDialog() {
         this.visitaDialog = false;
         this.submitted = false;
+    }
+
+    onNewOrcamento(visita: VisitaDto) {
+        this.visita = visita;
+        this.cliente = visita.cliente ? visita.cliente : {};
+        if(this.visita.endereco)
+            this.populateEndereco(this.visita.endereco);
+        this.submitted = false;
+        this.orcamentoDialog = true;
+        this.visitaViewMode = false;
     }
 
 

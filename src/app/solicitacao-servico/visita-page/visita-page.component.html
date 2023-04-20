@@ -70,11 +70,10 @@
                             <b>{{visita.status}}</b>
                         </td>
                         <td>
-                            <!-- TODO: Trocar essa lógica para status depois que adicionar status nas visitas -->
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-info mr-2" (click)="viewVisita(visita)"></button>
                                 <button pButton pRipple icon="pi pi-check" class="p-button-rounded p-button-success" (click)="finalizarVisita(visita)" *ngIf="visita.status === 'PENDENTE'"></button>
-                                <button pButton pRipple icon="pi pi-calendar" class="p-button-rounded" (click)="finalizarVisita(visita)" *ngIf="visita.status === 'FINALIZADA'"></button>
+                                <button pButton pRipple icon="pi pi-dollar" class="p-button-rounded p-button-success" (click)="onNewOrcamento(visita)" *ngIf="visita.status === 'FINALIZADA'"></button>
                             </div>
                         </td>
                     </tr>
@@ -97,7 +96,7 @@
                     </div>
                     <div class="field col-6 mt-3 mt-3">
                         <span class="p-float-label">
-                            <p-inputMask [unmask]="true" id="inputCpf" [(ngModel)]="cliente.cpf" placeholder="999.999.999-99" mask="999.999.999-99" [disabled]="visitaViewMode"></p-inputMask>
+                            <p-inputMask [unmask]="true" id="inputCpf" [(ngModel)]="cliente.cpf" inputValor [disabled]="visitaViewMode"></p-inputMask>
                             <label for="inputCpf">CPF</label>
                         </span>
                     </div>
@@ -184,6 +183,100 @@
                 </div>
             </ng-template>
 
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text p-button-secondary" *ngIf="!visitaViewMode" (click)="hideDialog()"></button>
+                <button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-text p-button-success" *ngIf="!visitaViewMode" (click)="saveVisita()"></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog [(visible)]="orcamentoDialog" [style]="{width: '1200px'}" [modal]="true" class="p-fluid" [maximizable]=true>
+            <ng-template pTemplate="content">
+                <div class="formgrid grid">
+                    <div class="col-12">
+                        <h5>Dados cliente</h5>
+                    </div>
+                    <div class="field col-6 mt-3 mt-3">
+                        <span class="p-float-label">
+                            <input type="text" id="inputNome" pInputText [(ngModel)]="cliente.nome" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !cliente.nome}" [disabled]="true">
+                            <label for="inputNome">Nome do cliente*</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !cliente.nome">Insira um nome</small>
+                    </div>
+                    <div class="field col-6 mt-3 mt-3">
+                        <span class="p-float-label">
+                            <p-inputMask [unmask]="true" id="inputCpf" [(ngModel)]="cliente.cpf" placeholder="999.999.999-99" mask="999.999.999-99" [disabled]="true"></p-inputMask>
+                            <label for="inputCpf">CPF</label>
+                        </span>
+                    </div>
+                    <div class="field col-6 mt-3 mt-3">
+                        <span class="p-float-label">
+                            <p-inputMask [unmask]="true" id="inputTelefone" [(ngModel)]="cliente.telefone" [required]=true laceholder="(99) 99999-9999" mask="(99) 99999-9999" [ngClass]="{'ng-invalid ng-dirty' : submitted && !cliente.telefone}" [disabled]="true"></p-inputMask>
+                            <label for="inputTelefone">Telefone*</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !cliente.telefone">Insira um telefone</small>
+                    </div>
+                    <div class="field col-6 mt-3 mt-3">
+                        <span class="p-float-label">
+                            <input type="text" id="inputEmail" pInputText [(ngModel)]="cliente.email" [disabled]="true">
+                            <label for="inputEmail">Email</label>
+                        </span>
+                    </div>
+                    <div class="col-12 mt-3">
+                        <h5>Endereço</h5>
+                    </div>
+                    <div class="field col-6 mt-3">
+                        <span class="p-float-label">
+                            <input maxlength="9" type="text" id="CepVisitaInputEditDialog" pInputText [(ngModel)]="endereco.cep" (blur)="onCepSelected()" [disabled]="true">
+                            <label for="CepVisitaInputEditDialog">CEP</label>
+                        </span>
+                    </div>
+                    <div class="field col-6 mt-3">
+                        <span class="p-float-label">
+                            <input type="text" id="RuaVisitaInputEditDialog" pInputText [(ngModel)]="endereco.rua" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.rua}" [disabled]="true">
+                            <label for="RuaVisitaInputEditDialog">Rua*</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !endereco.rua">Defina uma rua para o atendimento.</small>
+                    </div>
+                    <div class="field col-6 mt-3">
+                        <span class="p-float-label">
+                            <input maxlength="5" type="number" id="NúmeroVisitaInputEditDialog" pInputText [(ngModel)]="endereco.numero" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.rua}" [disabled]="true">
+                            <label for="NúmeroVisitaInputEditDialog">Número*</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !endereco.rua">Defina um número para o atendimento.</small>
+                    </div>
+                    <div class="field col-6 mt-3">
+                        <span class="p-float-label">
+                            <input type="text" id="BairroVisitaInputEditDialog" pInputText [(ngModel)]="endereco.bairro" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.bairro}" [disabled]="true">
+                            <label for="BairroVisitaInputEditDialog">Bairro*</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !endereco.bairro">Defina um bairro para o atendimento.</small>
+                    </div>
+                    <div class="field col-6 mt-3">
+                        <span class="p-float-label">
+                            <input type="text" id="CidadeVisitaInputEditDialog" pInputText [(ngModel)]="endereco.cidade" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.cidade}" [disabled]="true">
+                            <label for="CidadeVisitaInputEditDialog">Cidade*</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !endereco.cidade">Defina uma cidade para o atendimento.</small>
+                    </div>
+                    <div class="field col-6 mt-3">
+                        <span class="p-float-label">
+                            <input type="text" id="UfVisitaInputEditDialog" pInputText [(ngModel)]="endereco.uf" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.uf}" [disabled]="true">
+                            <label for="UfVisitaInputEditDialog">UF*</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !endereco.uf">Defina um estado para o atendimento.</small>
+                    </div>
+                    <div class="col-12 mt-3">
+                        <h5>Detalhes Orçamento</h5>
+                    </div>
+                    <div class="field col-6 mt-3">
+                        <span class="p-float-label">
+                            <p-inputNumber mode="currency" currency="BRL" locale="pt-BR" id="inputValor" [(ngModel)]="orcamento.valor" [required] = true [ngClass]="{'ng-invalid ng-dirty' : submitted && !visita.dataVisita}"></p-inputNumber>
+                            <label for="inputValor">Valor Orçamento</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !visita.dataVisita">Insira um valor</small>
+                    </div>
+                </div>
+            </ng-template>
             <ng-template pTemplate="footer">
                 <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text p-button-secondary" *ngIf="!visitaViewMode" (click)="hideDialog()"></button>
                 <button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-text p-button-success" *ngIf="!visitaViewMode" (click)="saveVisita()"></button>
