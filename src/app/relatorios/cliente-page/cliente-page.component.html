@@ -1,1 +1,48 @@
-<p>cliente-page works!</p>
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toast></p-toast>
+            <p-table #dt [value]="clientes" [columns]="cols" responsiveLayout="scroll" [globalFilterFields]="['_id', 'nome', 'telefone', 'endereco', 'dataCliente', 'chegouSite', 'notificarWpp']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Monstrando {first} até {last} de {totalRecords} clientes" [rowHover]="true" dataKey="id">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h5 class="m-0">Clientes</h5>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."  class="w-full sm:w-auto"/>
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="nome">Nome <p-sortIcon field="nome"></p-sortIcon></th>
+                        <th pSortableColumn="telefone">Telefone <p-sortIcon field="telefone"></p-sortIcon></th>
+                        <th pSortableColumn="endereco">Endereço <p-sortIcon field="endereco"></p-sortIcon></th>
+                        <th pSortableColumn="email">Email <p-sortIcon field="email"></p-sortIcon></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-cliente>
+                    <tr>
+                        <td style="width:12%; min-width:12rem;">
+                            <span class="p-column-title">Nome</span>
+                            {{cliente.nome}}
+                        </td>
+                        <td style="width:12%; min-width:12rem;">
+                            <span class="p-column-title">Telefone</span>
+                            {{cliente.telefone}}
+                        </td>
+                        <td style="width:12%; min-width:12rem;">
+                            <span class="p-column-title">Endereço</span>
+                            <a [href]="'http://maps.google.com/?q='+cliente.endereco" target="_blank">
+                                {{cliente.endereco}}
+                            </a>
+                        </td>
+                        <td style="width:12%; min-width:12rem;">
+                            <span class="p-column-title">Email</span>
+                            {{cliente.email}}
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>

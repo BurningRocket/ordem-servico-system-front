@@ -40,10 +40,6 @@ export class VisitaPageComponent implements OnInit {
     ngOnInit() {
         this.visitaService.buscarTodos().subscribe((data: any) => {
             this.visitas = data;
-
-            console.log(this.visitas);
-
-
         }, error => {
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao buscar visitas', life: 3000 });
         });
