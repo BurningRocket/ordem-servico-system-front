@@ -1,7 +1,9 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # Compiled output
-/dist
+# Removed dist for emergency ec2 deploy
+#FIXME: Voltar dist para .gitignore
+# /dist
 /tmp
 /out-tsc
 /bazel-out
