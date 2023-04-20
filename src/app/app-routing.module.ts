@@ -20,6 +20,12 @@ import { AuthGuard } from './seguranca/auth.guard';
                             // data: { roles: ["admin"]
                         },
                         {
+                            path: 'relatorios',
+                            loadChildren: () => import('./relatorios/relatorios.module').then((m) => m.RelatoriosModule),
+                            canActivate: [AuthGuard],
+                            // data: { roles: ["admin"]
+                        },
+                        {
                             path: '',
                             loadChildren: () => import('./demo/components/dashboard/dashboard.module').then(m => m.DashboardModule),
                             canActivate: [AuthGuard],

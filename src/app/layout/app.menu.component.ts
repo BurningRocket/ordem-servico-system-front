@@ -54,6 +54,21 @@ export class AppMenuComponent implements OnInit {
                 hasPermission: true,
                 // hasPermission: this.authService.hasRoles(["admin"]),
             },
+            {
+                label: 'Relatório',
+                items: [
+                    {
+                        label: 'Cliente',
+                        icon: 'pi pi-fw pi-user',
+                        routerLink: ['/relatorios/cliente'],
+                        hasPermission: true,
+                        // hasPermission: this.authService.hasRoles(["admin"]),
+                    },
+
+                ],
+                hasPermission: true,
+                // hasPermission: this.authService.hasRoles(["admin"]),
+            },
         ];
     }
 }
