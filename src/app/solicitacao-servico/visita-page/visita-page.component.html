@@ -110,42 +110,42 @@
                     </div>
                     <div class="field col-6 mt-3">
                         <span class="p-float-label">
-                            <input type="text" id="CepAtendimentoInputEditDialog" pInputText [(ngModel)]="endereco.cep" (blur)="onCepSelected()">
-                            <label for="CepAtendimentoInputEditDialog">CEP</label>
+                            <input maxlength="8" type="text" id="CepVisitaInputEditDialog" pInputText [(ngModel)]="endereco.cep" (blur)="onCepSelected()">
+                            <label for="CepVisitaInputEditDialog">CEP</label>
                         </span>
                     </div>
                     <div class="field col-6 mt-3">
                         <span class="p-float-label">
-                            <input type="text" id="RuaAtendimentoInputEditDialog" pInputText [(ngModel)]="endereco.rua" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.rua}">
-                            <label for="RuaAtendimentoInputEditDialog">Rua*</label>
+                            <input type="text" id="RuaVisitaInputEditDialog" pInputText [(ngModel)]="endereco.rua" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.rua}">
+                            <label for="RuaVisitaInputEditDialog">Rua*</label>
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !endereco.rua">Defina uma rua para o atendimento.</small>
                     </div>
                     <div class="field col-6 mt-3">
                         <span class="p-float-label">
-                            <input type="text" id="NúmeroAtendimentoInputEditDialog" pInputText [(ngModel)]="endereco.numero" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.rua}">
-                            <label for="NúmeroAtendimentoInputEditDialog">Número*</label>
+                            <input maxlength="5" type="text" id="NúmeroVisitaInputEditDialog" pInputText [(ngModel)]="endereco.numero" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.rua}">
+                            <label for="NúmeroVisitaInputEditDialog">Número*</label>
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !endereco.rua">Defina um número para o atendimento.</small>
                     </div>
                     <div class="field col-6 mt-3">
                         <span class="p-float-label">
-                            <input type="text" id="BairroAtendimentoInputEditDialog" pInputText [(ngModel)]="endereco.bairro" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.bairro}">
-                            <label for="BairroAtendimentoInputEditDialog">Bairro*</label>
+                            <input type="text" id="BairroVisitaInputEditDialog" pInputText [(ngModel)]="endereco.bairro" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.bairro}">
+                            <label for="BairroVisitaInputEditDialog">Bairro*</label>
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !endereco.bairro">Defina um bairro para o atendimento.</small>
                     </div>
                     <div class="field col-6 mt-3">
                         <span class="p-float-label">
-                            <input type="text" id="CidadeAtendimentoInputEditDialog" pInputText [(ngModel)]="endereco.cidade" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.cidade}">
-                            <label for="CidadeAtendimentoInputEditDialog">Cidade*</label>
+                            <input type="text" id="CidadeVisitaInputEditDialog" pInputText [(ngModel)]="endereco.cidade" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.cidade}">
+                            <label for="CidadeVisitaInputEditDialog">Cidade*</label>
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !endereco.cidade">Defina uma cidade para o atendimento.</small>
                     </div>
                     <div class="field col-6 mt-3">
                         <span class="p-float-label">
-                            <input type="text" id="UfAtendimentoInputEditDialog" pInputText [(ngModel)]="endereco.uf" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.uf}">
-                            <label for="UfAtendimentoInputEditDialog">UF*</label>
+                            <input type="text" id="UfVisitaInputEditDialog" pInputText [(ngModel)]="endereco.uf" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.uf}">
+                            <label for="UfVisitaInputEditDialog">UF*</label>
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !endereco.uf">Defina um estado para o atendimento.</small>
                     </div>
