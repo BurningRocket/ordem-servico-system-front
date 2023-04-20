@@ -15,12 +15,14 @@ import { AuthGuard } from './seguranca/auth.guard';
                     children: [
                         {
                             path: 'solicitacao-servico',
-                            loadChildren: () =>
-                                import(
-                                    './solicitacao-servico/solicitacao-servico.module'
-                                ).then((m) => m.SolicitacaoServicoModule),
+                            loadChildren: () => import('./solicitacao-servico/solicitacao-servico.module').then((m) => m.SolicitacaoServicoModule),
                             canActivate: [AuthGuard],
-                            // data: { roles: ["admin"] },
+                            // data: { roles: ["admin"]
+                        },
+                        {
+                            path: '',
+                            loadChildren: () => import('./demo/components/dashboard/dashboard.module').then(m => m.DashboardModule),
+                            canActivate: [AuthGuard],
                         },
                     ],
                 },
