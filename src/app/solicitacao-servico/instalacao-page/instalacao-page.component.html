@@ -1,1 +1,327 @@
-<p>instalacao-page works!</p>
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toast></p-toast>
+
+            <p-table #dt [value]="instalacoes" [columns]="cols" responsiveLayout="scroll" [globalFilterFields]="['_id', 'cliente.nome', 'cliente.telefone', 'cliente.endereco', 'dataVisita', 'chegouSite', 'notificarWpp']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Monstrando {first} até {last} de {totalRecords} visitas" [rowHover]="true" dataKey="id">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h5 class="m-0">Visitas</h5>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."  class="w-full sm:w-auto"/>
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="cliente.nome">Nome <p-sortIcon field="cliente.nome"></p-sortIcon></th>
+                        <th pSortableColumn="cliente.endereco">Endereço <p-sortIcon field="cliente.endereco"></p-sortIcon></th>
+                        <th pSortableColumn="dataInicioInstalacao">Início Instalação <p-sortIcon field="dataInstalacao"></p-sortIcon></th>
+                        <th pSortableColumn="dataFimInstalacao">Fim Instalação <p-sortIcon field="dataFimInstalacao"></p-sortIcon></th>
+                        <th pSortableColumn="descricao">Descrição <p-sortIcon field="descricao"></p-sortIcon></th>
+                        <th pSortableColumn="quantidadeCaixas">Caixas<p-sortIcon field="quantidadeCaixas"></p-sortIcon></th>
+                        <th pSortableColumn="tipoPagamento">Pagamento<p-sortIcon field="tipoPagamento"></p-sortIcon></th>
+                        <th pSortableColumn="status">Status<p-sortIcon field="status"></p-sortIcon></th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-instalacao>
+                    <tr>
+                        <td style="width:12%; min-width:12rem;">
+                            <span class="p-column-title">Nome</span>
+                            {{instalacao?.cliente?.nome}}
+                        </td>
+                        <td style="width:12%; min-width:12rem;">
+                            <span class="p-column-title">Endereço</span>
+                            <a [href]="'http://maps.google.com/?q='+instalacao.endereco" target="_blank">
+                                {{instalacao.endereco}}
+                            </a>
+                        </td>
+                        <td style="width:12%; min-width:12rem;">
+                            <span class="p-column-title">Data Instalação</span>
+                            {{instalacao.dataInstalacao[0] | date: 'dd/MM/yyyy, HH:mm'}}
+                        </td>
+                        <td style="width:12%; min-width:12rem;">
+                            <span class="p-column-title">Data Instalação</span>
+                            {{instalacao.dataInstalacao[1] | date: 'dd/MM/yyyy, HH:mm'}}
+                        </td>
+                        <td style="width:12%; min-width:12rem;">
+                            <span class="p-column-title">Descrição</span>
+                            {{instalacao.descricao}}
+                        </td>
+                        <td style="width:12%; min-width:6rem;">
+                            <span class="p-column-title">Status</span>
+                            <b>{{instalacao.quantidadeCaixas || '-----'}}</b>
+                        </td>
+                        <td style="width:12%; min-width:6rem;">
+                            <span class="p-column-title">Status</span>
+                            <b>{{instalacao.tipoPagamento || '-----'}}</b>
+                        </td>
+                        <td style="width:12%; min-width:6rem;">
+                            <span class="p-column-title">Status</span>
+                            <b>{{instalacao.status}}</b>
+                        </td>
+                        <td>
+                            <div class="flex">
+                                <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-info mr-2" (click)="viewInstalacao(instalacao)"></button>
+                                <button pButton pRipple icon="pi pi-check" class="p-button-rounded p-button-success mr-2" (click)="finalizarInstalacao(instalacao)" *ngIf="instalacao.status === 'PENDENTE'"></button>
+                                <button pButton pRipple icon="pi pi-money-bill" class="p-button-rounded p-button-success mr-2" (click)="faturarInstalacao(instalacao)" *ngIf="instalacao.status === 'EXECUTADA'"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <p-dialog [(visible)]="orcamentoDialog" [style]="{width: '1200px'}" [modal]="true" class="p-fluid" [maximizable]=true>
+            <ng-template pTemplate="content">
+                <div class="formgrid grid">
+                    <div class="col-12">
+                        <h5>Dados cliente</h5>
+                    </div>
+                    <div class="field col-6 mt-3 mt-3">
+                        <span class="p-float-label">
+                            <input type="text" id="inputNome" pInputText [(ngModel)]="cliente.nome" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !cliente.nome}" [disabled]="true">
+                            <label for="inputNome">Nome do cliente*</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !cliente.nome">Insira um nome</small>
+                    </div>
+                    <div class="field col-6 mt-3 mt-3">
+                        <span class="p-float-label">
+                            <p-inputMask [unmask]="true" id="inputCpf" [(ngModel)]="cliente.cpf" placeholder="999.999.999-99" mask="999.999.999-99" [disabled]="true"></p-inputMask>
+                            <label for="inputCpf">CPF</label>
+                        </span>
+                    </div>
+                    <div class="field col-6 mt-3 mt-3">
+                        <span class="p-float-label">
+                            <p-inputMask [unmask]="true" id="inputTelefone" [(ngModel)]="cliente.telefone" [required]=true placeholder="(99) 99999-9999" mask="(99) 99999-9999" [ngClass]="{'ng-invalid ng-dirty' : submitted && !cliente.telefone}" [disabled]="true"></p-inputMask>
+                            <label for="inputTelefone">Telefone*</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !cliente.telefone">Insira um telefone</small>
+                    </div>
+                    <div class="field col-6 mt-3 mt-3">
+                        <span class="p-float-label">
+                            <input type="text" id="inputEmail" pInputText [(ngModel)]="cliente.email" [disabled]="true">
+                            <label for="inputEmail">Email</label>
+                        </span>
+                    </div>
+                    <div class="col-12 mt-3">
+                        <h5>Endereço</h5>
+                    </div>
+                    <div class="field col-6 mt-3">
+                        <span class="p-float-label">
+                            <input maxlength="9" type="text" id="CepVisitaInputEditDialog" pInputText [(ngModel)]="endereco.cep" (blur)="onCepSelected()" [disabled]="true">
+                            <label for="CepVisitaInputEditDialog">CEP</label>
+                        </span>
+                    </div>
+                    <div class="field col-6 mt-3">
+                        <span class="p-float-label">
+                            <input type="text" id="RuaVisitaInputEditDialog" pInputText [(ngModel)]="endereco.rua" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.rua}" [disabled]="true">
+                            <label for="RuaVisitaInputEditDialog">Rua*</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !endereco.rua">Defina uma rua para o atendimento.</small>
+                    </div>
+                    <div class="field col-6 mt-3">
+                        <span class="p-float-label">
+                            <input maxlength="5" type="number" id="NúmeroVisitaInputEditDialog" pInputText [(ngModel)]="endereco.numero" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.rua}" [disabled]="true">
+                            <label for="NúmeroVisitaInputEditDialog">Número*</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !endereco.rua">Defina um número para o atendimento.</small>
+                    </div>
+                    <div class="field col-6 mt-3">
+                        <span class="p-float-label">
+                            <input type="text" id="BairroVisitaInputEditDialog" pInputText [(ngModel)]="endereco.bairro" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.bairro}" [disabled]="true">
+                            <label for="BairroVisitaInputEditDialog">Bairro*</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !endereco.bairro">Defina um bairro para o atendimento.</small>
+                    </div>
+                    <div class="field col-6 mt-3">
+                        <span class="p-float-label">
+                            <input type="text" id="CidadeVisitaInputEditDialog" pInputText [(ngModel)]="endereco.cidade" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.cidade}" [disabled]="true">
+                            <label for="CidadeVisitaInputEditDialog">Cidade*</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !endereco.cidade">Defina uma cidade para o atendimento.</small>
+                    </div>
+                    <div class="field col-6 mt-3">
+                        <span class="p-float-label">
+                            <input type="text" id="UfVisitaInputEditDialog" pInputText [(ngModel)]="endereco.uf" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.uf}" [disabled]="true">
+                            <label for="UfVisitaInputEditDialog">UF*</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !endereco.uf">Defina um estado para o atendimento.</small>
+                    </div>
+                    <div class="col-12 mt-3">
+                        <h5>Detalhes Orçamento</h5>
+                    </div>
+                    <div class="field col-6 mt-3">
+                        <span class="p-float-label">
+                            <p-inputNumber mode="currency" currency="BRL" locale="pt-BR" id="inputValor" [(ngModel)]="orcamento.valor" [required] = true [ngClass]="{'ng-invalid ng-dirty' : submitted && !orcamento.valor}" [disabled]="true"></p-inputNumber>
+                            <label for="inputValor">Valor Orçamento</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !orcamento.valor">Insira um valor</small>
+                    </div>
+                </div>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog [(visible)]="instalacaoDialog" [style]="{width: '1200px'}" [modal]="true" class="p-fluid" [maximizable]=true>
+            <ng-template pTemplate="content">
+                <div class="formgrid grid">
+                    <div class="col-12">
+                        <h5>Dados cliente</h5>
+                    </div>
+                    <div class="field col-6 mt-3 mt-3">
+                        <span class="p-float-label">
+                            <input type="text" id="inputNome" pInputText [(ngModel)]="cliente.nome" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !cliente.nome}" [disabled]="true">
+                            <label for="inputNome">Nome do cliente*</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !cliente.nome">Insira um nome</small>
+                    </div>
+                    <div class="field col-6 mt-3 mt-3">
+                        <span class="p-float-label">
+                            <p-inputMask [unmask]="true" id="inputCpf" [(ngModel)]="cliente.cpf" inputValor [disabled]="true"></p-inputMask>
+                            <label for="inputCpf">CPF</label>
+                        </span>
+                    </div>
+                    <div class="field col-6 mt-3 mt-3">
+                        <span class="p-float-label">
+                            <p-inputMask [disabled]="true" [unmask]="true" id="inputTelefone" [(ngModel)]="cliente.telefone" [required]=true placeholder="(99) 99999-9999" mask="(99) 99999-9999" [ngClass]="{'ng-invalid ng-dirty' : submitted && !cliente.telefone}" ></p-inputMask>
+                            <label for="inputTelefone">Telefone*</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !cliente.telefone">Insira um telefone</small>
+                    </div>
+                    <div class="field col-6 mt-3 mt-3">
+                        <span class="p-float-label">
+                            <input [disabled]="true" type="text" id="inputEmail" pInputText [(ngModel)]="cliente.email" >
+                            <label for="inputEmail">Email</label>
+                        </span>
+                    </div>
+                    <div class="col-12 mt-3">
+                        <h5>Endereço</h5>
+                    </div>
+                    <div class="field col-6 mt-3">
+                        <span class="p-float-label">
+                            <input [disabled]="true" maxlength="9" type="text" id="CepVisitaInputEditDialog" pInputText [(ngModel)]="endereco.cep" (blur)="onCepSelected()" >
+                            <label for="CepVisitaInputEditDialog">CEP</label>
+                        </span>
+                    </div>
+                    <div class="field col-6 mt-3">
+                        <span class="p-float-label">
+                            <input [disabled]="true" type="text" id="RuaVisitaInputEditDialog" pInputText [(ngModel)]="endereco.rua" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.rua}" >
+                            <label for="RuaVisitaInputEditDialog">Rua*</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !endereco.rua">Defina uma rua para o atendimento.</small>
+                    </div>
+                    <div class="field col-6 mt-3">
+                        <span class="p-float-label">
+                            <input [disabled]="true" maxlength="5" type="number" id="NúmeroVisitaInputEditDialog" pInputText [(ngModel)]="endereco.numero" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.rua}" >
+                            <label for="NúmeroVisitaInputEditDialog">Número*</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !endereco.rua">Defina um número para o atendimento.</small>
+                    </div>
+                    <div class="field col-6 mt-3">
+                        <span class="p-float-label">
+                            <input [disabled]="true" type="text" id="BairroVisitaInputEditDialog" pInputText [(ngModel)]="endereco.bairro" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.bairro}" >
+                            <label for="BairroVisitaInputEditDialog">Bairro*</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !endereco.bairro">Defina um bairro para o atendimento.</small>
+                    </div>
+                    <div class="field col-6 mt-3">
+                        <span class="p-float-label">
+                            <input [disabled]="true" type="text" id="CidadeVisitaInputEditDialog" pInputText [(ngModel)]="endereco.cidade" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.cidade}" >
+                            <label for="CidadeVisitaInputEditDialog">Cidade*</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !endereco.cidade">Defina uma cidade para o atendimento.</small>
+                    </div>
+                    <div class="field col-6 mt-3">
+                        <span class="p-float-label">
+                            <input [disabled]="true" type="text" id="UfVisitaInputEditDialog" pInputText [(ngModel)]="endereco.uf" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.uf}" >
+                            <label for="UfVisitaInputEditDialog">UF*</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !endereco.uf">Defina um estado para o atendimento.</small>
+                    </div>
+                    <div class="col-12 mt-3">
+                        <h5>Detalhes Instalação</h5>
+                    </div>
+                    <div class="field col-6 mt-3" >
+                        <span class="p-float-label">
+                            <input pInputText [disabled]="true" id="inputDataVisita" [(ngModel)]="dataInstalacaoFormatada" [required] = true [ngClass]="{'ng-invalid ng-dirty' : submitted && !instalacao.dataInstalacao}" >
+                            <label for="inputDataVisita">Data da instalação*</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !instalacao.dataInstalacao">Insira uma data</small>
+                    </div>
+                    <div class="field col-6 mt-3" >
+                        <span class="p-float-label">
+                            <input pInputText [disabled]="true" id="inputDataVisita" [(ngModel)]="instalacao.quantidadeCaixas" [required] = true [ngClass]="{'ng-invalid ng-dirty' : submitted && !instalacao.dataInstalacao}" >
+                            <label for="inputDataVisita">Quantidade de caixas</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !instalacao.dataInstalacao">Insira uma data</small>
+                    </div>
+                    <div class="field col-12 mt-3" >
+                        <span class="p-float-label">
+                            <textarea [disabled]="true" rows="4" pInputTextarea id="inputDataVisita" [(ngModel)]="instalacao.descricao" [required] = true [ngClass]="{'ng-invalid ng-dirty' : submitted && !instalacao.dataInstalacao}" ></textarea>
+                            <label for="inputDataVisita">Descrição instalação</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !instalacao.dataInstalacao">Insira uma data</small>
+                    </div>
+                    <div class="field col-12 mt-3" >
+                        <span class="p-float-label">
+                            <textarea [disabled]="true" rows="4" pInputTextarea id="inputDataVisita" [(ngModel)]="instalacao.observacao" [required] = true [ngClass]="{'ng-invalid ng-dirty' : submitted && !instalacao.dataInstalacao}" ></textarea>
+                            <label for="inputDataVisita">Observações pós instalação</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !instalacao.dataInstalacao">Insira uma data</small>
+                    </div>
+                </div>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog [(visible)]="finalizarInstalacaoDialog" header="Finalizar Instalação" [modal]="true" [style]="{width:'900px'}">
+            <div class="formgrid grid">
+                <div class="field col-6 mt-4">
+                    <span class="p-float-label">
+                        <p-inputNumber [showButtons]="false" inputId="descricaoVisita" [(ngModel)]="instalacao.quantidadeCaixas"></p-inputNumber>
+                        <label for="descricaoVisita">Caixas gastas</label>
+                    </span>
+                </div>
+                <div class="field col-12 mt-4">
+                    <span class="p-float-label">
+                        <textarea inputId="descricaoVisita" rows="5" [(ngModel)]="instalacao.observacao" pInputTextarea style="width: 100%;"></textarea>
+                        <label for="descricaoVisita">Observações da Instalação</label>
+                    </span>
+                </div>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text p-button-secondary" label="Cancelar" (click)="finalizaVisitaDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text p-button-success" label="Finalizar Instalação" (click)="confirmFinalizarInstalacao()"></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog [(visible)]="pagamentoDialog" header="Definir pagamento" [modal]="true" [style]="{width:'900px'}">
+            <div class="formgrid grid">
+                <div class="col-12 md:col-4 mt-4">
+					<div class="field-radiobutton">
+						<p-radioButton name="city" value="VISTA" [(ngModel)]="instalacao.tipoPagamento" id="tipoVista"></p-radioButton>
+						<label for="tipoVista">A Vista</label>
+					</div>
+				</div>
+				<div class="col-12 md:col-4 mt-4">
+					<div class="field-radiobutton">
+						<p-radioButton name="city" value="PRAZO" [(ngModel)]="instalacao.tipoPagamento" id="tipoPrazo"></p-radioButton>
+						<label for="tipoPrazo">A Prazo</label>
+					</div>
+				</div>
+				<div class="col-12 md:col-4 mt-4">
+					<div class="field-radiobutton">
+						<p-radioButton name="city" value="PARCELADO" [(ngModel)]="instalacao.tipoPagamento" id="tipoParcelado"></p-radioButton>
+						<label for="tipoParcelado">Parcelado</label>
+					</div>
+				</div>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text p-button-secondary" label="Cancelar" (click)="finalizaVisitaDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text p-button-success" label="Definir Pagamento" (click)="confirmFaturarInstalacao()"></button>
+            </ng-template>
+        </p-dialog>
+
+    </div>
+</div>

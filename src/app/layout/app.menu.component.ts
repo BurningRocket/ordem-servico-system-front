@@ -44,7 +44,7 @@ export class AppMenuComponent implements OnInit {
                     },
                     {
                         label: 'Instalação',
-                        icon: 'pi pi-fw pi-tag',
+                        icon: 'pi pi-fw pi-map-marker',
                         routerLink: ['/solicitacao-servico/instalacao'],
                         hasPermission: true,
                         // hasPermission: this.authService.hasRoles(["admin"]),

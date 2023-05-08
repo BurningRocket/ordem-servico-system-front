@@ -5,7 +5,7 @@ import { OrcamentoDto } from './orcamento-dto';
 export interface InstalacaoDto extends BaseDto{
     cliente?: ClienteDto;
     orcamento?: OrcamentoDto;
-    dataInstalacao?: Date;
+    dataInstalacao?: [Date, Date];
     status?: string;
     observacao?: string;
     endereco?: string;

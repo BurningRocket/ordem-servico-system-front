@@ -27,33 +27,33 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-orcamento>
                     <tr>
-                        <td style="width:12%; min-width:12rem;">
+                        <td style="width:16%; min-width:12rem;">
                             <span class="p-column-title">Nome</span>
                             {{orcamento?.cliente?.nome}}
                         </td>
-                        <td style="width:12%; min-width:12rem;">
+                        <td style="width:16%; min-width:12rem;">
                             <span class="p-column-title">Telefone</span>
                             {{orcamento?.cliente?.telefone}}
                         </td>
-                        <td style="width:12%; min-width:12rem;">
+                        <td style="width:16%; min-width:12rem;">
                             <span class="p-column-title">Endereço</span>
                             <a [href]="'http://maps.google.com/?q='+orcamento.visita.endereco" target="_blank">
                                 {{orcamento.endereco}}
                             </a>
                         </td>
-                        <td style="width:12%; min-width:12rem;">
+                        <td style="width:16%; min-width:12rem;">
                             <span class="p-column-title">Data Visita</span>
                             {{orcamento.visita.dataVisita | date: 'dd/MM/yyyy'}}
                         </td>
-                        <td style="width:12%; min-width:12rem;">
+                        <td style="width:16%; min-width:12rem;">
                             <span class="p-column-title">Descrição</span>
                             {{orcamento.visita.descricao}}
                         </td>
-                        <td style="width:12%; min-width:12rem;">
+                        <td style="width:16%; min-width:12rem;">
                             <span class="p-column-title">Valor Orçamento</span>
                             {{orcamento.valor | currency:'BRL'}}
                         </td>
-                        <td style="width:12%; min-width:6rem;">
+                        <td style="width:16%; min-width:6rem;">
                             <span class="p-column-title">Status</span>
                             <b>{{orcamento.status === 'INSTALACAO_CRIADA' ? 'INSTALAÇÃO CRIADA' : orcamento.status}}</b>
                         </td>

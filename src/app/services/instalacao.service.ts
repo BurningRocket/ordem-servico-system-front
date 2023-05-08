@@ -38,7 +38,7 @@ export class InstalacaoService extends BaseAdminService {
 
         let options = { headers: headers };
 
-        return this.http.put(this.actionUrl + "/aprovar", instalacaoDto, options);
+        return this.http.put(this.actionUrl + "/finalizar", instalacaoDto, options);
     }
 
     faturarInstalacao(instalacaoDto: InstalacaoDto) {
@@ -47,7 +47,7 @@ export class InstalacaoService extends BaseAdminService {
 
         let options = { headers: headers };
 
-        return this.http.put(this.actionUrl + "/reprovar", instalacaoDto, options);
+        return this.http.put(this.actionUrl + "/faturar", instalacaoDto, options);
     }
 
 }
