@@ -37,11 +37,11 @@
                     <tr>
                         <td style="width:12%; min-width:12rem;">
                             <span class="p-column-title">Nome</span>
-                            {{visita.cliente.nome}}
+                            {{visita?.cliente?.nome}}
                         </td>
                         <td style="width:12%; min-width:12rem;">
                             <span class="p-column-title">Telefone</span>
-                            {{visita.cliente.telefone}}
+                            {{visita?.cliente?.telefone}}
                         </td>
                         <td style="width:12%; min-width:12rem;">
                             <span class="p-column-title">Endereço</span>
@@ -67,13 +67,13 @@
                         </td>
                         <td style="width:12%; min-width:6rem;">
                             <span class="p-column-title">Status</span>
-                            <b>{{visita.status}}</b>
+                            <b>{{visita.status === 'ORCAMENTO_CRIADO' ? 'ORÇAMENTO CRIADO' : visita.status}}</b>
                         </td>
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-info mr-2" (click)="viewVisita(visita)"></button>
                                 <button pButton pRipple icon="pi pi-check" class="p-button-rounded p-button-success" (click)="finalizarVisita(visita)" *ngIf="visita.status === 'PENDENTE'"></button>
-                                <button pButton pRipple icon="pi pi-dollar" class="p-button-rounded p-button-success" (click)="onNewOrcamento(visita)" *ngIf="visita.status === 'FINALIZADA'"></button>
+                                <button pButton pRipple icon="pi pi-dollar" class="p-button-rounded p-button-success" (click)="onNewOrcamento(visita)" *ngIf="visita.status === 'EXECUTADA'"></button>
                             </div>
                         </td>
                     </tr>
@@ -102,7 +102,7 @@
                     </div>
                     <div class="field col-6 mt-3 mt-3">
                         <span class="p-float-label">
-                            <p-inputMask [unmask]="true" id="inputTelefone" [(ngModel)]="cliente.telefone" [required]=true laceholder="(99) 99999-9999" mask="(99) 99999-9999" [ngClass]="{'ng-invalid ng-dirty' : submitted && !cliente.telefone}" [disabled]="visitaViewMode"></p-inputMask>
+                            <p-inputMask [unmask]="true" id="inputTelefone" [(ngModel)]="cliente.telefone" [required]=true placeholder="(99) 99999-9999" mask="(99) 99999-9999" [ngClass]="{'ng-invalid ng-dirty' : submitted && !cliente.telefone}" [disabled]="visitaViewMode"></p-inputMask>
                             <label for="inputTelefone">Telefone*</label>
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !cliente.telefone">Insira um telefone</small>
@@ -210,7 +210,7 @@
                     </div>
                     <div class="field col-6 mt-3 mt-3">
                         <span class="p-float-label">
-                            <p-inputMask [unmask]="true" id="inputTelefone" [(ngModel)]="cliente.telefone" [required]=true laceholder="(99) 99999-9999" mask="(99) 99999-9999" [ngClass]="{'ng-invalid ng-dirty' : submitted && !cliente.telefone}" [disabled]="true"></p-inputMask>
+                            <p-inputMask [unmask]="true" id="inputTelefone" [(ngModel)]="cliente.telefone" [required]=true placeholder="(99) 99999-9999" mask="(99) 99999-9999" [ngClass]="{'ng-invalid ng-dirty' : submitted && !cliente.telefone}" [disabled]="true"></p-inputMask>
                             <label for="inputTelefone">Telefone*</label>
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !cliente.telefone">Insira um telefone</small>
@@ -270,16 +270,16 @@
                     </div>
                     <div class="field col-6 mt-3">
                         <span class="p-float-label">
-                            <p-inputNumber mode="currency" currency="BRL" locale="pt-BR" id="inputValor" [(ngModel)]="orcamento.valor" [required] = true [ngClass]="{'ng-invalid ng-dirty' : submitted && !visita.dataVisita}"></p-inputNumber>
+                            <p-inputNumber mode="currency" currency="BRL" locale="pt-BR" id="inputValor" [(ngModel)]="orcamento.valor" [required] = true [ngClass]="{'ng-invalid ng-dirty' : submitted && !orcamento.valor}"></p-inputNumber>
                             <label for="inputValor">Valor Orçamento</label>
                         </span>
-                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !visita.dataVisita">Insira um valor</small>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !orcamento.valor">Insira um valor</small>
                     </div>
                 </div>
             </ng-template>
             <ng-template pTemplate="footer">
                 <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text p-button-secondary" *ngIf="!visitaViewMode" (click)="hideDialog()"></button>
-                <button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-text p-button-success" *ngIf="!visitaViewMode" (click)="saveVisita()"></button>
+                <button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-text p-button-success" *ngIf="!visitaViewMode" (click)="saveOrcamento()"></button>
             </ng-template>
         </p-dialog>
 

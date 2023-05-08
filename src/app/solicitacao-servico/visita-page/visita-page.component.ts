@@ -7,6 +7,7 @@ import { ClienteDto } from 'src/app/models/cliente-dto.model';
 import { Endereco } from 'src/app/models/endereco.model';
 import { EnderecoService } from 'src/app/services/endereco.service';
 import { OrcamentoDto } from 'src/app/models/orcamento-dto';
+import { OrcamentoService } from 'src/app/services/orcamento.service';
 
 @Component({
   selector: 'app-visita-page',
@@ -27,7 +28,7 @@ export class VisitaPageComponent implements OnInit {
     visita: VisitaDto = {};
     cliente: ClienteDto = {};
     endereco: Endereco = {};
-    orcamento:OrcamentoDto = {};
+    orcamento: OrcamentoDto = {};
 
     visitas: VisitaDto[] = [];
 
@@ -38,7 +39,7 @@ export class VisitaPageComponent implements OnInit {
     rowsPerPageOptions = [5, 10, 20];
 
     constructor(private messageService: MessageService, private visitaService: VisitaService,
-        private enderecoService: EnderecoService) { }
+        private enderecoService: EnderecoService, private orcamentoService: OrcamentoService) { }
 
     ngOnInit() {
         this.visitaService.buscarTodos().subscribe((data: any) => {
@@ -133,6 +134,29 @@ export class VisitaPageComponent implements OnInit {
         this.submitted = false;
         this.orcamentoDialog = true;
         this.visitaViewMode = false;
+    }
+
+    saveOrcamento(){
+        if(!this.orcamento.valor){
+            this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Informe o valor do orçamento', life: 3000 });
+            return;
+        }
+
+        this.submitted = true;
+        this.orcamento.visita = this.visita;
+        this.orcamento.cliente = this.cliente;
+        this.orcamento.endereco = this.endereco.rua + ',' + this.endereco.numero + ',' + this.endereco.bairro + ',' + this.endereco.cidade + ',' + this.endereco.uf + ',' + this.endereco.cep;
+        this.orcamento.cliente.endereco = this.orcamento.endereco;
+
+        this.orcamentoService.createOrcamento(this.orcamento).subscribe((data: any) => {
+            this.orcamento = data;
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Orcamento Criado', life: 3000 });
+            this.orcamentoDialog = false;
+            window.location.reload();
+        }
+        , error => {
+            this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao criar orcamento', life: 3000 });
+        });
     }
 
 
