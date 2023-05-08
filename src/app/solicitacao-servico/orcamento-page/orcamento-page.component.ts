@@ -8,6 +8,8 @@ import { Endereco } from 'src/app/models/endereco.model';
 import { EnderecoService } from 'src/app/services/endereco.service';
 import { OrcamentoDto } from 'src/app/models/orcamento-dto';
 import { OrcamentoService } from 'src/app/services/orcamento.service';
+import { InstalacaoDto } from 'src/app/models/instalacao-dto.model';
+import { InstalacaoService } from 'src/app/services/instalacao.service';
 @Component({
   selector: 'app-orcamento-page',
   templateUrl: './orcamento-page.component.html',
@@ -20,7 +22,9 @@ export class OrcamentoPageComponent implements OnInit {
     orcamentoDialog: boolean = false;
     aprovarDialog: boolean = false;
     reprovarDialog: boolean = false;
+    instalacaoDialog: boolean = false;
 
+    instalacao: InstalacaoDto = {};
     cliente: ClienteDto = {};
     endereco: Endereco = {};
     orcamento: OrcamentoDto = {};
@@ -34,7 +38,7 @@ export class OrcamentoPageComponent implements OnInit {
     rowsPerPageOptions = [5, 10, 20];
 
     constructor(private messageService: MessageService, private visitaService: VisitaService,
-        private enderecoService: EnderecoService, private orcamentoService: OrcamentoService) { }
+        private enderecoService: EnderecoService, private orcamentoService: OrcamentoService, private instalacaoService: InstalacaoService) { }
 
     ngOnInit() {
         this.orcamentoService.buscarTodos().subscribe((data: any) => {
@@ -97,12 +101,27 @@ export class OrcamentoPageComponent implements OnInit {
         this.orcamentoDialog = true;
     }
 
-    onMarcarVisita(orcamento: OrcamentoDto) {
+    onMarcarInstalacao(orcamento: OrcamentoDto) {
         this.orcamento = orcamento;
         this.cliente = orcamento.cliente ? orcamento.cliente : {};
-        if(this.orcamento.endereco)
-            this.populateEndereco(this.orcamento.endereco);
-        this.finalizaVisitaDialog = true;
+        if(this.orcamento.visita?.endereco)
+            this.populateEndereco(this.orcamento.visita?.endereco);
+        this.instalacaoDialog = true;
+    }
+
+    saveInstalacao() {
+        this.instalacao.orcamento = this.orcamento;
+        this.instalacao.cliente = this.cliente;
+        this.instalacao.endereco = this.endereco.rua + ',' + this.endereco.numero + ',' + this.endereco.bairro + ',' + this.endereco.cidade + ',' + this.endereco.uf + ',' + this.endereco.cep;
+
+        this.instalacaoService.createInstalacao(this.instalacao).subscribe((data: any) => {
+            this.instalacao = data;
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Instalação marcada com sucesso', life: 3000 });
+            this.instalacaoDialog = false;
+            window.location.reload();
+        }, error => {
+            this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao marcar instalação', life: 3000 });
+        });
     }
 
     populateEndereco(enderecoString: string) {
