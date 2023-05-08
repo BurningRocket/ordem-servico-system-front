@@ -1,1 +1,188 @@
-<p>orcamento-page works!</p>
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toast></p-toast>
+
+            <p-table #dt [value]="orcamentos" [columns]="cols" responsiveLayout="scroll" [globalFilterFields]="['_id', 'cliente.nome', 'cliente.telefone', 'cliente.endereco', 'dataVisita', 'chegouSite', 'notificarWpp']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Monstrando {first} até {last} de {totalRecords} visitas" [rowHover]="true" dataKey="id">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h5 class="m-0">Visitas</h5>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."  class="w-full sm:w-auto"/>
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="cliente.nome">Nome <p-sortIcon field="cliente.nome"></p-sortIcon></th>
+                        <th pSortableColumn="cliente.telefone">Telefone <p-sortIcon field="cliente.telefone"></p-sortIcon></th>
+                        <th pSortableColumn="cliente.endereco">Endereço <p-sortIcon field="cliente.endereco"></p-sortIcon></th>
+                        <th pSortableColumn="visita.data">Data Visita <p-sortIcon field="data"></p-sortIcon></th>
+                        <th pSortableColumn="visita.descricao">Descrição <p-sortIcon field="descricao"></p-sortIcon></th>
+                        <th pSortableColumn="valor">Valor Orçamento <p-sortIcon field="valor"></p-sortIcon></th>
+                        <th pSortableColumn="status">Status<p-sortIcon field="status"></p-sortIcon></th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-orcamento>
+                    <tr>
+                        <td style="width:12%; min-width:12rem;">
+                            <span class="p-column-title">Nome</span>
+                            {{orcamento?.cliente?.nome}}
+                        </td>
+                        <td style="width:12%; min-width:12rem;">
+                            <span class="p-column-title">Telefone</span>
+                            {{orcamento?.cliente?.telefone}}
+                        </td>
+                        <td style="width:12%; min-width:12rem;">
+                            <span class="p-column-title">Endereço</span>
+                            <a [href]="'http://maps.google.com/?q='+orcamento.visita.endereco" target="_blank">
+                                {{orcamento.endereco}}
+                            </a>
+                        </td>
+                        <td style="width:12%; min-width:12rem;">
+                            <span class="p-column-title">Data Visita</span>
+                            {{orcamento.visita.dataVisita | date: 'dd/MM/yyyy'}}
+                        </td>
+                        <td style="width:12%; min-width:12rem;">
+                            <span class="p-column-title">Descrição</span>
+                            {{orcamento.visita.descricao}}
+                        </td>
+                        <td style="width:12%; min-width:12rem;">
+                            <span class="p-column-title">Valor Orçamento</span>
+                            {{orcamento.valor | currency:'BRL'}}
+                        </td>
+                        <td style="width:12%; min-width:6rem;">
+                            <span class="p-column-title">Status</span>
+                            <b>{{orcamento.status}}</b>
+                        </td>
+                        <td>
+                            <div class="flex">
+                                <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-info mr-2" (click)="viewOrcamento(orcamento)"></button>
+                                <button pButton pRipple icon="pi pi-check" class="p-button-rounded p-button-success mr-2" (click)="aprovarOrcamento(orcamento)" *ngIf="orcamento.status === 'PENDENTE'"></button>
+                                <button pButton pRipple icon="pi pi-times" class="p-button-rounded p-button-danger" (click)="reprovarOrcamento(orcamento)" *ngIf="orcamento.status === 'PENDENTE'"></button>
+                                <button pButton pRipple icon="pi pi-map-marker" class="p-button-rounded p-button-success" (click)="null" *ngIf="orcamento.status === 'APROVADO'"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <p-dialog [(visible)]="orcamentoDialog" [style]="{width: '1200px'}" [modal]="true" class="p-fluid" [maximizable]=true>
+            <ng-template pTemplate="content">
+                <div class="formgrid grid">
+                    <div class="col-12">
+                        <h5>Dados cliente</h5>
+                    </div>
+                    <div class="field col-6 mt-3 mt-3">
+                        <span class="p-float-label">
+                            <input type="text" id="inputNome" pInputText [(ngModel)]="cliente.nome" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !cliente.nome}" [disabled]="true">
+                            <label for="inputNome">Nome do cliente*</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !cliente.nome">Insira um nome</small>
+                    </div>
+                    <div class="field col-6 mt-3 mt-3">
+                        <span class="p-float-label">
+                            <p-inputMask [unmask]="true" id="inputCpf" [(ngModel)]="cliente.cpf" placeholder="999.999.999-99" mask="999.999.999-99" [disabled]="true"></p-inputMask>
+                            <label for="inputCpf">CPF</label>
+                        </span>
+                    </div>
+                    <div class="field col-6 mt-3 mt-3">
+                        <span class="p-float-label">
+                            <p-inputMask [unmask]="true" id="inputTelefone" [(ngModel)]="cliente.telefone" [required]=true placeholder="(99) 99999-9999" mask="(99) 99999-9999" [ngClass]="{'ng-invalid ng-dirty' : submitted && !cliente.telefone}" [disabled]="true"></p-inputMask>
+                            <label for="inputTelefone">Telefone*</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !cliente.telefone">Insira um telefone</small>
+                    </div>
+                    <div class="field col-6 mt-3 mt-3">
+                        <span class="p-float-label">
+                            <input type="text" id="inputEmail" pInputText [(ngModel)]="cliente.email" [disabled]="true">
+                            <label for="inputEmail">Email</label>
+                        </span>
+                    </div>
+                    <div class="col-12 mt-3">
+                        <h5>Endereço</h5>
+                    </div>
+                    <div class="field col-6 mt-3">
+                        <span class="p-float-label">
+                            <input maxlength="9" type="text" id="CepVisitaInputEditDialog" pInputText [(ngModel)]="endereco.cep" (blur)="onCepSelected()" [disabled]="true">
+                            <label for="CepVisitaInputEditDialog">CEP</label>
+                        </span>
+                    </div>
+                    <div class="field col-6 mt-3">
+                        <span class="p-float-label">
+                            <input type="text" id="RuaVisitaInputEditDialog" pInputText [(ngModel)]="endereco.rua" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.rua}" [disabled]="true">
+                            <label for="RuaVisitaInputEditDialog">Rua*</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !endereco.rua">Defina uma rua para o atendimento.</small>
+                    </div>
+                    <div class="field col-6 mt-3">
+                        <span class="p-float-label">
+                            <input maxlength="5" type="number" id="NúmeroVisitaInputEditDialog" pInputText [(ngModel)]="endereco.numero" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.rua}" [disabled]="true">
+                            <label for="NúmeroVisitaInputEditDialog">Número*</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !endereco.rua">Defina um número para o atendimento.</small>
+                    </div>
+                    <div class="field col-6 mt-3">
+                        <span class="p-float-label">
+                            <input type="text" id="BairroVisitaInputEditDialog" pInputText [(ngModel)]="endereco.bairro" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.bairro}" [disabled]="true">
+                            <label for="BairroVisitaInputEditDialog">Bairro*</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !endereco.bairro">Defina um bairro para o atendimento.</small>
+                    </div>
+                    <div class="field col-6 mt-3">
+                        <span class="p-float-label">
+                            <input type="text" id="CidadeVisitaInputEditDialog" pInputText [(ngModel)]="endereco.cidade" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.cidade}" [disabled]="true">
+                            <label for="CidadeVisitaInputEditDialog">Cidade*</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !endereco.cidade">Defina uma cidade para o atendimento.</small>
+                    </div>
+                    <div class="field col-6 mt-3">
+                        <span class="p-float-label">
+                            <input type="text" id="UfVisitaInputEditDialog" pInputText [(ngModel)]="endereco.uf" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.uf}" [disabled]="true">
+                            <label for="UfVisitaInputEditDialog">UF*</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !endereco.uf">Defina um estado para o atendimento.</small>
+                    </div>
+                    <div class="col-12 mt-3">
+                        <h5>Detalhes Orçamento</h5>
+                    </div>
+                    <div class="field col-6 mt-3">
+                        <span class="p-float-label">
+                            <p-inputNumber mode="currency" currency="BRL" locale="pt-BR" id="inputValor" [(ngModel)]="orcamento.valor" [required] = true [ngClass]="{'ng-invalid ng-dirty' : submitted && !orcamento.valor}" [disabled]="true"></p-inputNumber>
+                            <label for="inputValor">Valor Orçamento</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !orcamento.valor">Insira um valor</small>
+                    </div>
+                </div>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog [(visible)]="aprovarDialog" header="Aprovar orçamento" [style]="{width: '450px'}" [modal]="true" class="p-fluid">
+            <ng-template pTemplate="content">
+                <p class="line-height-3 m-0">
+                    Deseja aprovar o orçamento de <b>{{orcamento.cliente?.nome}}</b>?
+                </p>
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text p-button-secondary" (click)="aprovarDialog = false"></button>
+                <button pButton pRipple label="Aprovar" icon="pi pi-check" class="p-button-text p-button-success" (click)="confirmAprovarOrcamento()"></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog [(visible)]="reprovarDialog" header="Reprovar orçamento" [style]="{width: '450px'}" [modal]="true" class="p-fluid">
+            <ng-template pTemplate="content">
+                <p class="line-height-3 m-0">
+                    Deseja reprovar o orçamento de <b>{{orcamento.cliente?.nome}}</b>?
+                </p>
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text p-button-secondary" (click)="reprovarDialog = false"></button>
+                <button pButton pRipple label="Reprovar" icon="pi pi-trash" class="p-button-text p-button-danger" (click)="confirrmReprovarOrcamento()"></button>
+            </ng-template>
+        </p-dialog>
+
+    </div>
+</div>
