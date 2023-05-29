@@ -34,6 +34,8 @@ export class VisitaPageComponent implements OnInit {
 
     submitted: boolean = false;
 
+    visitaLoading: boolean = false;
+
     cols: any[] = [];
 
     rowsPerPageOptions = [5, 10, 20];
@@ -71,19 +73,35 @@ export class VisitaPageComponent implements OnInit {
 
     saveVisita() {
         this.submitted = true;
+        this.visitaLoading = true;
 
         this.visita.cliente = this.cliente;
         this.visita.endereco = this.endereco.rua + ',' + this.endereco.numero + ',' + this.endereco.bairro + ',' + this.endereco.cidade + ',' + this.endereco.uf + ',' + this.endereco.cep;
         this.visita.cliente.endereco = this.visita.endereco;
 
-        this.visitaService.createVisita(this.visita).subscribe((data: any) => {
-            this.visita = data;
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Visita Criada', life: 3000 });
-            this.visitaDialog = false;
-            window.location.reload();
-        }, error => {
-            this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao criar visita', life: 3000 });
-        });
+        if(this.visita.cliente.cpf && this.visita.cliente.nome && this.visita.cliente.telefone && this.visita.endereco && this.visita.dataVisita){
+            this.visitaService.createVisita(this.visita).subscribe((data: any) => {
+                this.visita = data;
+                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Visita Criada', life: 3000 });
+                this.visitaDialog = false;
+                this.visitaLoading = false;
+                window.location.reload();
+            }, error => {
+                this.visitaLoading = false;
+                this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao criar visita', life: 3000 });
+            });
+        }else{
+            this.visitaLoading = false;
+            this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Preencha todos os campos obrigatórios', life: 3000 });
+        }
+    }
+
+    validateEndereco(){
+        if(this.endereco.rua && this.endereco.numero && this.endereco.bairro && this.endereco.cidade && this.endereco.uf && this.endereco.cep){
+            return true;
+        }
+
+        return false;
     }
 
     finalizarVisita(visita: VisitaDto) {
