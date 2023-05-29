@@ -26,7 +26,7 @@
                         <th pSortableColumn="cliente.telefone">Telefone <p-sortIcon field="cliente.telefone"></p-sortIcon></th>
                         <th pSortableColumn="cliente.endereco">Endereço <p-sortIcon field="cliente.endereco"></p-sortIcon></th>
                         <th pSortableColumn="data">Data Agendamento <p-sortIcon field="data"></p-sortIcon></th>
-                        <th pSortableColumn="descricao">Descrição <p-sortIcon field="descricao"></p-sortIcon></th>
+                        <th pSortableColumn="descricao">Observação pós visita <p-sortIcon field="descricao"></p-sortIcon></th>
                         <th pSortableColumn="formaContato">Forma de contato <p-sortIcon field="formaContato"></p-sortIcon></th>
                         <th pSortableColumn="notificarWpp">Notificar Wpp <p-sortIcon field="notificarWpp"></p-sortIcon></th>
                         <th pSortableColumn="status">Status<p-sortIcon field="status"></p-sortIcon></th>
@@ -54,7 +54,7 @@
                             {{visita.dataVisita | date: 'dd/MM/yyyy'}}
                         </td>
                         <td style="width:12%; min-width:12rem;">
-                            <span class="p-column-title">Descrição</span>
+                            <span class="p-column-title">Observação pós visita</span>
                             {{visita.descricao}}
                         </td>
                         <td style="width:12%; min-width:12rem;">
@@ -176,21 +176,27 @@
                     </div>
                     <div class="field-checkbox col-3 mt-3">
                         <div class="field-radiobutton mr-3">
-                            <p-radioButton name="formaContato" value="SITE" [(ngModel)]="visita.formaContato" id="radioSite"></p-radioButton>
+                            <p-radioButton name="formaContato" value="SITE" [(ngModel)]="visita.formaContato" id="radioSite" [disabled]="visitaViewMode"></p-radioButton>
                             <label for="radioSite">Site</label>
                         </div>
                         <div class="field-radiobutton mr-3">
-                            <p-radioButton name="formaContato" value="BALCÃO" [(ngModel)]="visita.formaContato" id="radioBalcao"></p-radioButton>
+                            <p-radioButton name="formaContato" value="BALCÃO" [(ngModel)]="visita.formaContato" id="radioBalcao" [disabled]="visitaViewMode"></p-radioButton>
                             <label for="radioBalcao">Balcão</label>
                         </div>
                         <div class="field-radiobutton">
-                            <p-radioButton name="formaContato" value="TELEFONE" [(ngModel)]="visita.formaContato" id="radioTelefone"></p-radioButton>
+                            <p-radioButton name="formaContato" value="TELEFONE" [(ngModel)]="visita.formaContato" id="radioTelefone" [disabled]="visitaViewMode"></p-radioButton>
                             <label for="city1">Telefone</label>
                         </div>
                     </div>
                     <div class="field-checkbox col-3 mt-3">
 						<p-checkbox name="group1" [binary]="true" label="Enviar Notificações por WPP?" [(ngModel)]="visita.notificarWpp" id="checkNotificarWpp" [disabled]="visitaViewMode"></p-checkbox>
 					</div>
+                    <div class="field col-12 mt-3">
+                        <span class="p-float-label">
+                            <textarea  rows="5" cols="30" id="inputObservacaoVisita" pInputTextarea [(ngModel)]="visita.observacao" [disabled]="visitaViewMode"></textarea>
+                            <label for="inputObservacaoVisita">Observação</label>
+                        </span>
+                    </div>
                 </div>
             </ng-template>
 
