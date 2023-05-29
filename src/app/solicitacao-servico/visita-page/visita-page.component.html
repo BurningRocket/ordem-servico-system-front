@@ -113,9 +113,6 @@
                             <label for="inputEmail">Email</label>
                         </span>
                     </div>
-                    <div class="col-12 mt-3">
-                        <h5>Endereço</h5>
-                    </div>
                     <div class="field col-6 mt-3">
                         <span class="p-float-label">
                             <input maxlength="9" type="text" id="CepVisitaInputEditDialog" pInputText [(ngModel)]="endereco.cep" (blur)="onCepSelected()" [disabled]="visitaViewMode">
@@ -238,9 +235,6 @@
                             <label for="inputEmail">Email</label>
                         </span>
                     </div>
-                    <div class="col-12 mt-3">
-                        <h5>Endereço</h5>
-                    </div>
                     <div class="field col-6 mt-3">
                         <span class="p-float-label">
                             <input maxlength="9" type="text" id="CepVisitaInputEditDialog" pInputText [(ngModel)]="endereco.cep" (blur)="onCepSelected()" [disabled]="true">
@@ -291,6 +285,24 @@
                             <label for="inputValor">Valor Orçamento</label>
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !orcamento.valor">Insira um valor</small>
+                    </div>
+                    <div class="field col-2 mt-4">
+                        <div class="field-radiobutton">
+                            <p-radioButton name="city" value="VISTA" [(ngModel)]="orcamento.tipoPagamento" id="tipoVista"></p-radioButton>
+                            <label for="tipoVista">Pagamento a Vista</label>
+                        </div>
+                    </div>
+                    <div class="field col-2 mt-4">
+                        <div class="field-radiobutton">
+                            <p-radioButton name="city" value="PRAZO" [(ngModel)]="orcamento.tipoPagamento" id="tipoPrazo"></p-radioButton>
+                            <label for="tipoPrazo">Pagamento a Prazo</label>
+                        </div>
+                    </div>
+                    <div class="field col-2 mt-4">
+                        <div class="field-radiobutton">
+                            <p-radioButton name="city" value="PARCELADO" [(ngModel)]="orcamento.tipoPagamento" id="tipoParcelado"></p-radioButton>
+                            <label for="tipoParcelado">Pagamento Parcelado</label>
+                        </div>
                     </div>
                     <div class="field col-12 mt-4">
                         <span class="p-float-label">

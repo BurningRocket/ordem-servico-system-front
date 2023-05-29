@@ -6,7 +6,7 @@
             <p-table #dt [value]="orcamentos" [columns]="cols" responsiveLayout="scroll" [globalFilterFields]="['_id', 'cliente.nome', 'cliente.telefone', 'cliente.endereco', 'dataVisita', 'formaContato', 'notificarWpp']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Monstrando {first} até {last} de {totalRecords} visitas" [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                        <h5 class="m-0">Visitas</h5>
+                        <h5 class="m-0">Orçamentos</h5>
                         <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
                             <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."  class="w-full sm:w-auto"/>
@@ -17,10 +17,9 @@
                     <tr>
                         <th pSortableColumn="cliente.nome">Nome <p-sortIcon field="cliente.nome"></p-sortIcon></th>
                         <th pSortableColumn="cliente.telefone">Telefone <p-sortIcon field="cliente.telefone"></p-sortIcon></th>
-                        <th pSortableColumn="cliente.endereco">Endereço <p-sortIcon field="cliente.endereco"></p-sortIcon></th>
-                        <th pSortableColumn="visita.data">Data Visita <p-sortIcon field="data"></p-sortIcon></th>
                         <th pSortableColumn="observacao">Observação <p-sortIcon field="observacao"></p-sortIcon></th>
                         <th pSortableColumn="valor">Valor Orçamento <p-sortIcon field="valor"></p-sortIcon></th>
+                        <th pSortableColumn="tipoPagamento">Pagamento<p-sortIcon field="tipoPagamento"></p-sortIcon></th>
                         <th pSortableColumn="status">Status<p-sortIcon field="status"></p-sortIcon></th>
                         <th></th>
                     </tr>
@@ -36,16 +35,6 @@
                             {{orcamento?.cliente?.telefone}}
                         </td>
                         <td style="width:16%; min-width:12rem;">
-                            <span class="p-column-title">Endereço</span>
-                            <a [href]="'http://maps.google.com/?q='+orcamento.visita.endereco" target="_blank">
-                                {{orcamento.endereco}}
-                            </a>
-                        </td>
-                        <td style="width:16%; min-width:12rem;">
-                            <span class="p-column-title">Data Visita</span>
-                            {{orcamento.visita.dataVisita | date: 'dd/MM/yyyy'}}
-                        </td>
-                        <td style="width:16%; min-width:12rem;">
                             <span class="p-column-title">Observação</span>
                             {{orcamento.observacao ? orcamento.observacao : 'Sem observação'}}
                         </td>
@@ -53,16 +42,20 @@
                             <span class="p-column-title">Valor Orçamento</span>
                             {{orcamento.valor | currency:'BRL'}}
                         </td>
+                        <td style="width:12%; min-width:6rem;">
+                            <span class="p-column-title">Pagamento</span>
+                            <b>{{orcamento.tipoPagamento || '-----'}}</b>
+                        </td>
                         <td style="width:16%; min-width:6rem;">
                             <span class="p-column-title">Status</span>
-                            <b>{{orcamento.status === 'INSTALACAO_CRIADA' ? 'INSTALAÇÃO CRIADA' : orcamento.status}}</b>
+                            <b>{{orcamento.status === 'INSTALACAO_AGENDADA' ? 'INSTALAÇÃO AGENDADA' : orcamento.status}}</b>
                         </td>
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-info mr-2" (click)="viewOrcamento(orcamento)"></button>
                                 <button pButton pRipple icon="pi pi-check" class="p-button-rounded p-button-success mr-2" (click)="aprovarOrcamento(orcamento)" *ngIf="orcamento.status === 'PENDENTE'"></button>
                                 <button pButton pRipple icon="pi pi-times" class="p-button-rounded p-button-danger" (click)="reprovarOrcamento(orcamento)" *ngIf="orcamento.status === 'PENDENTE'"></button>
-                                <button pButton pRipple icon="pi pi-map-marker" class="p-button-rounded p-button-success" (click)="onMarcarInstalacao(orcamento)" *ngIf="orcamento.status === 'APROVADO' && orcamento.status !== 'INSTALACAO_CRIADA'"></button>
+                                <button pButton pRipple icon="pi pi-map-marker" class="p-button-rounded p-button-success" (click)="onMarcarInstalacao(orcamento)" *ngIf="orcamento.status === 'APROVADO' && orcamento.status !== 'INSTALACAO_AGENDADA'"></button>
                             </div>
                         </td>
                     </tr>
