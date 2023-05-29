@@ -57,7 +57,7 @@ export class VisitaPageComponent implements OnInit {
             { field: 'cliente.endereco', header: 'Endereço' },
             { field: 'dataVisita', header: 'Data' },
             { field: 'descricao', header: 'Descrição'},
-            { field: 'chegouSite' , header: 'Chegou pelo Site' },
+            { field: 'formaContato' , header: 'Forma de contato' },
             { field: 'notificarWpp' , header: 'Notificar Wpp' },
         ];
     }

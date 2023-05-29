@@ -10,7 +10,7 @@
                 </ng-template>
             </p-toolbar>
 
-            <p-table #dt [value]="visitas" [columns]="cols" responsiveLayout="scroll" [globalFilterFields]="['_id', 'cliente.nome', 'cliente.telefone', 'cliente.endereco', 'dataVisita', 'chegouSite', 'notificarWpp']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Monstrando {first} até {last} de {totalRecords} visitas" [rowHover]="true" dataKey="id">
+            <p-table #dt [value]="visitas" [columns]="cols" responsiveLayout="scroll" [globalFilterFields]="['_id', 'cliente.nome', 'cliente.telefone', 'cliente.endereco', 'dataVisita', 'formaContato', 'notificarWpp']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Monstrando {first} até {last} de {totalRecords} visitas" [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <h5 class="m-0">Visitas</h5>
@@ -27,7 +27,7 @@
                         <th pSortableColumn="cliente.endereco">Endereço <p-sortIcon field="cliente.endereco"></p-sortIcon></th>
                         <th pSortableColumn="data">Data Agendamento <p-sortIcon field="data"></p-sortIcon></th>
                         <th pSortableColumn="descricao">Descrição <p-sortIcon field="descricao"></p-sortIcon></th>
-                        <th pSortableColumn="chegouSite">Chegou pelo Site <p-sortIcon field="chegouSite"></p-sortIcon></th>
+                        <th pSortableColumn="formaContato">Forma de contato <p-sortIcon field="formaContato"></p-sortIcon></th>
                         <th pSortableColumn="notificarWpp">Notificar Wpp <p-sortIcon field="notificarWpp"></p-sortIcon></th>
                         <th pSortableColumn="status">Status<p-sortIcon field="status"></p-sortIcon></th>
                         <th></th>
@@ -59,7 +59,7 @@
                         </td>
                         <td style="width:12%; min-width:12rem;">
                             <span class="p-column-title">Chegou pelo Site</span>
-                            <b>{{visita.chegouSite? 'Sim' : 'Não'}}</b>
+                            <b>{{visita.formaContato ? visita.formaContato : 'Não definido'}}</b>
                         </td>
                         <td style="width:12%; min-width:6rem;">
                             <span class="p-column-title">Notificar Wpp</span>
@@ -175,8 +175,19 @@
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !visita.dataVisita">Insira uma data</small>
                     </div>
                     <div class="field-checkbox col-3 mt-3">
-						<p-checkbox name="group1" [binary]="true" label="Cliente chegou pelo Site?" [(ngModel)]="visita.chegouSite" id="checkChegouSite" [disabled]="visitaViewMode"></p-checkbox>
-					</div>
+                        <div class="field-radiobutton mr-3">
+                            <p-radioButton name="formaContato" value="SITE" [(ngModel)]="visita.formaContato" id="radioSite"></p-radioButton>
+                            <label for="radioSite">Site</label>
+                        </div>
+                        <div class="field-radiobutton mr-3">
+                            <p-radioButton name="formaContato" value="BALCÃO" [(ngModel)]="visita.formaContato" id="radioBalcao"></p-radioButton>
+                            <label for="radioBalcao">Balcão</label>
+                        </div>
+                        <div class="field-radiobutton">
+                            <p-radioButton name="formaContato" value="TELEFONE" [(ngModel)]="visita.formaContato" id="radioTelefone"></p-radioButton>
+                            <label for="city1">Telefone</label>
+                        </div>
+                    </div>
                     <div class="field-checkbox col-3 mt-3">
 						<p-checkbox name="group1" [binary]="true" label="Enviar Notificações por WPP?" [(ngModel)]="visita.notificarWpp" id="checkNotificarWpp" [disabled]="visitaViewMode"></p-checkbox>
 					</div>

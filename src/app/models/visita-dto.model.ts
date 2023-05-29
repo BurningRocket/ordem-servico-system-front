@@ -5,7 +5,7 @@ export interface VisitaDto extends BaseDto{
     cliente?: ClienteDto;
     dataVisita?: Date;
     observacao?: string;
-    chegouSite?: boolean;
+    formaContato?: string;
     notificarWpp?: boolean;
     endereco?: string;
     descricao?: string;
