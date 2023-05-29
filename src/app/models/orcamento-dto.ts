@@ -10,4 +10,5 @@ export interface OrcamentoDto extends BaseDto{
     endereco?: string;
     valor?: number;
     descricao?: string;
+    tipoPagamento?: string;
 }

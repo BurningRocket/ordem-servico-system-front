@@ -292,11 +292,17 @@
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !orcamento.valor">Insira um valor</small>
                     </div>
+                    <div class="field col-12 mt-4">
+                        <span class="p-float-label">
+                            <textarea  rows="5" cols="30" id="inputObservacaoOrcamento" pInputTextarea [(ngModel)]="orcamento.observacao" [disabled]="visitaViewMode"></textarea>
+                            <label for="inputObservacaoOrcamento">Observação orçamento</label>
+                        </span>
+                    </div>
                 </div>
             </ng-template>
             <ng-template pTemplate="footer">
-                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text p-button-secondary" *ngIf="!visitaViewMode" (click)="hideDialog()"></button>
-                <button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-text p-button-success" *ngIf="!visitaViewMode" (click)="saveOrcamento()"></button>
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text p-button-secondary" *ngIf="!visitaViewMode" (click)="hideDialog()" [loading]="orcamentoLoading"></button>
+                <button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-text p-button-success" *ngIf="!visitaViewMode" (click)="saveOrcamento()" [loading]="orcamentoLoading"></button>
             </ng-template>
         </p-dialog>
 
@@ -310,8 +316,8 @@
                 </div>
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text p-button-secondary" label="Cancelar" (click)="finalizaVisitaDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text p-button-success" label="Finalizar Visita" (click)="confirmFinalizarVisita()"></button>
+                <button pButton pRipple icon="pi pi-times" class="p-button-text p-button-secondary" label="Cancelar" (click)="finalizaVisitaDialog = false" [loading]="visitaLoading"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text p-button-success" label="Finalizar Visita" (click)="confirmFinalizarVisita()" [loading]="visitaLoading"></button>
             </ng-template>
         </p-dialog>
     </div>

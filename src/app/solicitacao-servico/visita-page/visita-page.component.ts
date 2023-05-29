@@ -35,6 +35,7 @@ export class VisitaPageComponent implements OnInit {
     submitted: boolean = false;
 
     visitaLoading: boolean = false;
+    orcamentoLoading: boolean = false;
 
     cols: any[] = [];
 
@@ -110,13 +111,16 @@ export class VisitaPageComponent implements OnInit {
     }
 
     confirmFinalizarVisita() {
+        this.visitaLoading = true;
         this.visitaService.finalizarVisita(this.visita).subscribe((data: any) => {
             this.visita = data;
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Visita Finalizada', life: 3000 });
             this.finalizaVisitaDialog = false;
+            this.visitaLoading = false;
             window.location.reload();
         }, error => {
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao finalizar visita', life: 3000 });
+            this.visitaLoading = false;
         });
     }
 
@@ -161,6 +165,7 @@ export class VisitaPageComponent implements OnInit {
         }
 
         this.submitted = true;
+        this.orcamentoLoading = true;
         this.orcamento.visita = this.visita;
         this.orcamento.cliente = this.cliente;
         this.orcamento.endereco = this.endereco.rua + ',' + this.endereco.numero + ',' + this.endereco.bairro + ',' + this.endereco.cidade + ',' + this.endereco.uf + ',' + this.endereco.cep;
@@ -170,9 +175,11 @@ export class VisitaPageComponent implements OnInit {
             this.orcamento = data;
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Orcamento Criado', life: 3000 });
             this.orcamentoDialog = false;
+            this.orcamentoLoading = false;
             window.location.reload();
         }
         , error => {
+            this.orcamentoLoading = false;
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao criar orcamento', life: 3000 });
         });
     }
