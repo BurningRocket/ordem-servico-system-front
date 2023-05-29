@@ -96,7 +96,7 @@
                     </div>
                     <div class="field col-6 mt-3 mt-3">
                         <span class="p-float-label">
-                            <p-inputMask [unmask]="true" id="inputCpf" [(ngModel)]="cliente.cpf" inputValor [disabled]="visitaViewMode"></p-inputMask>
+                            <p-inputMask [unmask]="true" id="inputCpf" [(ngModel)]="cliente.cpf" [disabled]="visitaViewMode" placeholder="999.999.999-99" mask="999.999.999-99" [ngClass]="{'ng-invalid ng-dirty' : submitted && !cliente.telefone}"></p-inputMask>
                             <label for="inputCpf">CPF</label>
                         </span>
                     </div>
