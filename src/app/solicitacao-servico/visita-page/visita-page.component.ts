@@ -45,7 +45,7 @@ export class VisitaPageComponent implements OnInit {
         private enderecoService: EnderecoService, private orcamentoService: OrcamentoService) { }
 
     ngOnInit() {
-        this.visitaService.buscarTodos().subscribe((data: any) => {
+        this.visitaService.buscarTodosAbertos().subscribe((data: any) => {
             this.visitas = data;
         }, error => {
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao buscar visitas', life: 3000 });
@@ -145,6 +145,7 @@ export class VisitaPageComponent implements OnInit {
 
     hideDialog() {
         this.visitaDialog = false;
+        this.orcamentoDialog = false;
         this.submitted = false;
     }
 
