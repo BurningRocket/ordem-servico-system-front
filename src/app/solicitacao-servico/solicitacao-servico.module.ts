@@ -26,8 +26,9 @@ import { OrcamentoPageComponent } from './orcamento-page/orcamento-page.componen
 import { InstalacaoPageComponent } from './instalacao-page/instalacao-page.component';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputMaskModule } from 'primeng/inputmask';
+import { ProfissionalPageComponent } from './profissional-page/profissional-page.component';
 @NgModule({
-    declarations: [VisitaPageComponent, OrcamentoPageComponent, InstalacaoPageComponent],
+    declarations: [VisitaPageComponent, OrcamentoPageComponent, InstalacaoPageComponent, ProfissionalPageComponent],
     imports: [
         CommonModule,
         SolicitacaoServicoRoutingModule,
