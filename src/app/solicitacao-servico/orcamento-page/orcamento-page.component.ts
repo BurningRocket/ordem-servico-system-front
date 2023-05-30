@@ -33,6 +33,9 @@ export class OrcamentoPageComponent implements OnInit {
 
     submitted: boolean = false;
 
+    orcamentoLoading: boolean = false;
+    instalacaoLoading: boolean = false;
+
     cols: any[] = [];
 
     rowsPerPageOptions = [5, 10, 20];
@@ -41,7 +44,7 @@ export class OrcamentoPageComponent implements OnInit {
         private enderecoService: EnderecoService, private orcamentoService: OrcamentoService, private instalacaoService: InstalacaoService) { }
 
     ngOnInit() {
-        this.orcamentoService.buscarTodos().subscribe((data: any) => {
+        this.orcamentoService.buscarTodosAbertos().subscribe((data: any) => {
             this.orcamentos = data;
             console.log(this.orcamentos);
 
@@ -67,13 +70,16 @@ export class OrcamentoPageComponent implements OnInit {
     }
 
     confirmAprovarOrcamento() {
+        this.orcamentoLoading = true;
         this.orcamentoService.aprovarOrcamento(this.orcamento).subscribe((data: any) => {
             this.orcamento = data;
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Visita Finalizada', life: 3000 });
             this.finalizaVisitaDialog = false;
+            this.orcamentoLoading = false;
             window.location.reload();
         }, error => {
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao finalizar visita', life: 3000 });
+            this.orcamentoLoading = false;
         });
     }
 
@@ -83,13 +89,16 @@ export class OrcamentoPageComponent implements OnInit {
     }
 
     confirrmReprovarOrcamento() {
+        this.orcamentoLoading = true;
         this.orcamentoService.reprovarOrcamento(this.orcamento).subscribe((data: any) => {
             this.orcamento = data;
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Visita Finalizada', life: 3000 });
             this.finalizaVisitaDialog = false;
+            this.orcamentoLoading = false;
             window.location.reload();
         }, error => {
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao finalizar visita', life: 3000 });
+            this.orcamentoLoading = false;
         });
     }
 
@@ -114,13 +123,17 @@ export class OrcamentoPageComponent implements OnInit {
         this.instalacao.cliente = this.cliente;
         this.instalacao.endereco = this.endereco.rua + ',' + this.endereco.numero + ',' + this.endereco.bairro + ',' + this.endereco.cidade + ',' + this.endereco.uf + ',' + this.endereco.cep;
 
+        this.instalacaoLoading = true;
+
         this.instalacaoService.createInstalacao(this.instalacao).subscribe((data: any) => {
             this.instalacao = data;
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Instalação marcada com sucesso', life: 3000 });
             this.instalacaoDialog = false;
+            this.instalacaoLoading = false;
             window.location.reload();
         }, error => {
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao marcar instalação', life: 3000 });
+            this.instalacaoLoading = false;
         });
     }
 
