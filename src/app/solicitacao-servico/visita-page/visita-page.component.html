@@ -10,7 +10,7 @@
                 </ng-template>
             </p-toolbar>
 
-            <p-table #dt [value]="visitas" [columns]="cols" responsiveLayout="scroll" [globalFilterFields]="['_id', 'cliente.nome', 'cliente.telefone', 'cliente.endereco', 'dataVisita', 'formaContato', 'notificarWpp']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} até {last} de {totalRecords} visitas abertas" [rowHover]="true" dataKey="id">
+            <p-table #dt [value]="visitas" [columns]="cols" responsiveLayout="scroll" [globalFilterFields]="['_id', 'cliente.nome', 'cliente.telefone', 'cliente.endereco', 'dataVisita', 'formaContato', 'notificarWpp', 'profissional.nome']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} até {last} de {totalRecords} visitas abertas" [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <h5 class="m-0">Visitas</h5>
@@ -26,7 +26,7 @@
                         <th pSortableColumn="cliente.telefone">Telefone <p-sortIcon field="cliente.telefone"></p-sortIcon></th>
                         <th pSortableColumn="cliente.endereco">Endereço <p-sortIcon field="cliente.endereco"></p-sortIcon></th>
                         <th pSortableColumn="data">Data Agendamento <p-sortIcon field="data"></p-sortIcon></th>
-                        <th pSortableColumn="descricao">Observação pós visita <p-sortIcon field="descricao"></p-sortIcon></th>
+                        <th pSortableColumn="profissional.nome">Vistoriador <p-sortIcon field="profissional.nome"></p-sortIcon></th>
                         <th pSortableColumn="formaContato">Forma de contato <p-sortIcon field="formaContato"></p-sortIcon></th>
                         <th pSortableColumn="notificarWpp">Notificar Wpp <p-sortIcon field="notificarWpp"></p-sortIcon></th>
                         <th pSortableColumn="status">Status<p-sortIcon field="status"></p-sortIcon></th>
@@ -54,8 +54,8 @@
                             {{visita.dataVisita | date: 'dd/MM/yyyy'}}
                         </td>
                         <td style="width:12%; min-width:12rem;">
-                            <span class="p-column-title">Observação pós visita</span>
-                            {{visita.descricao}}
+                            <span class="p-column-title">Vistoriador</span>
+                            {{visita.profissional?.nome}}
                         </td>
                         <td style="width:12%; min-width:12rem;">
                             <span class="p-column-title">Chegou pelo Site</span>
@@ -113,41 +113,41 @@
                             <label for="inputEmail">Email</label>
                         </span>
                     </div>
-                    <div class="field col-6 mt-3">
+                    <div class="field col-4 mt-3">
                         <span class="p-float-label">
                             <input maxlength="9" type="text" id="CepVisitaInputEditDialog" pInputText [(ngModel)]="endereco.cep" (blur)="onCepSelected()" [disabled]="visitaViewMode">
                             <label for="CepVisitaInputEditDialog">CEP</label>
                         </span>
                     </div>
-                    <div class="field col-6 mt-3">
+                    <div class="field col-4 mt-3">
                         <span class="p-float-label">
                             <input type="text" id="RuaVisitaInputEditDialog" pInputText [(ngModel)]="endereco.rua" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.rua}" [disabled]="visitaViewMode">
                             <label for="RuaVisitaInputEditDialog">Rua*</label>
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !endereco.rua">Defina uma rua para o atendimento.</small>
                     </div>
-                    <div class="field col-6 mt-3">
+                    <div class="field col-4 mt-3">
                         <span class="p-float-label">
                             <input maxlength="5" type="number" id="NúmeroVisitaInputEditDialog" pInputText [(ngModel)]="endereco.numero" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.rua}" [disabled]="visitaViewMode">
                             <label for="NúmeroVisitaInputEditDialog">Número*</label>
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !endereco.rua">Defina um número para o atendimento.</small>
                     </div>
-                    <div class="field col-6 mt-3">
+                    <div class="field col-4 mt-3">
                         <span class="p-float-label">
                             <input type="text" id="BairroVisitaInputEditDialog" pInputText [(ngModel)]="endereco.bairro" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.bairro}" [disabled]="visitaViewMode">
                             <label for="BairroVisitaInputEditDialog">Bairro*</label>
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !endereco.bairro">Defina um bairro para o atendimento.</small>
                     </div>
-                    <div class="field col-6 mt-3">
+                    <div class="field col-4 mt-3">
                         <span class="p-float-label">
                             <input type="text" id="CidadeVisitaInputEditDialog" pInputText [(ngModel)]="endereco.cidade" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.cidade}" [disabled]="visitaViewMode">
                             <label for="CidadeVisitaInputEditDialog">Cidade*</label>
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !endereco.cidade">Defina uma cidade para o atendimento.</small>
                     </div>
-                    <div class="field col-6 mt-3">
+                    <div class="field col-4 mt-3">
                         <span class="p-float-label">
                             <input type="text" id="UfVisitaInputEditDialog" pInputText [(ngModel)]="endereco.uf" [ngClass]="{'ng-invalid ng-dirty' : submitted && !endereco.uf}" [disabled]="visitaViewMode">
                             <label for="UfVisitaInputEditDialog">UF*</label>
@@ -159,7 +159,7 @@
                     </div>
                     <div class="field col-6 mt-3" *ngIf="!visitaViewMode">
                         <span class="p-float-label">
-                            <p-calendar dateFormat="dd/mm/yy" [showIcon]="true" id="inputDataVisita" [(ngModel)]="visita.dataVisita" [required] = true [ngClass]="{'ng-invalid ng-dirty' : submitted && !visita.dataVisita}" [disabled]="visitaViewMode"></p-calendar>
+                            <p-calendar appendTo="body" dateFormat="dd/mm/yy" [showIcon]="true" id="inputDataVisita" [(ngModel)]="visita.dataVisita" [required] = true [ngClass]="{'ng-invalid ng-dirty' : submitted && !visita.dataVisita}" [disabled]="visitaViewMode"></p-calendar>
                             <label for="inputDataVisita">Data da visita*</label>
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !visita.dataVisita">Insira uma data</small>
@@ -188,6 +188,13 @@
                     <div class="field-checkbox col-3 mt-3">
 						<p-checkbox name="group1" [binary]="true" label="Enviar Notificações por WPP?" [(ngModel)]="visita.notificarWpp" id="checkNotificarWpp" [disabled]="visitaViewMode"></p-checkbox>
 					</div>
+                    <div class="field col-6 mt-3">
+                        <span class="p-float-label">
+                            <p-dropdown appendTo="body" inputId="inputVistoriador" [autoDisplayFirst]="false" [options]="profissionais" [(ngModel)]="visita.profissional" optionLabel="nome" [required]="true" [ngClass]="{'ng-invalid ng-dirty' : submitted && !visita.profissional}" [disabled]="visitaViewMode"></p-dropdown>
+                            <label for="inputVistoriador">Vistoriador</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !visita.profissional">Insira um vistoriador</small>
+                    </div>
                     <div class="field col-12 mt-3">
                         <span class="p-float-label">
                             <textarea  rows="5" cols="30" id="inputObservacaoVisita" pInputTextarea [(ngModel)]="visita.observacao" [disabled]="visitaViewMode"></textarea>

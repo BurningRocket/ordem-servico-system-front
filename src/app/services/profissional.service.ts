@@ -23,6 +23,24 @@ export class ProfissionalService extends BaseAdminService {
         return this.http.get(this.actionUrl + "/findAll", options);
     }
 
+    buscarInstaladores() {
+
+        let headers = this.getHttpHeaders();
+
+        let options = { headers: headers };
+
+        return this.http.get(this.actionUrl + "/findInstaladores", options);
+    }
+
+    buscarVistoriadores() {
+
+        let headers = this.getHttpHeaders();
+
+        let options = { headers: headers };
+
+        return this.http.get(this.actionUrl + "/findVistoriadores", options);
+    }
+
     createProfissional(visitaDto: ProfissionalDto) {
 
         let headers = this.getHttpHeaders();

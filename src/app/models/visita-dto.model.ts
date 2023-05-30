@@ -1,5 +1,6 @@
 import { BaseDto } from './base-dto.model';
 import { ClienteDto } from './cliente-dto.model';
+import { ProfissionalDto } from './profissional-dto';
 
 export interface VisitaDto extends BaseDto{
     cliente?: ClienteDto;
@@ -11,4 +12,5 @@ export interface VisitaDto extends BaseDto{
     endereco?: string;
     descricao?: string;
     status?: string;
+    profissional?: ProfissionalDto;
 }

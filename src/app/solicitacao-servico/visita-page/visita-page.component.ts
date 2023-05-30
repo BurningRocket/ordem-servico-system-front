@@ -8,6 +8,8 @@ import { Endereco } from 'src/app/models/endereco.model';
 import { EnderecoService } from 'src/app/services/endereco.service';
 import { OrcamentoDto } from 'src/app/models/orcamento-dto';
 import { OrcamentoService } from 'src/app/services/orcamento.service';
+import { ProfissionalService } from 'src/app/services/profissional.service';
+import { ProfissionalDto } from 'src/app/models/profissional-dto';
 
 @Component({
   selector: 'app-visita-page',
@@ -31,6 +33,7 @@ export class VisitaPageComponent implements OnInit {
     orcamento: OrcamentoDto = {};
 
     visitas: VisitaDto[] = [];
+    profissionais: ProfissionalDto[] = [];
 
     submitted: boolean = false;
 
@@ -42,13 +45,20 @@ export class VisitaPageComponent implements OnInit {
     rowsPerPageOptions = [5, 10, 20];
 
     constructor(private messageService: MessageService, private visitaService: VisitaService,
-        private enderecoService: EnderecoService, private orcamentoService: OrcamentoService) { }
+        private enderecoService: EnderecoService, private orcamentoService: OrcamentoService,
+        private profissionalService: ProfissionalService) { }
 
     ngOnInit() {
         this.visitaService.buscarTodosAbertos().subscribe((data: any) => {
             this.visitas = data;
         }, error => {
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao buscar visitas', life: 3000 });
+        });
+
+        this.profissionalService.buscarTodos().subscribe((data: any) => {
+            this.profissionais = data;
+        }, error => {
+            this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao buscar profissionais', life: 3000 });
         });
 
         this.cols = [
@@ -80,7 +90,7 @@ export class VisitaPageComponent implements OnInit {
         this.visita.endereco = this.endereco.rua + ',' + this.endereco.numero + ',' + this.endereco.bairro + ',' + this.endereco.cidade + ',' + this.endereco.uf + ',' + this.endereco.cep;
         this.visita.cliente.endereco = this.visita.endereco;
 
-        if(this.visita.cliente.cpf && this.visita.cliente.nome && this.visita.cliente.telefone && this.visita.endereco && this.visita.dataVisita){
+        if(this.visita.cliente.cpf && this.visita.cliente.nome && this.visita.cliente.telefone && this.visita.endereco && this.visita.dataVisita && this.visita.profissional){
             this.visitaService.createVisita(this.visita).subscribe((data: any) => {
                 this.visita = data;
                 this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Visita Criada', life: 3000 });
