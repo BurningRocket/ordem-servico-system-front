@@ -240,8 +240,8 @@
                     </div>
                     <div class="field col-6 mt-3" >
                         <span class="p-float-label">
-                            <p-calendar selectionMode="range" [showTime]="true" dateFormat="dd/mm/yy" [showIcon]="true" id="inputDataVisita" [(ngModel)]="instalacao.dataInstalacao" [required] = true [ngClass]="{'ng-invalid ng-dirty' : submitted && !instalacao.dataInstalacao}" ></p-calendar>
-                            <label for="inputDataVisita">Data da instalação*</label>
+                            <p-calendar pTooltip="Selecione um período entre dois dias" selectionMode="range" [showTime]="true" dateFormat="dd/mm/yy" [showIcon]="true" id="inputDataVisita" [(ngModel)]="instalacao.dataInstalacao" [required] = true [ngClass]="{'ng-invalid ng-dirty' : submitted && !instalacao.dataInstalacao}" ></p-calendar>
+                            <label for="inputDataVisita">Período instalação*</label>
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !instalacao.dataInstalacao">Insira uma data</small>
                     </div>
