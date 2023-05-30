@@ -13,18 +13,18 @@ export class AppMenuComponent implements OnInit {
 
     ngOnInit() {
         this.model = [
-            {
-                label: 'Home',
-                items: [
-                    {
-                        label: 'Dashboard',
-                        icon: 'pi pi-fw pi-home',
-                        routerLink: ['/'],
-                        hasPermission: true,
-                    }
-                ],
-                hasPermission: true,
-            },
+            // {
+            //     label: 'Home',
+            //     items: [
+            //         {
+            //             label: 'Dashboard',
+            //             icon: 'pi pi-fw pi-home',
+            //             routerLink: ['/'],
+            //             hasPermission: true,
+            //         }
+            //     ],
+            //     hasPermission: true,
+            // },
             {
                 label: 'Fluxo de serviço',
                 items: [
@@ -64,7 +64,27 @@ export class AppMenuComponent implements OnInit {
                         hasPermission: true,
                         // hasPermission: this.authService.hasRoles(["admin"]),
                     },
-
+                    {
+                        label: 'Visita',
+                        icon: 'pi pi-fw pi-car',
+                        routerLink: ['/relatorios/visita'],
+                        hasPermission: true,
+                        // hasPermission: this.authService.hasRoles(["admin"]),
+                    },
+                    {
+                        label: 'Orçamento',
+                        icon: 'pi pi-fw pi-dollar',
+                        routerLink: ['/relatorios/orcamento'],
+                        hasPermission: true,
+                        // hasPermission: this.authService.hasRoles(["admin"]),
+                    },
+                    {
+                        label: 'Instalação',
+                        icon: 'pi pi-fw pi-map-marker',
+                        routerLink: ['/relatorios/instalacao'],
+                        hasPermission: true,
+                        // hasPermission: this.authService.hasRoles(["admin"]),
+                    },
                 ],
                 hasPermission: true,
                 // hasPermission: this.authService.hasRoles(["admin"]),

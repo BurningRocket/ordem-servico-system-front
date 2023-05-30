@@ -24,8 +24,11 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputMaskModule } from 'primeng/inputmask';
 import { ClientePageComponent } from './cliente-page/cliente-page.component';
 import { RelatoriosRoutingModule } from './relatorios-routing.module';
+import { VisitaPageRelatorioComponent } from './visita-page-relatorio/visita-page-relatorio.component';
+import { OrcamentoPageRelatorioComponent } from './orcamento-page-relatorio/orcamento-page-relatorio.component';
+import { InstalacaoPageRelatorioComponent } from './instalacao-page-relatorio/instalacao-page-relatorio.component';
 @NgModule({
-    declarations: [ClientePageComponent],
+    declarations: [ClientePageComponent, VisitaPageRelatorioComponent, OrcamentoPageRelatorioComponent, InstalacaoPageRelatorioComponent],
     imports: [
         CommonModule,
         RelatoriosRoutingModule,
