@@ -238,12 +238,19 @@
                     <div class="col-12 mt-3">
                         <h5>Detalhes Instalação</h5>
                     </div>
-                    <div class="field col-6 mt-3" >
+                    <div class="field col-6 mt-2" >
                         <span class="p-float-label">
-                            <p-calendar pTooltip="Selecione um período entre dois dias" selectionMode="range" [showTime]="true" dateFormat="dd/mm/yy" [showIcon]="true" id="inputDataVisita" [(ngModel)]="instalacao.dataInstalacao" [required] = true [ngClass]="{'ng-invalid ng-dirty' : submitted && !instalacao.dataInstalacao}" ></p-calendar>
+                            <p-calendar appendTo="body" pTooltip="Selecione um período entre dois dias" selectionMode="range" [showTime]="true" dateFormat="dd/mm/yy" [showIcon]="true" id="inputDataVisita" [(ngModel)]="instalacao.dataInstalacao" [required] = true [ngClass]="{'ng-invalid ng-dirty' : submitted && !instalacao.dataInstalacao}" ></p-calendar>
                             <label for="inputDataVisita">Período instalação*</label>
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !instalacao.dataInstalacao">Insira uma data</small>
+                    </div>
+                    <div class="field col-6 mt-2">
+                        <span class="p-float-label">
+                            <p-dropdown appendTo="body" inputId="inputVistoriador" [autoDisplayFirst]="false" [options]="profissionais" [(ngModel)]="instalacao.profissional" optionLabel="nome" [required]="true" [ngClass]="{'ng-invalid ng-dirty' : submitted && !instalacao.profissional}"></p-dropdown>
+                            <label for="inputVistoriador">Instalador</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !instalacao.profissional">Insira um instalador</small>
                     </div>
                     <div class="field col-12 mt-3" >
                         <span class="p-float-label">

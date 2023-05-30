@@ -10,6 +10,8 @@ import { OrcamentoDto } from 'src/app/models/orcamento-dto';
 import { OrcamentoService } from 'src/app/services/orcamento.service';
 import { InstalacaoDto } from 'src/app/models/instalacao-dto.model';
 import { InstalacaoService } from 'src/app/services/instalacao.service';
+import { ProfissionalDto } from 'src/app/models/profissional-dto';
+import { ProfissionalService } from 'src/app/services/profissional.service';
 @Component({
   selector: 'app-orcamento-page',
   templateUrl: './orcamento-page.component.html',
@@ -30,6 +32,7 @@ export class OrcamentoPageComponent implements OnInit {
     orcamento: OrcamentoDto = {};
 
     orcamentos: OrcamentoDto[] = [];
+    profissionais: ProfissionalDto[] = [];
 
     submitted: boolean = false;
 
@@ -41,15 +44,20 @@ export class OrcamentoPageComponent implements OnInit {
     rowsPerPageOptions = [5, 10, 20];
 
     constructor(private messageService: MessageService, private visitaService: VisitaService,
-        private enderecoService: EnderecoService, private orcamentoService: OrcamentoService, private instalacaoService: InstalacaoService) { }
+        private enderecoService: EnderecoService, private orcamentoService: OrcamentoService,
+        private instalacaoService: InstalacaoService, private profissionalService: ProfissionalService) { }
 
     ngOnInit() {
         this.orcamentoService.buscarTodosAbertos().subscribe((data: any) => {
             this.orcamentos = data;
-            console.log(this.orcamentos);
-
         }, error => {
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao buscar orcamentos', life: 3000 });
+        });
+
+        this.profissionalService.buscarInstaladores().subscribe((data: any) => {
+            this.profissionais = data;
+        }, error => {
+            this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao buscar profissionais', life: 3000 });
         });
 
         this.cols = [
@@ -125,16 +133,21 @@ export class OrcamentoPageComponent implements OnInit {
 
         this.instalacaoLoading = true;
 
-        this.instalacaoService.createInstalacao(this.instalacao).subscribe((data: any) => {
-            this.instalacao = data;
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Instalação marcada com sucesso', life: 3000 });
-            this.instalacaoDialog = false;
+        if(this.instalacao.dataInstalacao && this.instalacao.profissional){
+            this.instalacaoService.createInstalacao(this.instalacao).subscribe((data: any) => {
+                this.instalacao = data;
+                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Instalação marcada com sucesso', life: 3000 });
+                this.instalacaoDialog = false;
+                this.instalacaoLoading = false;
+                window.location.reload();
+            }, error => {
+                this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao marcar instalação', life: 3000 });
+                this.instalacaoLoading = false;
+            });
+        }else{
+            this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Preencha todos os campos obrigatórios', life: 3000 });
             this.instalacaoLoading = false;
-            window.location.reload();
-        }, error => {
-            this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao marcar instalação', life: 3000 });
-            this.instalacaoLoading = false;
-        });
+        }
     }
 
     populateEndereco(enderecoString: string) {

@@ -159,7 +159,7 @@
                     </div>
                     <div class="field col-6 mt-3" *ngIf="!visitaViewMode">
                         <span class="p-float-label">
-                            <p-calendar appendTo="body" dateFormat="dd/mm/yy" [showIcon]="true" id="inputDataVisita" [(ngModel)]="visita.dataVisita" [required] = true [ngClass]="{'ng-invalid ng-dirty' : submitted && !visita.dataVisita}" [disabled]="visitaViewMode"></p-calendar>
+                            <p-calendar [showTime]="true" appendTo="body" dateFormat="dd/mm/yy" [showIcon]="true" id="inputDataVisita" [(ngModel)]="visita.dataVisita" [required] = true [ngClass]="{'ng-invalid ng-dirty' : submitted && !visita.dataVisita}" [disabled]="visitaViewMode"></p-calendar>
                             <label for="inputDataVisita">Data da visita*</label>
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !visita.dataVisita">Insira uma data</small>

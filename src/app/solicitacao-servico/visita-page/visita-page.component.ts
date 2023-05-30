@@ -55,7 +55,7 @@ export class VisitaPageComponent implements OnInit {
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao buscar visitas', life: 3000 });
         });
 
-        this.profissionalService.buscarTodos().subscribe((data: any) => {
+        this.profissionalService.buscarVistoriadores().subscribe((data: any) => {
             this.profissionais = data;
         }, error => {
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao buscar profissionais', life: 3000 });

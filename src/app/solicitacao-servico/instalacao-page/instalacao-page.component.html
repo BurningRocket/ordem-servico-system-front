@@ -17,12 +17,12 @@
                     <tr>
                         <th pSortableColumn="cliente.nome">Nome <p-sortIcon field="cliente.nome"></p-sortIcon></th>
                         <th pSortableColumn="cliente.endereco">Endereço <p-sortIcon field="cliente.endereco"></p-sortIcon></th>
+                        <th pSortableColumn="profissional.nome">Instalador <p-sortIcon field="profissional.nome"></p-sortIcon></th>
                         <th pSortableColumn="dataInicioInstalacao">Início Instalação <p-sortIcon field="dataInstalacao"></p-sortIcon></th>
                         <th pSortableColumn="dataFimInstalacao">Fim Instalação <p-sortIcon field="dataFimInstalacao"></p-sortIcon></th>
                         <th pSortableColumn="descricao">Descrição <p-sortIcon field="descricao"></p-sortIcon></th>
                         <th pSortableColumn="quantidadeCaixas">Caixas<p-sortIcon field="quantidadeCaixas"></p-sortIcon></th>
                         <th pSortableColumn="statusPagamento">Status Pagamento<p-sortIcon field="statusPagamento"></p-sortIcon></th>
-                        <th pSortableColumn="status">Status<p-sortIcon field="status"></p-sortIcon></th>
                         <th></th>
                     </tr>
                 </ng-template>
@@ -37,6 +37,10 @@
                             <a [href]="'http://maps.google.com/?q='+instalacao.endereco" target="_blank">
                                 {{instalacao.endereco}}
                             </a>
+                        </td>
+                        <td style="width:16%; min-width:12rem;">
+                            <span class="p-column-title">Instalador</span>
+                            {{instalacao?.profissional?.nome}}
                         </td>
                         <td style="width:12%; min-width:12rem;">
                             <span class="p-column-title">Data Instalação</span>
@@ -57,10 +61,6 @@
                         <td style="width:12%; min-width:6rem;">
                             <span class="p-column-title">Status</span>
                             <b>{{instalacao.statusPagamento || '-----'}}</b>
-                        </td>
-                        <td style="width:12%; min-width:6rem;">
-                            <span class="p-column-title">Status</span>
-                            <b>{{instalacao.status}}</b>
                         </td>
                         <td>
                             <div class="flex">

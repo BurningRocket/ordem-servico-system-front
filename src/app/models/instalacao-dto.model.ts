@@ -1,6 +1,7 @@
 import { BaseDto } from './base-dto.model';
 import { ClienteDto } from './cliente-dto.model';
 import { OrcamentoDto } from './orcamento-dto';
+import { ProfissionalDto } from './profissional-dto';
 
 export interface InstalacaoDto extends BaseDto{
     cliente?: ClienteDto;
@@ -12,4 +13,5 @@ export interface InstalacaoDto extends BaseDto{
     descricao?: string;
     quantidadeCaixas?: number;
     statusPagamento?: string;
+    profissional?: ProfissionalDto;
 }

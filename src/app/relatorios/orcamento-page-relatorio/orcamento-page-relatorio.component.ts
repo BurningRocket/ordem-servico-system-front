@@ -44,7 +44,7 @@ export class OrcamentoPageRelatorioComponent implements OnInit {
         private enderecoService: EnderecoService, private orcamentoService: OrcamentoService, private instalacaoService: InstalacaoService) { }
 
     ngOnInit() {
-        this.orcamentoService.buscarTodosAbertos().subscribe((data: any) => {
+        this.orcamentoService.buscarTodos().subscribe((data: any) => {
             this.orcamentos = data;
             console.log(this.orcamentos);
 
