@@ -11,5 +11,5 @@ export interface InstalacaoDto extends BaseDto{
     endereco?: string;
     descricao?: string;
     quantidadeCaixas?: number;
-    tipoPagamento?: string;
+    statusPagamento?: string;
 }

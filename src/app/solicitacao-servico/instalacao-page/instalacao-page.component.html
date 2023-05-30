@@ -21,7 +21,7 @@
                         <th pSortableColumn="dataFimInstalacao">Fim Instalação <p-sortIcon field="dataFimInstalacao"></p-sortIcon></th>
                         <th pSortableColumn="descricao">Descrição <p-sortIcon field="descricao"></p-sortIcon></th>
                         <th pSortableColumn="quantidadeCaixas">Caixas<p-sortIcon field="quantidadeCaixas"></p-sortIcon></th>
-                        <th pSortableColumn="tipoPagamento">Pagamento<p-sortIcon field="tipoPagamento"></p-sortIcon></th>
+                        <th pSortableColumn="statusPagamento">Status Pagamento<p-sortIcon field="statusPagamento"></p-sortIcon></th>
                         <th pSortableColumn="status">Status<p-sortIcon field="status"></p-sortIcon></th>
                         <th></th>
                     </tr>
@@ -56,7 +56,7 @@
                         </td>
                         <td style="width:12%; min-width:6rem;">
                             <span class="p-column-title">Status</span>
-                            <b>{{instalacao.tipoPagamento || '-----'}}</b>
+                            <b>{{instalacao.statusPagamento || '-----'}}</b>
                         </td>
                         <td style="width:12%; min-width:6rem;">
                             <span class="p-column-title">Status</span>
@@ -66,7 +66,6 @@
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-info mr-2" (click)="viewInstalacao(instalacao)"></button>
                                 <button pButton pRipple icon="pi pi-check" class="p-button-rounded p-button-success mr-2" (click)="finalizarInstalacao(instalacao)" *ngIf="instalacao.status === 'PENDENTE'"></button>
-                                <button pButton pRipple icon="pi pi-money-bill" class="p-button-rounded p-button-success mr-2" (click)="faturarInstalacao(instalacao)" *ngIf="instalacao.status === 'EXECUTADA'"></button>
                             </div>
                         </td>
                     </tr>
@@ -185,53 +184,45 @@
             </ng-template>
         </p-dialog>
 
-        <p-dialog [(visible)]="finalizarInstalacaoDialog" header="Finalizar Instalação" [modal]="true" [style]="{width:'900px'}">
-            <div class="formgrid grid">
-                <div class="field col-6 mt-4">
-                    <span class="p-float-label">
-                        <p-inputNumber [showButtons]="false" inputId="descricaoVisita" [(ngModel)]="instalacao.quantidadeCaixas"></p-inputNumber>
-                        <label for="descricaoVisita">Caixas gastas</label>
-                    </span>
+        <p-dialog [(visible)]="finalizarInstalacaoDialog" header="Finalizar Instalação" [modal]="true" [style]="{width:'900px'}" class="p-fluid">
+            <ng-template pTemplate="content">
+                <div class="formgrid grid">
+                    <div class="field col-6 mt-4">
+                        <span class="p-float-label">
+                            <p-inputNumber [showButtons]="false" inputId="descricaoVisita" [(ngModel)]="instalacao.quantidadeCaixas"></p-inputNumber>
+                            <label for="descricaoVisita">Caixas gastas</label>
+                        </span>
+                    </div>
+                    <div class="field col-2 mt-4">
+                        <div class="field-radiobutton">
+                            <p-radioButton name="pagamentoStatus" value="SIM" [(ngModel)]="instalacao.statusPagamento" id="pagamentoRealizado"></p-radioButton>
+                            <label for="pagamentoRealizado">Pagamento realizado</label>
+                        </div>
+                    </div>
+                    <div class="field col-2 mt-4">
+                        <div class="field-radiobutton">
+                            <p-radioButton name="pagamentoStatus" value="NÃO" [(ngModel)]="instalacao.statusPagamento" id="pagamentoNaoRealizado"></p-radioButton>
+                            <label for="pagamentoNaoRealizado">Pagamento não realizado</label>
+                        </div>
+                    </div>
+                    <div class="field col-2 mt-4">
+                        <div class="field-radiobutton">
+                            <p-radioButton name="pagamentoStatus" value="PENDENTE" [(ngModel)]="instalacao.statusPagamento" id="pagamentoPendente"></p-radioButton>
+                            <label for="pagamentoPendente">Pagamento Pendente</label>
+                        </div>
+                    </div>
+                    <div class="field col-12 mt-4">
+                        <span class="p-float-label">
+                            <textarea inputId="descricaoVisita" rows="5" [(ngModel)]="instalacao.observacao" pInputTextarea style="width: 100%;"></textarea>
+                            <label for="descricaoVisita">Observações da Instalação</label>
+                        </span>
+                    </div>
                 </div>
-                <div class="field col-12 mt-4">
-                    <span class="p-float-label">
-                        <textarea inputId="descricaoVisita" rows="5" [(ngModel)]="instalacao.observacao" pInputTextarea style="width: 100%;"></textarea>
-                        <label for="descricaoVisita">Observações da Instalação</label>
-                    </span>
-                </div>
-            </div>
+            </ng-template>
             <ng-template pTemplate="footer">
                 <button pButton pRipple icon="pi pi-times" class="p-button-text p-button-secondary" label="Cancelar" (click)="finalizaVisitaDialog = false" [loading]="instalacaoLoading"></button>
                 <button pButton pRipple icon="pi pi-check" class="p-button-text p-button-success" label="Finalizar Instalação" (click)="confirmFinalizarInstalacao()" [loading]="instalacaoLoading"></button>
             </ng-template>
         </p-dialog>
-
-        <p-dialog [(visible)]="pagamentoDialog" header="Definir pagamento" [modal]="true" [style]="{width:'900px'}">
-            <div class="formgrid grid">
-                <div class="col-12 md:col-4 mt-4">
-					<div class="field-radiobutton">
-						<p-radioButton name="city" value="VISTA" [(ngModel)]="instalacao.tipoPagamento" id="tipoVista"></p-radioButton>
-						<label for="tipoVista">A Vista</label>
-					</div>
-				</div>
-				<div class="col-12 md:col-4 mt-4">
-					<div class="field-radiobutton">
-						<p-radioButton name="city" value="PRAZO" [(ngModel)]="instalacao.tipoPagamento" id="tipoPrazo"></p-radioButton>
-						<label for="tipoPrazo">A Prazo</label>
-					</div>
-				</div>
-				<div class="col-12 md:col-4 mt-4">
-					<div class="field-radiobutton">
-						<p-radioButton name="city" value="PARCELADO" [(ngModel)]="instalacao.tipoPagamento" id="tipoParcelado"></p-radioButton>
-						<label for="tipoParcelado">Parcelado</label>
-					</div>
-				</div>
-            </div>
-            <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text p-button-secondary" label="Cancelar" (click)="finalizaVisitaDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text p-button-success" label="Definir Pagamento" (click)="confirmFaturarInstalacao()"></button>
-            </ng-template>
-        </p-dialog>
-
     </div>
 </div>
