@@ -256,8 +256,8 @@
             </ng-template>
 
             <ng-template pTemplate="footer">
-                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text p-button-secondary"  (click)="instalacaoDialog = false"></button>
-                <button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-text p-button-success"  (click)="saveInstalacao()"></button>
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text p-button-secondary"  (click)="instalacaoDialog = false" [loading]="instalacaoLoading"></button>
+                <button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-text p-button-success"  (click)="saveInstalacao()" [loading]="instalacaoLoading"></button>
             </ng-template>
         </p-dialog>
 
@@ -268,8 +268,8 @@
                 </p>
             </ng-template>
             <ng-template pTemplate="footer">
-                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text p-button-secondary" (click)="aprovarDialog = false"></button>
-                <button pButton pRipple label="Aprovar" icon="pi pi-check" class="p-button-text p-button-success" (click)="confirmAprovarOrcamento()"></button>
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text p-button-secondary" (click)="aprovarDialog = false" [loading]="orcamentoLoading"></button>
+                <button pButton pRipple label="Aprovar" icon="pi pi-check" class="p-button-text p-button-success" (click)="confirmAprovarOrcamento()" [loading]="orcamentoLoading"></button>
             </ng-template>
         </p-dialog>
 
@@ -280,8 +280,8 @@
                 </p>
             </ng-template>
             <ng-template pTemplate="footer">
-                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text p-button-secondary" (click)="reprovarDialog = false"></button>
-                <button pButton pRipple label="Reprovar" icon="pi pi-trash" class="p-button-text p-button-danger" (click)="confirrmReprovarOrcamento()"></button>
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text p-button-secondary" (click)="reprovarDialog = false" [loading]="orcamentoLoading"></button>
+                <button pButton pRipple label="Reprovar" icon="pi pi-trash" class="p-button-text p-button-danger" (click)="confirrmReprovarOrcamento()" [loading]="orcamentoLoading"></button>
             </ng-template>
         </p-dialog>
 

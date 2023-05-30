@@ -19,7 +19,6 @@ export class InstalacaoPageComponent implements OnInit {
 
     deleteVisitaDialog: boolean = false;
     finalizaVisitaDialog: boolean = false;
-    orcamentoDialog: boolean = false;
     aprovarDialog: boolean = false;
     reprovarDialog: boolean = false;
     instalacaoDialog: boolean = false;
@@ -34,6 +33,8 @@ export class InstalacaoPageComponent implements OnInit {
     instalacoes: InstalacaoDto[] = [];
 
     submitted: boolean = false;
+
+    instalacaoLoading: boolean = false;
 
     dataInstalacaoFormatada: string = "";
 
@@ -70,13 +71,16 @@ export class InstalacaoPageComponent implements OnInit {
     }
 
     confirmFinalizarInstalacao() {
+        this.instalacaoLoading = true;
         this.instalacaoService.finalizarInstalacao(this.instalacao).subscribe((data: any) => {
             this.instalacao = data;
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Visita Finalizada', life: 3000 });
             this.finalizaVisitaDialog = false;
+            this.instalacaoLoading = false;
             window.location.reload();
         }, error => {
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao finalizar visita', life: 3000 });
+            this.instalacaoLoading = false;
         });
     }
 
