@@ -23,6 +23,15 @@ export class InstalacaoService extends BaseAdminService {
         return this.http.get(this.actionUrl + "/findAll", options);
     }
 
+    buscarTodosAbertos() {
+
+        let headers = this.getHttpHeaders();
+
+        let options = { headers: headers };
+
+        return this.http.get(this.actionUrl + "/findAllOpen", options);
+    }
+
     createInstalacao(instalacaoDto: InstalacaoDto) {
 
         let headers = this.getHttpHeaders();

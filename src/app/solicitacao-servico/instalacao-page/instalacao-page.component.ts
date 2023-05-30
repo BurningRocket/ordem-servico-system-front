@@ -46,7 +46,7 @@ export class InstalacaoPageComponent implements OnInit {
         private instalacaoService: InstalacaoService) { }
 
     ngOnInit() {
-        this.instalacaoService.buscarTodos().subscribe((data: any) => {
+        this.instalacaoService.buscarTodosAbertos().subscribe((data: any) => {
             this.instalacoes = data;
         }, error => {
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao buscar instalações', life: 3000 });
