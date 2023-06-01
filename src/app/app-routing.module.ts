@@ -25,6 +25,11 @@ import { AuthGuard } from './seguranca/auth.guard';
                             canActivate: [AuthGuard],
                             // data: { roles: ["admin"]
                         },
+                        {
+                            path: '',
+                            loadChildren: () => import('./demo/components/dashboard/dashboard.module').then(m => m.DashboardModule),
+                            canActivate: [AuthGuard],
+                        },
                     ],
                 },
                 {
@@ -34,7 +39,6 @@ import { AuthGuard } from './seguranca/auth.guard';
                             (m) => m.AuthModule
                         ),
                 },
-
                 { path: 'notfound', component: NotfoundComponent },
                 { path: '**', redirectTo: '/notfound' },
             ]
