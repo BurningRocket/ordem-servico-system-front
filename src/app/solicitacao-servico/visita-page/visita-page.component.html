@@ -157,7 +157,7 @@
                     <div class="col-12 mt-3">
                         <h5>Detalhes Visita</h5>
                     </div>
-                    <div class="field col-6 mt-3" *ngIf="!visitaViewMode">
+                    <div class="field lg:col-6 col-12 mt-3" *ngIf="!visitaViewMode">
                         <span class="p-float-label">
                             <p-calendar [showTime]="true" appendTo="body" dateFormat="dd/mm/yy" [showIcon]="true" id="inputDataVisita" [(ngModel)]="visita.dataVisita" [required] = true [ngClass]="{'ng-invalid ng-dirty' : submitted && !visita.dataVisita}" [disabled]="visitaViewMode"></p-calendar>
                             <label for="inputDataVisita">Data da visita*</label>
@@ -171,7 +171,7 @@
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !visita.dataVisita">Insira uma data</small>
                     </div>
-                    <div class="field-checkbox col-3 mt-3">
+                    <div class="field-checkbox lg:col-3 col-12 mt-3">
                         <div class="field-radiobutton mr-3">
                             <p-radioButton name="formaContato" value="SITE" [(ngModel)]="visita.formaContato" id="radioSite" [disabled]="visitaViewMode"></p-radioButton>
                             <label for="radioSite">Site</label>
@@ -185,7 +185,7 @@
                             <label for="city1">Telefone</label>
                         </div>
                     </div>
-                    <div class="field-checkbox col-3 mt-3">
+                    <div class="field-checkbox lg:col-3 col-6 mt-3">
 						<p-checkbox name="group1" [binary]="true" label="Enviar Notificações por WPP?" [(ngModel)]="visita.notificarWpp" id="checkNotificarWpp" [disabled]="visitaViewMode"></p-checkbox>
 					</div>
                     <div class="field col-6 mt-3">
