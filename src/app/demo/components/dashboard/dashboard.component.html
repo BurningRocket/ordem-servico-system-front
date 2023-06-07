@@ -76,6 +76,12 @@
     <!-- Talvez colocar últimos orçamentos -->
 
     <div class="col-12 xl:col-6">
+        <div class="card flex flex-column ">
+            <full-calendar [options]="calendarOptions"></full-calendar>
+        </div>
+    </div>
+
+    <div class="col-12 xl:col-6">
         <div class="card flex flex-column align-items-center">
             <h5>Média orçamentos</h5>
             <p-chart type="doughnut" [data]="pieData" [options]="pieOptions"></p-chart>

@@ -6,6 +6,13 @@ import { Subscription } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { DashboardDto } from 'src/app/models/dashboard-dto.model';
+import { CalendarOptions } from '@fullcalendar/core';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import { InstalacaoService } from 'src/app/services/instalacao.service';
+import { VisitaService } from 'src/app/services/visita.service';
+import { InstalacaoDto } from 'src/app/models/instalacao-dto.model';
+import { VisitaDto } from 'src/app/models/visita-dto.model';
+import ptLocale from '@fullcalendar/core/locales/pt-br';
 
 @Component({
     templateUrl: './dashboard.component.html',
@@ -35,6 +42,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
         geralAnoVisitas: []
     };
 
+    calendarOptions: any = {
+        initialView: 'dayGridMonth',
+        plugins: [dayGridPlugin],
+        locale: ptLocale,
+        events: []
+    };
+
+    instalacoes:InstalacaoDto[] = [];
+    visitas:VisitaDto[] = [];
+
     pieData: any;
     pieOptions: any;
 
@@ -46,7 +63,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     subscription!: Subscription;
 
     constructor(private productService: ProductService, public layoutService: LayoutService,
-        private dashboardService: DashboardService, private messageService: MessageService) {
+        private dashboardService: DashboardService, private messageService: MessageService,
+        private instalacaoService: InstalacaoService, private visitaService: VisitaService) {
         this.subscription = this.layoutService.configUpdate$.subscribe(() => {
             this.initChart();
         });
@@ -62,6 +80,26 @@ export class DashboardComponent implements OnInit, OnDestroy {
         }, (error: any) => {
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao gerar gráficos', life: 3000 });
             this.chartsLoading = false;
+        });
+
+        this.instalacaoService.buscarTodosAbertos().subscribe((data: any) => {
+            this.instalacoes = data;
+            this.calendarOptions.events = this.instalacoes.map((instalacao) => {
+                return {
+                    title: instalacao.cliente ? instalacao.cliente.nome : 'Sem cliente',
+                    date: instalacao.dataInstalacao
+                }
+            });
+        });
+
+        this.visitaService.buscarTodosAbertos().subscribe((data: any) => {
+            this.visitas = data;
+            this.calendarOptions.events = this.calendarOptions.events.concat(this.visitas.map((visita) => {
+                return {
+                    title: visita.cliente ? visita.cliente.nome : 'Sem cliente',
+                    date: visita.dataVisita
+                }
+            }));
         });
     }
 

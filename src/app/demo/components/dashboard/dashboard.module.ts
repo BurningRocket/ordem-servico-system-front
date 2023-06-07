@@ -10,6 +10,7 @@ import { StyleClassModule } from 'primeng/styleclass';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { DashboardsRoutingModule } from './dashboard-routing.module';
 import { ToastModule } from 'primeng/toast';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 @NgModule({
     imports: [
@@ -22,7 +23,8 @@ import { ToastModule } from 'primeng/toast';
         PanelMenuModule,
         ButtonModule,
         DashboardsRoutingModule,
-        ToastModule
+        ToastModule,
+        FullCalendarModule
     ],
     declarations: [DashboardComponent]
 })
