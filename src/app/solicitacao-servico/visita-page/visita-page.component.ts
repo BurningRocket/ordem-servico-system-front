@@ -37,6 +37,8 @@ export class VisitaPageComponent implements OnInit {
 
     submitted: boolean = false;
 
+    buscarVisitaLoading: boolean = false;
+    buscarProfissionaisLoading: boolean = false;
     visitaLoading: boolean = false;
     orcamentoLoading: boolean = false;
 
@@ -49,16 +51,23 @@ export class VisitaPageComponent implements OnInit {
         private profissionalService: ProfissionalService) { }
 
     ngOnInit() {
+        this.buscarVisitaLoading = true;
+        this.buscarProfissionaisLoading = true;
+
         this.visitaService.buscarTodosAbertos().subscribe((data: any) => {
             this.visitas = data;
+            this.buscarVisitaLoading = false;
         }, error => {
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao buscar visitas', life: 3000 });
+            this.buscarVisitaLoading = false;
         });
 
         this.profissionalService.buscarVistoriadores().subscribe((data: any) => {
             this.profissionais = data;
+            this.buscarProfissionaisLoading = false;
         }, error => {
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao buscar profissionais', life: 3000 });
+            this.buscarProfissionaisLoading = false;
         });
 
         this.cols = [

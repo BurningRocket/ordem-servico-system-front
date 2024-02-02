@@ -34,6 +34,7 @@ export class InstalacaoPageComponent implements OnInit {
 
     submitted: boolean = false;
 
+    buscarInstalacaoLoading: boolean = false;
     instalacaoLoading: boolean = false;
 
     dataInstalacaoFormatada: string = "";
@@ -47,10 +48,13 @@ export class InstalacaoPageComponent implements OnInit {
         private instalacaoService: InstalacaoService) { }
 
     ngOnInit() {
+        this.buscarInstalacaoLoading = true;
         this.instalacaoService.buscarTodosAbertos().subscribe((data: any) => {
             this.instalacoes = data;
+            this.buscarInstalacaoLoading = false;
         }, error => {
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao buscar instalações', life: 3000 });
+            this.buscarInstalacaoLoading = false;
         });
 
         this.cols = [

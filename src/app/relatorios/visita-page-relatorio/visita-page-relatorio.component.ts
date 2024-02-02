@@ -34,6 +34,7 @@ export class VisitaPageRelatorioComponent implements OnInit {
 
     submitted: boolean = false;
 
+    buscarVisitaLoading: boolean = false;
     visitaLoading: boolean = false;
     orcamentoLoading: boolean = false;
 
@@ -47,8 +48,10 @@ export class VisitaPageRelatorioComponent implements OnInit {
     ngOnInit() {
         this.visitaService.buscarTodos().subscribe((data: any) => {
             this.visitas = data;
+            this.buscarVisitaLoading = false;
         }, error => {
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao buscar visitas', life: 3000 });
+            this.buscarVisitaLoading = false;
         });
 
         this.cols = [

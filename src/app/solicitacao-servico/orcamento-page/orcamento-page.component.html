@@ -292,5 +292,8 @@
             </ng-template>
         </p-dialog>
 
+        <p-dialog [(visible)]="buscarOrcamentoLoading || buscarInstalacaoLoading" header="Buscando registros..." [modal]="true" [style]="{ width: '450px' }" [closable]="false">
+            <p-progressSpinner [style]="{ display: 'flex' }"></p-progressSpinner>
+        </p-dialog>
     </div>
 </div>

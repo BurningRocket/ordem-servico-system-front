@@ -21,13 +21,19 @@ export class ClientePageComponent implements OnInit {
 
     rowsPerPageOptions = [5, 10, 20];
 
+    clienteLoading: boolean = false;
+
     constructor(private messageService: MessageService, private clienteService: ClienteService) { }
 
     ngOnInit() {
+        this.clienteLoading = true;
+
         this.clienteService.buscarTodos().subscribe((data: any) => {
             this.clientes = data;
+            this.clienteLoading = false;
         }, error => {
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao buscar clientes', life: 3000 });
+            this.clienteLoading = false;
         });
 
         this.cols = [

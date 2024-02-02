@@ -33,6 +33,7 @@ export class OrcamentoPageRelatorioComponent implements OnInit {
 
     submitted: boolean = false;
 
+    buscarOrcamentoLoading: boolean = false;
     orcamentoLoading: boolean = false;
     instalacaoLoading: boolean = false;
 
@@ -46,10 +47,10 @@ export class OrcamentoPageRelatorioComponent implements OnInit {
     ngOnInit() {
         this.orcamentoService.buscarTodos().subscribe((data: any) => {
             this.orcamentos = data;
-            console.log(this.orcamentos);
-
+            this.buscarOrcamentoLoading = false;
         }, error => {
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao buscar orcamentos', life: 3000 });
+            this.buscarOrcamentoLoading = false;
         });
 
         this.cols = [

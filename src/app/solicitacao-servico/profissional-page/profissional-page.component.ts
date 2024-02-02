@@ -17,6 +17,7 @@ export class ProfissionalPageComponent implements OnInit {
 
     profissionalDialog: boolean = false;
 
+    buscarProfissionalLoading: boolean = false;
     profissionalLoading: boolean = false;
 
     profissionalViewMode: boolean = false;
@@ -30,10 +31,14 @@ export class ProfissionalPageComponent implements OnInit {
   constructor(private profissionalService: ProfissionalService, private messageService: MessageService) { }
 
   ngOnInit(): void {
+    this.buscarProfissionalLoading = true;
+
     this.profissionalService.buscarTodos().subscribe((data: any) => {
         this.profissionais = data;
+        this.buscarProfissionalLoading = false;
     }, error => {
         this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao buscar profissionais', life: 3000 });
+        this.buscarProfissionalLoading = false;
     });
   }
 

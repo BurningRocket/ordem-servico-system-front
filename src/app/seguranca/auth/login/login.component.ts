@@ -58,9 +58,10 @@ export class LoginComponent implements OnInit {
 
             this.router.navigate(['/']);
             this.service.setToken(data.token);
+            this.loginLoading = false;
         }, (error) => {
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: "Erro ao realizar login" });
+            this.loginLoading = false;
         });
-        this.loginLoading = false;
     }
 }

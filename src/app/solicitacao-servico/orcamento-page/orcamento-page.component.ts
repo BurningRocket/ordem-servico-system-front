@@ -36,6 +36,8 @@ export class OrcamentoPageComponent implements OnInit {
 
     submitted: boolean = false;
 
+    buscarOrcamentoLoading: boolean = false;
+    buscarInstalacaoLoading: boolean = false;
     orcamentoLoading: boolean = false;
     instalacaoLoading: boolean = false;
 
@@ -48,16 +50,24 @@ export class OrcamentoPageComponent implements OnInit {
         private instalacaoService: InstalacaoService, private profissionalService: ProfissionalService) { }
 
     ngOnInit() {
+
+        this.buscarOrcamentoLoading = true;
+        this.buscarInstalacaoLoading = true;
+
         this.orcamentoService.buscarTodosAbertos().subscribe((data: any) => {
             this.orcamentos = data;
+            this.buscarOrcamentoLoading = false;
         }, error => {
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao buscar orcamentos', life: 3000 });
+            this.buscarOrcamentoLoading = false;
         });
 
         this.profissionalService.buscarInstaladores().subscribe((data: any) => {
             this.profissionais = data;
+            this.buscarInstalacaoLoading = false;
         }, error => {
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao buscar profissionais', life: 3000 });
+            this.buscarInstalacaoLoading = false;
         });
 
         this.cols = [

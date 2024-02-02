@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    URL: 'http://54.207.81.165:8087/api',
+    URL: 'https://pmft4routf.execute-api.us-east-1.amazonaws.com/dev/api',
   };
