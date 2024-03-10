@@ -102,7 +102,7 @@ export class AppMenuComponent implements OnInit {
                     {
                         label: 'Usuários',
                         icon: 'pi pi-fw pi-key',
-                        routerLink: ['/relatorios/cliente'],
+                        routerLink: ['/users'],
                         hasPermission: this.authService.hasRoles(["ROOT"]),
                     },
                 ],

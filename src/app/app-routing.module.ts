@@ -29,6 +29,12 @@ import { AuthGuard } from './seguranca/auth.guard';
                             canActivate: [AuthGuard],
                             // data: { roles: ["ADMIN"]
                         },
+                        {
+                            path: 'users',
+                            loadChildren: () => import('./users/users.module').then((m) => m.UsersModule),
+                            canActivate: [AuthGuard],
+                            // data: { roles: ["ADMIN"]
+                        },
                     ],
                 },
                 {
