@@ -64,11 +64,11 @@
 
         <p-dialog header="Dados Profissional" [(visible)]="profissionalDialog" [style]="{width: '1200px'}" [modal]="true" class="p-fluid" [maximizable]=true >
             <ng-template pTemplate="content">
-                <div class="formgrid grid">
+                <div class="formgrid grid mt-3">
                     <div class="field col-6 mt-3 mt-3">
                         <span class="p-float-label">
                             <input type="text" id="inputNome" pInputText [(ngModel)]="profissional.nome" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !profissional.nome}" [disabled]="profissionalViewMode">
-                            <label for="inputNome">Nome do cliente*</label>
+                            <label for="inputNome">Nome do Profissional*</label>
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !profissional.nome">Insira um nome</small>
                     </div>

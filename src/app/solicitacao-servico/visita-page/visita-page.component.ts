@@ -65,6 +65,7 @@ export class VisitaPageComponent implements OnInit {
         this.profissionalService.buscarVistoriadores().subscribe((data: any) => {
             this.profissionais = data;
             this.buscarProfissionaisLoading = false;
+            this.checkVistoriador();
         }, error => {
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao buscar profissionais', life: 3000 });
             this.buscarProfissionaisLoading = false;
@@ -80,6 +81,14 @@ export class VisitaPageComponent implements OnInit {
             { field: 'formaContato' , header: 'Forma de contato' },
             { field: 'notificarWpp' , header: 'Notificar Wpp' },
         ];
+    }
+
+    checkVistoriador(){
+        console.log(this.profissionais.length);
+
+        if(this.profissionais.length < 1){
+            this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: 'Para criar uma visita primeiro tenha algum vistoriador cadastrado!', life: 3000 });
+        }
     }
 
     openNewVisita() {

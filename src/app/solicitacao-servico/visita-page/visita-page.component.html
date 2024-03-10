@@ -5,7 +5,7 @@
             <p-toolbar styleClass="mb-4">
                 <ng-template pTemplate="left">
                     <div class="my-2">
-                        <button pButton pRipple label="Nova Visita" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNewVisita()" [loading]="visitaLoading"></button>
+                        <button pButton pRipple label="Nova Visita" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNewVisita()" [loading]="visitaLoading" [disabled]="profissionais.length < 1" pTooltip="Para criar uma visita primeiro tenha algum vistoriador cadastrado!" [tooltipDisabled]="profissionais.length >= 1"></button>
                     </div>
                 </ng-template>
             </p-toolbar>
