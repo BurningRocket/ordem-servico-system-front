@@ -12,25 +12,25 @@ import { InstalacaoPageRelatorioComponent } from './instalacao-page-relatorio/in
             path: 'cliente',
             component: ClientePageComponent,
             canActivate: [AuthGuard],
-            // data: { role: ["admin"] }
+            // data: { role: ["ADMIN"] }
         },
         {
             path: 'visita',
             component: VisitaPageRelatorioComponent,
             canActivate: [AuthGuard],
-            // data: { role: ["admin"] }
+            // data: { role: ["ADMIN"] }
         },
         {
             path: 'orcamento',
             component: OrcamentoPageRelatorioComponent,
             canActivate: [AuthGuard],
-            // data: { role: ["admin"] }
+            // data: { role: ["ADMIN"] }
         },
         {
             path: 'instalacao',
             component: InstalacaoPageRelatorioComponent,
             canActivate: [AuthGuard],
-            // data: { role: ["admin"] }
+            // data: { role: ["ADMIN"] }
         },
 
     ])],
