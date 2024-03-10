@@ -95,12 +95,15 @@ export class InstalacaoPageComponent implements OnInit {
     }
 
     confirmFaturarInstalacao() {
+        this.instalacaoLoading = true;
         this.instalacaoService.faturarInstalacao(this.instalacao).subscribe((data: any) => {
+            this.instalacaoLoading = false;
             this.instalacao = data;
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Pagamento Definido', life: 3000 });
             this.pagamentoDialog = false;
-            window.location.reload();
+            this.router.navigate(['/']);
         }, error => {
+            this.instalacaoLoading = false;
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Pagamento Definido', life: 3000 });
         });
     }
