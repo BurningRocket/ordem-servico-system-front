@@ -42,7 +42,7 @@ export class AuthGuard implements CanActivate{
             return false;
         }
 
-        if(tokenPayload.role.name === 'admin' || requiredRoles.some(role => tokenPayload.role.name === role)){
+        if(tokenPayload.role === 'ROOT' || requiredRoles.some(role => tokenPayload.role === role)){
             return true;
         }
 

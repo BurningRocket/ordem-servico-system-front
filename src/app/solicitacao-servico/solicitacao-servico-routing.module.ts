@@ -12,25 +12,25 @@ import { ProfissionalPageComponent } from './profissional-page/profissional-page
             path: 'visita',
             component: VisitaPageComponent,
             canActivate: [AuthGuard],
-            // data: { role: ["admin"] }
+            // data: { role: ["ADMIN"] }
         },
         {
             path: 'orcamento',
             component: OrcamentoPageComponent,
             canActivate: [AuthGuard],
-            // data: { role: ["admin"] }
+            // data: { role: ["ADMIN"] }
         },
         {
             path: 'instalacao',
             component: InstalacaoPageComponent,
             canActivate: [AuthGuard],
-            // data: { role: ["admin"] }
+            // data: { role: ["ADMIN"] }
         },
         {
             path: 'profissional',
             component: ProfissionalPageComponent,
             canActivate: [AuthGuard],
-            // data: { role: ["admin"] }
+            // data: { role: ["ADMIN"] }
         }
     ])],
     exports: [RouterModule]

@@ -3,4 +3,5 @@ export interface LoginDTO {
     password: string;
     name?: string;
     token?: string;
+    role?: string;
 }

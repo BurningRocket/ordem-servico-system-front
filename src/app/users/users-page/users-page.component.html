@@ -1,0 +1,109 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toast></p-toast>
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                    <div class="my-2">
+                        <button pButton pRipple label="Novo usuário" icon="pi pi-plus" class="p-button-success mr-2" (click)="newUser()" [loading]="creatingUserLoading"></button>
+                    </div>
+                </ng-template>
+            </p-toolbar>
+            <p-table #dt [value]="users" responsiveLayout="scroll" [globalFilterFields]="['_id', 'name', 'email', 'role']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} até {last} de {totalRecords} usuários" [rowHover]="true" dataKey="_id">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h5 class="m-0">Usuários</h5>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."  class="w-full sm:w-auto"/>
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="nome">Nome <p-sortIcon field="name"></p-sortIcon></th>
+                        <th pSortableColumn="telefone">Email <p-sortIcon field="email"></p-sortIcon></th>
+                        <th pSortableColumn="endereco">Tipo de Usuário <p-sortIcon field="role"></p-sortIcon></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-user>
+                    <tr>
+                        <td style="width:12%; min-width:12rem;">
+                            <span class="p-column-title">Nome</span>
+                            {{user.name}}
+                        </td>
+                        <td style="width:12%; min-width:12rem;">
+                            <span class="p-column-title">Email</span>
+                            {{user.email}}
+                        </td>
+                        <td style="width:12%; min-width:12rem;">
+                            <span class="p-column-title">Tipo de Usuário</span>
+                            <b>{{user.role}}</b>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <p-dialog [(visible)]="newUserDialog" header="Detalhes do usuário" [modal]="true" [style]="{width:'900px'}" class="p-fluid" [maximizable]=true [draggable]="false" [resizable]="false">
+            <ng-template pTemplate="content">
+                <div class="formgrid grid">
+                    <div class="field col-6 mt-4">
+                        <span class="p-float-label">
+                            <input inputId="userName" [(ngModel)]="user.name" pInputText/>
+                            <label for="userName">Nome*</label>
+                        </span>
+                    </div>
+                    <div  class="field col-6 mt-4">
+                        <span class="p-float-label">
+                            <input inputId="userEmail" [(ngModel)]="user.email" pInputText  autocomplete="nope"/>
+                            <label for="userEmail">Email*</label>
+                        </span>
+                    </div>
+                    <div  class="field col-6 mt-4">
+                        <span class="p-float-label">
+                            <p-password inputId="userPassword" [(ngModel)]="user.password" [toggleMask]="true" autocomplete="new-password"></p-password>
+                            <label for="userPassword">Senha*</label>
+                        </span>
+                    </div>
+                    <div  class="field col-6 mt-4">
+                        <span class="p-float-label">
+                            <p-password inputId="userPasswordConfirm" [(ngModel)]="confirmPassword" [toggleMask]="true" [ngClass]="{'ng-invalid ng-dirty' : !checkPassword()}"></p-password>
+                            <label for="userPasswordConfirm">Confirme a senha*</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid" *ngIf="!checkPassword()">Senhas não conferem!</small>
+                    </div>
+                    <div class="col-12 mt-3">
+                        <h5>Tipos de Usuário*</h5>
+                    </div>
+                    <div class="field col-4 mt-2">
+                        <div class="field-radiobutton">
+                            <p-radioButton name="userRole" value="BASE" [(ngModel)]="user.role" id="userBase"></p-radioButton>
+                            <label for="userBase">Básico</label>
+                        </div>
+                    </div>
+                    <div class="field col-4 mt-2">
+                        <div class="field-radiobutton">
+                            <p-radioButton name="userRole" value="PROFISSIONAL" [(ngModel)]="user.role" id="userProfissional"></p-radioButton>
+                            <label for="userProfissional">Profissional</label>
+                        </div>
+                    </div>
+                    <div class="field col-4 mt-2">
+                        <div class="field-radiobutton">
+                            <p-radioButton name="userRole" value="ADMIN" [(ngModel)]="user.role" id="userAdmin"></p-radioButton>
+                            <label for="userAdmin">Administrador</label>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text p-button-secondary" label="Cancelar" (click)="newUserDialog = false" [loading]="creatingUserLoading"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text p-button-success" label="Criar novo Usuário" (click)="confirmNewUser()" [loading]="creatingUserLoading"></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog [(visible)]="userLoading" header="Buscando registros..." [modal]="true" [style]="{ width: '450px' }" [closable]="false">
+            <p-progressSpinner [style]="{ display: 'flex' }"></p-progressSpinner>
+        </p-dialog>
+    </div>
+</div>

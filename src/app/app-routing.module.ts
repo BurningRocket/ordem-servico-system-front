@@ -21,13 +21,19 @@ import { AuthGuard } from './seguranca/auth.guard';
                             path: 'solicitacao-servico',
                             loadChildren: () => import('./solicitacao-servico/solicitacao-servico.module').then((m) => m.SolicitacaoServicoModule),
                             canActivate: [AuthGuard],
-                            // data: { roles: ["admin"]
+                            // data: { roles: ["ADMIN"]
                         },
                         {
                             path: 'relatorios',
                             loadChildren: () => import('./relatorios/relatorios.module').then((m) => m.RelatoriosModule),
                             canActivate: [AuthGuard],
-                            // data: { roles: ["admin"]
+                            // data: { roles: ["ADMIN"]
+                        },
+                        {
+                            path: 'users',
+                            loadChildren: () => import('./users/users.module').then((m) => m.UsersModule),
+                            canActivate: [AuthGuard],
+                            // data: { roles: ["ADMIN"]
                         },
                     ],
                 },
