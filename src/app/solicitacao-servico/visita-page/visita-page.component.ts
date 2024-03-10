@@ -10,6 +10,7 @@ import { OrcamentoDto } from 'src/app/models/orcamento-dto';
 import { OrcamentoService } from 'src/app/services/orcamento.service';
 import { ProfissionalService } from 'src/app/services/profissional.service';
 import { ProfissionalDto } from 'src/app/models/profissional-dto';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-visita-page',
@@ -48,7 +49,7 @@ export class VisitaPageComponent implements OnInit {
 
     constructor(private messageService: MessageService, private visitaService: VisitaService,
         private enderecoService: EnderecoService, private orcamentoService: OrcamentoService,
-        private profissionalService: ProfissionalService) { }
+        private profissionalService: ProfissionalService, private router: Router) { }
 
     ngOnInit() {
         this.buscarVisitaLoading = true;
@@ -205,7 +206,7 @@ export class VisitaPageComponent implements OnInit {
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Orcamento Criado', life: 3000 });
             this.orcamentoDialog = false;
             this.orcamentoLoading = false;
-            window.location.reload();
+            this.router.navigate(['/solicitacao-servico/orcamento']);
         }
         , error => {
             this.orcamentoLoading = false;
