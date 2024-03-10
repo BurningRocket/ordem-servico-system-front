@@ -12,6 +12,7 @@ import { InstalacaoDto } from 'src/app/models/instalacao-dto.model';
 import { InstalacaoService } from 'src/app/services/instalacao.service';
 import { ProfissionalDto } from 'src/app/models/profissional-dto';
 import { ProfissionalService } from 'src/app/services/profissional.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-orcamento-page',
   templateUrl: './orcamento-page.component.html',
@@ -47,7 +48,8 @@ export class OrcamentoPageComponent implements OnInit {
 
     constructor(private messageService: MessageService, private visitaService: VisitaService,
         private enderecoService: EnderecoService, private orcamentoService: OrcamentoService,
-        private instalacaoService: InstalacaoService, private profissionalService: ProfissionalService) { }
+        private instalacaoService: InstalacaoService, private profissionalService: ProfissionalService,
+        private router: Router) { }
 
     ngOnInit() {
 
@@ -65,6 +67,7 @@ export class OrcamentoPageComponent implements OnInit {
         this.profissionalService.buscarInstaladores().subscribe((data: any) => {
             this.profissionais = data;
             this.buscarInstalacaoLoading = false;
+            this.checkInstalador();
         }, error => {
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao buscar profissionais', life: 3000 });
             this.buscarInstalacaoLoading = false;
@@ -80,6 +83,12 @@ export class OrcamentoPageComponent implements OnInit {
             { field: 'status', header: 'Status' },
             { field: 'valor', header: 'Valor' },
         ];
+    }
+
+    checkInstalador(){
+        if(this.profissionais.length < 1){
+            this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: 'Para agendar uma instalação primeiro tenha algum instalador cadastrado!', life: 3000 });
+        }
     }
 
     aprovarOrcamento(orcamento: OrcamentoDto) {
@@ -149,7 +158,7 @@ export class OrcamentoPageComponent implements OnInit {
                 this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Instalação marcada com sucesso', life: 3000 });
                 this.instalacaoDialog = false;
                 this.instalacaoLoading = false;
-                window.location.reload();
+                this.router.navigate(['/solicitacao-servico/instalacao']);
             }, error => {
                 this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao marcar instalação', life: 3000 });
                 this.instalacaoLoading = false;

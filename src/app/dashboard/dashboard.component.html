@@ -20,7 +20,7 @@
                     <i class="pi pi-car text-blue-500 text-xl"></i>
                 </div>
             </div>
-            <span class="font-medium" [ngClass]="{'text-green-500' : (dashboard.diferencaVisitasMesAnterior >= 0), 'text-red-500' : (dashboard.diferencaVisitasMesAnterior < 0)}">{{dashboard.diferencaVisitasMesAnterior + (dashboard.diferencaVisitasMesAnterior)}}  </span>
+            <span class="font-medium" [ngClass]="{'text-green-500' : (dashboard.diferencaVisitasMesAnterior >= 0), 'text-red-500' : (dashboard.diferencaVisitasMesAnterior < 0)}">{{(dashboard.diferencaVisitasMesAnterior < 0 ? '' : '+') + dashboard.diferencaVisitasMesAnterior}}  </span>
             <span class="text-500">do que último mês</span>
         </div>
     </div>
@@ -36,7 +36,7 @@
                     <i class="pi pi-dollar text-green-500 text-xl"></i>
                 </div>
             </div>
-            <span class="font-medium" [ngClass]="{'text-green-500' : (dashboard.diferencaOrcamentosMesAnterior >= 0), 'text-red-500' : (dashboard.diferencaOrcamentosMesAnterior < 0)}">{{dashboard.diferencaOrcamentosMesAnterior + (dashboard.diferencaOrcamentosMesAnterior)}}  </span>
+            <span class="font-medium" [ngClass]="{'text-green-500' : (dashboard.diferencaOrcamentosMesAnterior >= 0), 'text-red-500' : (dashboard.diferencaOrcamentosMesAnterior < 0)}">{{(dashboard.diferencaOrcamentosMesAnterior < 0 ? '' : '+') + dashboard.diferencaOrcamentosMesAnterior}}  </span>
             <span class="text-500">do que último mês</span>
         </div>
     </div>
@@ -52,7 +52,7 @@
                     <i class="pi pi-map-marker text-cyan-500 text-xl"></i>
                 </div>
             </div>
-            <span class="font-medium" [ngClass]="{'text-green-500' : (dashboard.diferencaInstalacoesMesAnterior >= 0), 'text-red-500' : (dashboard.diferencaInstalacoesMesAnterior < 0)}">{{dashboard.diferencaInstalacoesMesAnterior + (dashboard.diferencaInstalacoesMesAnterior)}}  </span>
+            <span class="font-medium" [ngClass]="{'text-green-500' : (dashboard.diferencaInstalacoesMesAnterior >= 0), 'text-red-500' : (dashboard.diferencaInstalacoesMesAnterior < 0)}">{{(dashboard.diferencaInstalacoesMesAnterior < 0 ? '' : '+') + dashboard.diferencaInstalacoesMesAnterior}}  </span>
             <span class="text-500">do que último mês</span>
         </div>
     </div>
@@ -68,7 +68,7 @@
                     <i class="pi pi-box text-yellow-500 text-xl"></i>
                 </div>
             </div>
-            <span class="font-medium" [ngClass]="{'text-green-500' : (dashboard.diferencaCaixasMesAnterior >= 0), 'text-red-500' : (dashboard.diferencaCaixasMesAnterior < 0)}">{{dashboard.diferencaCaixasMesAnterior + (dashboard.diferencaCaixasMesAnterior)}}  </span>
+            <span class="font-medium" [ngClass]="{'text-green-500' : (dashboard.diferencaCaixasMesAnterior >= 0), 'text-red-500' : (dashboard.diferencaCaixasMesAnterior < 0)}">{{(dashboard.diferencaCaixasMesAnterior < 0 ? '' : '+') + dashboard.diferencaCaixasMesAnterior}}  </span>
             <span class="text-500">do que último mês</span>
         </div>
     </div>

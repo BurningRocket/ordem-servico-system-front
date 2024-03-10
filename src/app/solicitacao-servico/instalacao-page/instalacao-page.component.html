@@ -66,6 +66,7 @@
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-info mr-2" (click)="viewInstalacao(instalacao)"></button>
                                 <button pButton pRipple icon="pi pi-check" class="p-button-rounded p-button-success mr-2" (click)="finalizarInstalacao(instalacao)" *ngIf="instalacao.status === 'PENDENTE'"></button>
+                                <button pButton pRipple icon="pi pi-dollar" class="p-button-rounded p-button-success mr-2" (click)="faturarInstalacao(instalacao)" *ngIf="instalacao.status === 'EXECUTADA'"></button>
                             </div>
                         </td>
                     </tr>
@@ -184,7 +185,7 @@
             </ng-template>
         </p-dialog>
 
-        <p-dialog [(visible)]="finalizarInstalacaoDialog" header="Finalizar Instalação" [modal]="true" [style]="{width:'900px'}" class="p-fluid">
+        <p-dialog [(visible)]="finalizarInstalacaoDialog" header="Finalizar Instalação" [modal]="true" [style]="{width:'900px'}" class="p-fluid" [maximizable]=true [draggable]="false" [resizable]="false">
             <ng-template pTemplate="content">
                 <div class="formgrid grid">
                     <div class="field col-6 mt-4">
@@ -224,6 +225,19 @@
                 <button pButton pRipple icon="pi pi-check" class="p-button-text p-button-success" label="Finalizar Instalação" (click)="confirmFinalizarInstalacao()" [loading]="instalacaoLoading"></button>
             </ng-template>
         </p-dialog>
+
+        <p-dialog [(visible)]="pagamentoDialog" header="Faturar Instalação" [modal]="true" [style]="{width:'450px'}" class="p-fluid" [maximizable]=true [draggable]="false" [resizable]="false">
+            <ng-template pTemplate="content">
+                <p class="line-height-3 m-0">
+                    Deseja faturar a instalação de <b>{{instalacao.cliente?.nome}}</b>?
+                </p>
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text p-button-secondary" label="Cancelar" (click)="finalizarInstalacaoDialog = false" [loading]="instalacaoLoading"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text p-button-success" label="Faturar Instalação" (click)="confirmFaturarInstalacao()" [loading]="instalacaoLoading"></button>
+            </ng-template>
+        </p-dialog>
+
 
         <p-dialog [(visible)]="buscarInstalacaoLoading" header="Buscando registros..." [modal]="true" [style]="{ width: '450px' }" [closable]="false">
             <p-progressSpinner [style]="{ display: 'flex' }"></p-progressSpinner>

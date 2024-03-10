@@ -54,7 +54,8 @@ import { ProfissionalPageComponent } from './profissional-page/profissional-page
         AutoCompleteModule,
         CheckboxModule,
         InputMaskModule,
-        TooltipModule
+        TooltipModule,
+        AutoCompleteModule
     ]
 })
 export class SolicitacaoServicoModule { }

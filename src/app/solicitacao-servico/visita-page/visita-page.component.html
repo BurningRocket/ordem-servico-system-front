@@ -5,7 +5,7 @@
             <p-toolbar styleClass="mb-4">
                 <ng-template pTemplate="left">
                     <div class="my-2">
-                        <button pButton pRipple label="Nova Visita" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNewVisita()" [loading]="visitaLoading" [disabled]="profissionais.length < 1" pTooltip="Para criar uma visita primeiro tenha algum vistoriador cadastrado!" [tooltipDisabled]="profissionais.length >= 1"></button>
+                        <button pButton pRipple label="Nova Visita" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNewVisita()" [loading]="visitaLoading" [disabled]="profissionais.length < 1" pTooltip="Para agendar uma visita primeiro tenha algum vistoriador cadastrado!" [tooltipDisabled]="profissionais.length >= 1"></button>
                     </div>
                 </ng-template>
             </p-toolbar>
@@ -90,7 +90,8 @@
                     </div>
                     <div class="field col-6 mt-3 mt-3">
                         <span class="p-float-label">
-                            <input type="text" id="inputNome" pInputText [(ngModel)]="cliente.nome" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !cliente.nome}" [disabled]="visitaViewMode">
+                            <!-- <input type="text" id="inputNome" pInputText [(ngModel)]="cliente.nome" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !cliente.nome}" [disabled]="visitaViewMode"> -->
+                            <p-autoComplete inputId="inputNome" [suggestions]="nomeClientesFiltered" (completeMethod)="searchClientes($event)" (ngModelChange)="onClienteSelected($event)" [(ngModel)]="cliente.nome" [dropdown]="true" appendTo="body" [ngClass]="{'ng-invalid ng-dirty' : submitted && !cliente.nome}"></p-autoComplete>
                             <label for="inputNome">Nome do cliente*</label>
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !cliente.nome">Insira um nome</small>
@@ -341,7 +342,7 @@
             </ng-template>
         </p-dialog>
 
-        <p-dialog [(visible)]="buscarProfissionaisLoading || buscarVisitaLoading" header="Buscando registros..." [modal]="true" [style]="{ width: '450px' }" [closable]="false">
+        <p-dialog [(visible)]="buscarProfissionaisLoading || buscarVisitaLoading || buscarClientesLoading" header="Buscando registros..." [modal]="true" [style]="{ width: '450px' }" [closable]="false">
             <p-progressSpinner [style]="{ display: 'flex' }"></p-progressSpinner>
         </p-dialog>
     </div>
