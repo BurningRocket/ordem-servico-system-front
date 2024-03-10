@@ -85,10 +85,8 @@ export class VisitaPageComponent implements OnInit {
     }
 
     checkVistoriador(){
-        console.log(this.profissionais.length);
-
         if(this.profissionais.length < 1){
-            this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: 'Para criar uma visita primeiro tenha algum vistoriador cadastrado!', life: 3000 });
+            this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: 'Para agendar uma visita primeiro tenha algum vistoriador cadastrado!', life: 3000 });
         }
     }
 

@@ -55,7 +55,7 @@
                                 <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-info mr-2" (click)="viewOrcamento(orcamento)"></button>
                                 <button pButton pRipple icon="pi pi-check" class="p-button-rounded p-button-success mr-2" (click)="aprovarOrcamento(orcamento)" *ngIf="orcamento.status === 'PENDENTE'"></button>
                                 <button pButton pRipple icon="pi pi-times" class="p-button-rounded p-button-danger" (click)="reprovarOrcamento(orcamento)" *ngIf="orcamento.status === 'PENDENTE'"></button>
-                                <button pButton pRipple icon="pi pi-map-marker" class="p-button-rounded p-button-success" (click)="onMarcarInstalacao(orcamento)" *ngIf="orcamento.status === 'APROVADO' && orcamento.status !== 'INSTALACAO_AGENDADA'"></button>
+                                <button pButton pRipple icon="pi pi-calendar" class="p-button-rounded p-button-success" (click)="onMarcarInstalacao(orcamento)" *ngIf="orcamento.status === 'APROVADO' && orcamento.status !== 'INSTALACAO_AGENDADA'" [disabled]="profissionais.length < 1" pTooltip="Para agendar uma instalação primeiro tenha algum instalador cadastrado!" [tooltipDisabled]="profissionais.length >= 1"></button>
                             </div>
                         </td>
                     </tr>
@@ -174,7 +174,7 @@
                     </div>
                     <div class="field col-6 mt-3 mt-3">
                         <span class="p-float-label">
-                            <p-inputMask [unmask]="true" id="inputCpf" [(ngModel)]="cliente.cpf" inputValor ></p-inputMask>
+                            <p-inputMask [unmask]="true" id="inputCpf" [(ngModel)]="cliente.cpf" placeholder="999.999.999-99" mask="999.999.999-99" [disabled]="true"></p-inputMask>
                             <label for="inputCpf">CPF</label>
                         </span>
                     </div>
