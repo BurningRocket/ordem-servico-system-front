@@ -257,7 +257,7 @@
                             <textarea rows="4" pInputTextarea id="inputDataVisita" [(ngModel)]="instalacao.descricao" [required] = true [ngClass]="{'ng-invalid ng-dirty' : submitted && !instalacao.dataInstalacao}" ></textarea>
                             <label for="inputDataVisita">Descrição instalação</label>
                         </span>
-                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !instalacao.dataInstalacao">Insira uma data</small>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !instalacao.dataInstalacao">Insira uma descrição</small>
                     </div>
                 </div>
             </ng-template>

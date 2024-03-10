@@ -158,7 +158,7 @@ export class OrcamentoPageComponent implements OnInit {
                 this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Instalação marcada com sucesso', life: 3000 });
                 this.instalacaoDialog = false;
                 this.instalacaoLoading = false;
-                this.router.navigate(['/solictacao-servico/instalacao']);
+                this.router.navigate(['/solicitacao-servico/instalacao']);
             }, error => {
                 this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao marcar instalação', life: 3000 });
                 this.instalacaoLoading = false;
