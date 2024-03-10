@@ -10,6 +10,7 @@ import { OrcamentoDto } from 'src/app/models/orcamento-dto';
 import { OrcamentoService } from 'src/app/services/orcamento.service';
 import { InstalacaoDto } from 'src/app/models/instalacao-dto.model';
 import { InstalacaoService } from 'src/app/services/instalacao.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-orcamento-page',
   templateUrl: './instalacao-page.component.html',
@@ -45,7 +46,7 @@ export class InstalacaoPageComponent implements OnInit {
 
     constructor(private messageService: MessageService, private visitaService: VisitaService,
         private enderecoService: EnderecoService, private orcamentoService: OrcamentoService,
-        private instalacaoService: InstalacaoService) { }
+        private instalacaoService: InstalacaoService, private router: Router) { }
 
     ngOnInit() {
         this.buscarInstalacaoLoading = true;
@@ -81,7 +82,7 @@ export class InstalacaoPageComponent implements OnInit {
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Visita Finalizada', life: 3000 });
             this.finalizaVisitaDialog = false;
             this.instalacaoLoading = false;
-            window.location.reload();
+            this.router.navigate(['/']);
         }, error => {
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao finalizar visita', life: 3000 });
             this.instalacaoLoading = false;
