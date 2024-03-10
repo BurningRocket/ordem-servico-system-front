@@ -1,0 +1,97 @@
+<!--
+    Relatório de Orçamentos
+    Relatórios de Visitas
+    Relatório de Instalações
+    Média de Orçamentos Aprovados e Negados
+    Quantidade de Peças Utilizadas
+ -->
+
+ <div class="grid">
+    <p-toast></p-toast>
+    <div class="col-12 lg:col-6 xl:col-3">
+        <div class="card mb-0">
+            <div class="flex justify-content-between mb-3">
+                <div>
+                    <span class="block text-500 font-medium mb-3">Visitas realizadas</span>
+                    <div class="text-900 font-medium text-xl">{{dashboard.totalVisitasMes}}</div>
+                </div>
+                <div class="flex align-items-center justify-content-center bg-blue-100 border-round"
+                    [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                    <i class="pi pi-car text-blue-500 text-xl"></i>
+                </div>
+            </div>
+            <span class="font-medium" [ngClass]="{'text-green-500' : (dashboard.diferencaVisitasMesAnterior >= 0), 'text-red-500' : (dashboard.diferencaVisitasMesAnterior < 0)}">{{dashboard.diferencaVisitasMesAnterior + (dashboard.diferencaVisitasMesAnterior)}}  </span>
+            <span class="text-500">do que último mês</span>
+        </div>
+    </div>
+    <div class="col-12 lg:col-6 xl:col-3">
+        <div class="card mb-0">
+            <div class="flex justify-content-between mb-3">
+                <div>
+                    <span class="block text-500 font-medium mb-3">Orçamentos aprovados</span>
+                    <div class="text-900 font-medium text-xl">{{dashboard.totalOrcamentosMes}}</div>
+                </div>
+                <div class="flex align-items-center justify-content-center bg-green-100 border-round"
+                    [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                    <i class="pi pi-dollar text-green-500 text-xl"></i>
+                </div>
+            </div>
+            <span class="font-medium" [ngClass]="{'text-green-500' : (dashboard.diferencaOrcamentosMesAnterior >= 0), 'text-red-500' : (dashboard.diferencaOrcamentosMesAnterior < 0)}">{{dashboard.diferencaOrcamentosMesAnterior + (dashboard.diferencaOrcamentosMesAnterior)}}  </span>
+            <span class="text-500">do que último mês</span>
+        </div>
+    </div>
+    <div class="col-12 lg:col-6 xl:col-3">
+        <div class="card mb-0">
+            <div class="flex justify-content-between mb-3">
+                <div>
+                    <span class="block text-500 font-medium mb-3">Instalações concluídas</span>
+                    <div class="text-900 font-medium text-xl">{{dashboard.totalInstalacoesMes}}</div>
+                </div>
+                <div class="flex align-items-center justify-content-center bg-cyan-100 border-round"
+                    [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                    <i class="pi pi-map-marker text-cyan-500 text-xl"></i>
+                </div>
+            </div>
+            <span class="font-medium" [ngClass]="{'text-green-500' : (dashboard.diferencaInstalacoesMesAnterior >= 0), 'text-red-500' : (dashboard.diferencaInstalacoesMesAnterior < 0)}">{{dashboard.diferencaInstalacoesMesAnterior + (dashboard.diferencaInstalacoesMesAnterior)}}  </span>
+            <span class="text-500">do que último mês</span>
+        </div>
+    </div>
+    <div class="col-12 lg:col-6 xl:col-3">
+        <div class="card mb-0">
+            <div class="flex justify-content-between mb-3">
+                <div>
+                    <span class="block text-500 font-medium mb-3">Peças utilizadas</span>
+                    <div class="text-900 font-medium text-xl">{{dashboard.totalCaixasMes}}</div>
+                </div>
+                <div class="flex align-items-center justify-content-center bg-yellow-100 border-round"
+                    [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                    <i class="pi pi-box text-yellow-500 text-xl"></i>
+                </div>
+            </div>
+            <span class="font-medium" [ngClass]="{'text-green-500' : (dashboard.diferencaCaixasMesAnterior >= 0), 'text-red-500' : (dashboard.diferencaCaixasMesAnterior < 0)}">{{dashboard.diferencaCaixasMesAnterior + (dashboard.diferencaCaixasMesAnterior)}}  </span>
+            <span class="text-500">do que último mês</span>
+        </div>
+    </div>
+
+    <!-- Talvez colocar últimos orçamentos -->
+
+    <div class="col-12 xl:col-6">
+        <div class="card flex flex-column ">
+            <full-calendar [options]="calendarOptions"></full-calendar>
+        </div>
+    </div>
+
+    <div class="col-12 xl:col-6">
+        <div class="card flex flex-column align-items-center">
+            <h5>Média orçamentos</h5>
+            <p-chart type="doughnut" [data]="pieData" [options]="pieOptions"></p-chart>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <h5>Visão geral de serviços</h5>
+            <p-chart type="bar" [data]="chartData" [options]="chartOptions"></p-chart>
+        </div>
+    </div>
+</div>

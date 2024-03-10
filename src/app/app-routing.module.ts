@@ -13,6 +13,11 @@ import { AuthGuard } from './seguranca/auth.guard';
                     canActivate: [AuthGuard],
                     children: [
                         {
+                            path: '',
+                            loadChildren: () => import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
+                            canActivate: [AuthGuard],
+                        },
+                        {
                             path: 'solicitacao-servico',
                             loadChildren: () => import('./solicitacao-servico/solicitacao-servico.module').then((m) => m.SolicitacaoServicoModule),
                             canActivate: [AuthGuard],
