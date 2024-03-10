@@ -11,6 +11,7 @@ import { OrcamentoService } from 'src/app/services/orcamento.service';
 import { ProfissionalService } from 'src/app/services/profissional.service';
 import { ProfissionalDto } from 'src/app/models/profissional-dto';
 import { Router } from '@angular/router';
+import { ClienteService } from 'src/app/services/cliente.service';
 
 @Component({
   selector: 'app-visita-page',
@@ -35,11 +36,16 @@ export class VisitaPageComponent implements OnInit {
 
     visitas: VisitaDto[] = [];
     profissionais: ProfissionalDto[] = [];
+    clientes: ClienteDto[] = [];
+    nomeClientes: string[] = [];
+
+    nomeClientesFiltered: string[] = [];
 
     submitted: boolean = false;
 
     buscarVisitaLoading: boolean = false;
     buscarProfissionaisLoading: boolean = false;
+    buscarClientesLoading: boolean = false;
     visitaLoading: boolean = false;
     orcamentoLoading: boolean = false;
 
@@ -49,11 +55,13 @@ export class VisitaPageComponent implements OnInit {
 
     constructor(private messageService: MessageService, private visitaService: VisitaService,
         private enderecoService: EnderecoService, private orcamentoService: OrcamentoService,
-        private profissionalService: ProfissionalService, private router: Router) { }
+        private profissionalService: ProfissionalService, private clienteService: ClienteService,
+        private router: Router) { }
 
     ngOnInit() {
         this.buscarVisitaLoading = true;
         this.buscarProfissionaisLoading = true;
+        this.buscarClientesLoading = true;
 
         this.visitaService.buscarTodosAbertos().subscribe((data: any) => {
             this.visitas = data;
@@ -72,6 +80,17 @@ export class VisitaPageComponent implements OnInit {
             this.buscarProfissionaisLoading = false;
         });
 
+        this.clienteService.buscarTodos().subscribe((data: any) => {
+            this.clientes = data;
+            if(this.clientes.length > 0){
+                this.nomeClientes = this.clientes.map((cliente: ClienteDto) => cliente.nome) as string[];
+            }
+            this.buscarClientesLoading = false;
+        }, error => {
+            this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao buscar clientes', life: 3000 });
+            this.buscarClientesLoading = false;
+        });
+
         this.cols = [
             { field: '_id', header: 'ID' },
             { field: 'cliente.nome', header: 'Nome' },
@@ -87,6 +106,19 @@ export class VisitaPageComponent implements OnInit {
     checkVistoriador(){
         if(this.profissionais.length < 1){
             this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: 'Para agendar uma visita primeiro tenha algum vistoriador cadastrado!', life: 3000 });
+        }
+    }
+
+    onClienteSelected(event: any) {
+        const clienteSelected = this.clientes.find((cliente: ClienteDto) => cliente.nome === event) as ClienteDto;
+
+        if(clienteSelected){
+            this.cliente = {...clienteSelected};
+            const enderecoCliente = clienteSelected.endereco as string;
+            this.populateEndereco(enderecoCliente);
+        }else{
+            this.cliente = {};
+            this.endereco = {};
         }
     }
 
@@ -236,4 +268,7 @@ export class VisitaPageComponent implements OnInit {
         });
     }
 
+    searchClientes(event: any) {
+        this.nomeClientesFiltered = this.nomeClientes.filter((nomeCliente: string) => nomeCliente?.toLowerCase().includes(event.query.toLowerCase()));
+    }
 }
