@@ -27,7 +27,7 @@ export class InstalacaoPageComponent implements OnInit {
     pagamentoDialog: boolean = false;
 
     instalacao: InstalacaoDto = {};
-    cliente: ClienteDto = {};
+    cliente: ClienteDto = {notificarWhatsapp: false};
     endereco: Endereco = {};
     orcamento: OrcamentoDto = {};
 

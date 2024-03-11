@@ -8,4 +8,5 @@ export interface ClienteDto extends BaseDto {
     telefone?: string;
     endereco?: string;
     cnpj?: string;
+    notificarWhatsapp?: boolean;
 }

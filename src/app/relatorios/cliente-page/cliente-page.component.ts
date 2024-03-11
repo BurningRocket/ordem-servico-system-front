@@ -13,7 +13,9 @@ import { EnderecoService } from 'src/app/services/endereco.service';
 })
 export class ClientePageComponent implements OnInit {
 
-    cliente: ClienteDto = {};
+    cliente: ClienteDto = {
+        notificarWhatsapp: false
+    };
 
     clientes: ClienteDto[] = [];
 
@@ -44,7 +46,7 @@ export class ClientePageComponent implements OnInit {
             { field: 'dataCliente', header: 'Data' },
             { field: 'descricao', header: 'Descrição'},
             { field: 'formaContato' , header: 'Forma de contato' },
-            { field: 'notificarWpp' , header: 'Notificar Wpp' },
+            { field: 'cliente.notificarWpp' , header: 'Notificar Wpp' },
         ];
     }
 

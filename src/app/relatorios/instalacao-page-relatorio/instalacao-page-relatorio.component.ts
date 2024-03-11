@@ -26,7 +26,7 @@ export class InstalacaoPageRelatorioComponent implements OnInit {
     pagamentoDialog: boolean = false;
 
     instalacao: InstalacaoDto = {};
-    cliente: ClienteDto = {};
+    cliente: ClienteDto = {notificarWhatsapp: false};
     endereco: Endereco = {};
     orcamento: OrcamentoDto = {};
 
@@ -71,7 +71,7 @@ export class InstalacaoPageRelatorioComponent implements OnInit {
     viewInstalacao(instalacao: InstalacaoDto) {
         this.instalacao = {...instalacao};
         this.dataInstalacaoFormatada = this.instalacao.dataInstalacao ? new Date(this.instalacao.dataInstalacao[0]).toLocaleDateString() + " " +  new Date(this.instalacao.dataInstalacao[0]).toLocaleTimeString() + ' - ' + new Date(this.instalacao.dataInstalacao[1]).toLocaleDateString() + " " +  new Date(this.instalacao.dataInstalacao[1]).toLocaleTimeString() : '';
-        this.cliente = instalacao.cliente ? instalacao.cliente : {};
+        this.cliente = instalacao.cliente ? instalacao.cliente : { notificarWhatsapp: false };
         if(this.instalacao.endereco)
             this.populateEndereco(this.instalacao.endereco);
         this.instalacaoDialog = true;

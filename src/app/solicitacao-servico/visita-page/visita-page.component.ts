@@ -30,7 +30,7 @@ export class VisitaPageComponent implements OnInit {
     visitaViewMode: boolean = false;
 
     visita: VisitaDto = {};
-    cliente: ClienteDto = {};
+    cliente: ClienteDto = {notificarWhatsapp: false};
     endereco: Endereco = {};
     orcamento: OrcamentoDto = {};
 

@@ -3,7 +3,7 @@
         <div class="card px-6 py-6">
             <p-toast></p-toast>
 
-            <p-table #dt [value]="visitas" [columns]="cols" responsiveLayout="scroll" [globalFilterFields]="['_id', 'cliente.nome', 'cliente.telefone', 'cliente.endereco', 'dataVisita', 'formaContato', 'notificarWpp']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} até {last} de {totalRecords} visitas abertas" [rowHover]="true" dataKey="id">
+            <p-table #dt [value]="visitas" [columns]="cols" responsiveLayout="scroll" [globalFilterFields]="['_id', 'cliente.nome', 'cliente.telefone', 'cliente.endereco', 'dataVisita', 'formaContato', 'cliente.notificarWpp']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} até {last} de {totalRecords} visitas abertas" [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <h5 class="m-0">Visitas</h5>
@@ -21,7 +21,7 @@
                         <th pSortableColumn="data">Data Agendamento <p-sortIcon field="data"></p-sortIcon></th>
                         <th pSortableColumn="descricao">Observação pós visita <p-sortIcon field="descricao"></p-sortIcon></th>
                         <th pSortableColumn="formaContato">Forma de contato <p-sortIcon field="formaContato"></p-sortIcon></th>
-                        <th pSortableColumn="notificarWpp">Notificar Wpp <p-sortIcon field="notificarWpp"></p-sortIcon></th>
+                        <th pSortableColumn="cliente.notificarWpp">Notificar Wpp <p-sortIcon field="cliente.notificarWpp"></p-sortIcon></th>
                         <th pSortableColumn="status">Status<p-sortIcon field="status"></p-sortIcon></th>
                         <th></th>
                     </tr>
@@ -56,7 +56,7 @@
                         </td>
                         <td style="width:12%; min-width:6rem;">
                             <span class="p-column-title">Notificar Wpp</span>
-                            <b>{{visita.notificarWpp ? 'Sim' : 'Não'}}</b>
+                            <b>{{visita?.cliente?.notificarWpp ? 'Sim' : 'Não'}}</b>
                         </td>
                         <td style="width:12%; min-width:6rem;">
                             <span class="p-column-title">Status</span>
@@ -177,7 +177,7 @@
                         </div>
                     </div>
                     <div class="field-checkbox col-3 mt-3">
-						<p-checkbox name="group1" [binary]="true" label="Enviar Notificações por WPP?" [(ngModel)]="visita.notificarWpp" id="checkNotificarWpp" [disabled]="visitaViewMode"></p-checkbox>
+						<p-checkbox name="group1" [binary]="true" label="Enviar Notificações por WPP?" [ngModel]="visita.cliente?.notificarWhatsapp" id="checkNotificarWpp" [disabled]="visitaViewMode"></p-checkbox>
 					</div>
                     <div class="field col-12 mt-3">
                         <span class="p-float-label">

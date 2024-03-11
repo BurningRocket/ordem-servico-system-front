@@ -2,7 +2,7 @@
     <div class="col-12">
         <div class="card px-6 py-6">
             <p-toast></p-toast>
-            <p-table #dt [value]="clientes" [columns]="cols" responsiveLayout="scroll" [globalFilterFields]="['_id', 'nome', 'telefone', 'endereco', 'dataCliente', 'formaContato', 'notificarWpp']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} até {last} de {totalRecords} clientes" [rowHover]="true" dataKey="id">
+            <p-table #dt [value]="clientes" [columns]="cols" responsiveLayout="scroll" [globalFilterFields]="['_id', 'nome', 'telefone', 'endereco', 'dataCliente', 'formaContato', 'cliente.notificarWpp']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} até {last} de {totalRecords} clientes" [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <h5 class="m-0">Clientes</h5>
