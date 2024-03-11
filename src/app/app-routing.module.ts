@@ -18,19 +18,19 @@ import { AuthGuard } from './seguranca/auth.guard';
                             canActivate: [AuthGuard],
                         },
                         {
-                            path: '#!/solicitacao-servico',
+                            path: 'solicitacao-servico',
                             loadChildren: () => import('./solicitacao-servico/solicitacao-servico.module').then((m) => m.SolicitacaoServicoModule),
                             canActivate: [AuthGuard],
                             // data: { roles: ["ADMIN"]
                         },
                         {
-                            path: '#!/relatorios',
+                            path: 'relatorios',
                             loadChildren: () => import('./relatorios/relatorios.module').then((m) => m.RelatoriosModule),
                             canActivate: [AuthGuard],
                             // data: { roles: ["ADMIN"]
                         },
                         {
-                            path: '#!/users',
+                            path: 'users',
                             loadChildren: () => import('./users/users.module').then((m) => m.UsersModule),
                             canActivate: [AuthGuard],
                             // data: { roles: ["ADMIN"]
