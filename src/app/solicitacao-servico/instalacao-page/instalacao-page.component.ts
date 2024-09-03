@@ -75,6 +75,34 @@ export class InstalacaoPageComponent implements OnInit {
         this.finalizarInstalacaoDialog = true;
     }
 
+    updateInstalacao(){
+        this.instalacaoLoading = true;
+        this.instalacaoService.updateInstalacao(this.instalacao).subscribe((data: any) => {
+            this.instalacao = data;
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'orçamento excluido', life: 3000 });
+            this.instalacaoDialog = false;
+            this.instalacaoLoading = false;
+            window.location.reload();
+        }, error => {
+            this.instalacaoLoading = false;
+            this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao excluir orçamento', life: 3000 });
+        });
+    }
+
+    deleteInstalacao(){
+        this.instalacaoLoading = true;
+        this.instalacaoService.deleteInstalacao(this.instalacao._id).subscribe((data: any) => {
+            this.instalacao = data;
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'orçamento excluido', life: 3000 });
+            this.instalacaoDialog = false;
+            this.instalacaoLoading = false;
+            window.location.reload();
+        }, error => {
+            this.instalacaoLoading = false;
+            this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao excluir orçamento', life: 3000 });
+        });
+    }
+
     confirmFinalizarInstalacao() {
         this.instalacaoLoading = true;
         this.instalacaoService.finalizarInstalacao(this.instalacao).subscribe((data: any) => {
@@ -110,6 +138,8 @@ export class InstalacaoPageComponent implements OnInit {
 
     viewInstalacao(instalacao: InstalacaoDto) {
         this.instalacao = {...instalacao};
+        const dataInstalacao = this.instalacao.dataInstalacao as [string, string]
+        this.instalacao.dataInstalacao = [new Date(dataInstalacao[1] as string), new Date(dataInstalacao[1] as string)]
         this.dataInstalacaoFormatada = this.instalacao.dataInstalacao ? new Date(this.instalacao.dataInstalacao[0]).toLocaleDateString() + " " +  new Date(this.instalacao.dataInstalacao[0]).toLocaleTimeString() + ' - ' + new Date(this.instalacao.dataInstalacao[1]).toLocaleDateString() + " " +  new Date(this.instalacao.dataInstalacao[1]).toLocaleTimeString() : '';
         this.cliente = instalacao.cliente ? instalacao.cliente : {};
         if(this.instalacao.endereco)

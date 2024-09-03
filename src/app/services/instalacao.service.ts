@@ -59,4 +59,21 @@ export class InstalacaoService extends BaseAdminService {
         return this.http.put(this.actionUrl + "/faturar", instalacaoDto, options);
     }
 
+
+    updateInstalacao(instalacaoDto: InstalacaoDto){
+        let headers = this.getHttpHeaders();
+
+        let options = { headers: headers };
+
+        return this.http.put(this.actionUrl + "/update", instalacaoDto, options);
+    }
+
+    deleteInstalacao(instalacaoId?: string){
+        let headers = this.getHttpHeaders();
+
+        let options = { headers: headers };
+
+        return this.http.delete(this.actionUrl + "/delete/" + instalacaoId, options);
+    }
+
 }

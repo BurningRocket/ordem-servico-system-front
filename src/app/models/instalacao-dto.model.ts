@@ -6,7 +6,7 @@ import { ProfissionalDto } from './profissional-dto';
 export interface InstalacaoDto extends BaseDto{
     cliente?: ClienteDto;
     orcamento?: OrcamentoDto;
-    dataInstalacao?: [Date, Date];
+    dataInstalacao?: [Date | string, Date | string];
     status?: string;
     observacao?: string;
     endereco?: string;

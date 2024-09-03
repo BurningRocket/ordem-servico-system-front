@@ -64,7 +64,7 @@
                         </td>
                         <td>
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-info mr-2" (click)="viewInstalacao(instalacao)"></button>
+                                <button pButton pRipple [icon]="instalacao.status === 'PENDENTE' ? 'pi pi-pencil' : 'pi pi-eye'" class="p-button-rounded mr-2" [class.p-button-warning]="instalacao.status === 'PENDENTE'" (click)="viewInstalacao(instalacao)"></button>
                                 <button pButton pRipple icon="pi pi-check" class="p-button-rounded p-button-success mr-2" (click)="finalizarInstalacao(instalacao)" *ngIf="instalacao.status === 'PENDENTE'"></button>
                                 <button pButton pRipple icon="pi pi-dollar" class="p-button-rounded p-button-success mr-2" (click)="faturarInstalacao(instalacao)" *ngIf="instalacao.status === 'EXECUTADA'"></button>
                             </div>
@@ -155,7 +155,7 @@
                     </div>
                     <div class="field col-6 mt-3" >
                         <span class="p-float-label">
-                            <input pInputText [disabled]="true" id="inputDataVisita" [(ngModel)]="dataInstalacaoFormatada" [required] = true [ngClass]="{'ng-invalid ng-dirty' : submitted && !instalacao.dataInstalacao}" >
+                            <p-calendar appendTo="body" pTooltip="Selecione um período entre dois dias" selectionMode="range" [showTime]="true" dateFormat="dd/mm/yy" [showIcon]="true" id="inputDataVisita" [(ngModel)]="instalacao.dataInstalacao" [required] = true [ngClass]="{'ng-invalid ng-dirty' : submitted && !instalacao.dataInstalacao}" [disabled]="instalacao.status !== 'PENDENTE'"></p-calendar>
                             <label for="inputDataVisita">Data da instalação*</label>
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !instalacao.dataInstalacao">Insira uma data</small>
@@ -169,7 +169,7 @@
                     </div>
                     <div class="field col-12 mt-3" >
                         <span class="p-float-label">
-                            <textarea [disabled]="true" rows="4" pInputTextarea id="inputDataVisita" [(ngModel)]="instalacao.descricao" [required] = true [ngClass]="{'ng-invalid ng-dirty' : submitted && !instalacao.dataInstalacao}" ></textarea>
+                            <textarea [disabled]="instalacao.status !== 'PENDENTE'" rows="4" pInputTextarea id="inputDataVisita" [(ngModel)]="instalacao.descricao" [required] = true [ngClass]="{'ng-invalid ng-dirty' : submitted && !instalacao.dataInstalacao}" ></textarea>
                             <label for="inputDataVisita">Descrição instalação</label>
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !instalacao.dataInstalacao">Insira uma data</small>
@@ -182,6 +182,10 @@
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !instalacao.dataInstalacao">Insira uma data</small>
                     </div>
                 </div>
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Excluir" icon="pi pi-trash" class="p-button-text p-button-danger" *ngIf="instalacao.status==='PENDENTE'" (click)="deleteInstalacao()" [loading]="instalacaoLoading"></button>
+                <button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-text p-button-success" *ngIf="instalacao.status==='PENDENTE'" (click)="updateInstalacao()" [loading]="instalacaoLoading"></button>
             </ng-template>
         </p-dialog>
 
