@@ -58,4 +58,20 @@ export class OrcamentoService extends BaseAdminService {
         return this.http.put(this.actionUrl + "/reprovar", orcamentoDto, options);
     }
 
+    updateOrcamento(orcamentoDto: OrcamentoDto){
+        let headers = this.getHttpHeaders();
+
+        let options = { headers: headers };
+
+        return this.http.put(this.actionUrl + "/update", orcamentoDto, options);
+    }
+
+    deleteOrcamento(orcamentoId?: string){
+        let headers = this.getHttpHeaders();
+
+        let options = { headers: headers };
+
+        return this.http.delete(this.actionUrl + "/delete/" + orcamentoId, options);
+    }
+
 }

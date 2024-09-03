@@ -96,6 +96,33 @@ export class OrcamentoPageComponent implements OnInit {
         this.aprovarDialog = true;
     }
 
+    deleteOrcamento(){
+        this.orcamentoLoading = true;
+        this.orcamentoService.deleteOrcamento(this.orcamento._id).subscribe((data: any) => {
+            this.orcamento = data;
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'orçamento excluido', life: 3000 });
+            this.orcamentoDialog = false;
+            this.orcamentoLoading = false;
+            window.location.reload();
+        }, error => {
+            this.orcamentoLoading = false;
+            this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao excluir orçamento', life: 3000 });
+        });
+    }
+
+    saveOrcamento(){
+        this.orcamentoService.updateOrcamento(this.orcamento).subscribe((data: any) => {
+            this.orcamento = data;
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'orçamento atualizado', life: 3000 });
+            this.orcamentoDialog = false;
+            this.orcamentoLoading = false;
+            window.location.reload();
+        }, error => {
+            this.orcamentoLoading = false;
+            this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao excluir atualizado', life: 3000 });
+        });
+    }
+
     confirmAprovarOrcamento() {
         this.orcamentoLoading = true;
         this.orcamentoService.aprovarOrcamento(this.orcamento).subscribe((data: any) => {

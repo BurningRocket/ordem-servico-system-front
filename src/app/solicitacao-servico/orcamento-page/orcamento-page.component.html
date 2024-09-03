@@ -52,7 +52,7 @@
                         </td>
                         <td>
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-info mr-2" (click)="viewOrcamento(orcamento)"></button>
+                                <button pButton pRipple [icon]="orcamento.status === 'PENDENTE' ? 'pi pi-pencil' : 'pi pi-eye'" class="p-button-rounded mr-2" [class.p-button-warning]="orcamento.status === 'PENDENTE'" (click)="viewOrcamento(orcamento)"></button>
                                 <button pButton pRipple icon="pi pi-check" class="p-button-rounded p-button-success mr-2" (click)="aprovarOrcamento(orcamento)" *ngIf="orcamento.status === 'PENDENTE'"></button>
                                 <button pButton pRipple icon="pi pi-times" class="p-button-rounded p-button-danger" (click)="reprovarOrcamento(orcamento)" *ngIf="orcamento.status === 'PENDENTE'"></button>
                                 <button pButton pRipple icon="pi pi-calendar" class="p-button-rounded p-button-success" (click)="onMarcarInstalacao(orcamento)" *ngIf="orcamento.status === 'APROVADO' && orcamento.status !== 'INSTALACAO_AGENDADA'" [disabled]="profissionais.length < 1" pTooltip="Para agendar uma instalação primeiro tenha algum instalador cadastrado!" [tooltipDisabled]="profissionais.length >= 1"></button>
@@ -144,18 +144,21 @@
                     </div>
                     <div class="field col-6 mt-3">
                         <span class="p-float-label">
-                            <p-inputNumber mode="currency" currency="BRL" locale="pt-BR" id="inputValor" [(ngModel)]="orcamento.valor" [required] = true [ngClass]="{'ng-invalid ng-dirty' : submitted && !orcamento.valor}" [disabled]="true"></p-inputNumber>
+                            <p-inputNumber mode="currency" currency="BRL" locale="pt-BR" id="inputValor" [(ngModel)]="orcamento.valor" [required] = true [ngClass]="{'ng-invalid ng-dirty' : submitted && !orcamento.valor}" [disabled]="orcamento.status !== 'PENDENTE'"></p-inputNumber>
                             <label for="inputValor">Valor Orçamento</label>
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !orcamento.valor">Insira um valor</small>
                     </div>
                     <div class="field col-12 mt-4">
                         <span class="p-float-label">
-                            <textarea  rows="5" cols="30" id="inputObservacaoOrcamento" pInputTextarea [(ngModel)]="orcamento.observacao" [disabled]="true"></textarea>
+                            <textarea  rows="5" cols="30" id="inputObservacaoOrcamento" pInputTextarea [(ngModel)]="orcamento.observacao" [disabled]="orcamento.status !== 'PENDENTE'"></textarea>
                             <label for="inputObservacaoOrcamento">Observação orçamento</label>
                         </span>
                     </div>
                 </div>
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-text p-button-success" *ngIf="orcamento.status==='PENDENTE'" (click)="saveOrcamento()" [loading]="orcamentoLoading"></button>
             </ng-template>
         </p-dialog>
 
@@ -292,7 +295,7 @@
             </ng-template>
         </p-dialog>
 
-        <p-dialog [(visible)]="buscarOrcamentoLoading || buscarInstalacaoLoading" header="Buscando registros..." [modal]="true" [style]="{ width: '450px' }" [closable]="false">
+        <p-dialog [visible]="buscarOrcamentoLoading || buscarInstalacaoLoading" header="Buscando registros..." [modal]="true" [style]="{ width: '450px' }" [closable]="false">
             <p-progressSpinner [style]="{ display: 'flex' }"></p-progressSpinner>
         </p-dialog>
     </div>
