@@ -4,7 +4,7 @@ import { ProfissionalDto } from './profissional-dto';
 
 export interface VisitaDto extends BaseDto{
     cliente?: ClienteDto;
-    dataVisita?: Date;
+    dataVisita?: string | Date;
     observacao?: string;
     preObservacao?: string;
     formaContato?: string;

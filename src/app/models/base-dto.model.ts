@@ -1,5 +1,5 @@
 export interface BaseDto{
-    id?: number;
+    _id?: string;
     name?: string;
     token?: string;
     createdAt?: Date;

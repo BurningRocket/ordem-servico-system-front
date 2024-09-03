@@ -140,20 +140,46 @@ export class VisitaPageComponent implements OnInit {
         this.visita.cliente.endereco = this.visita.endereco;
 
         if(this.visita.cliente.cpf && this.visita.cliente.nome && this.visita.cliente.telefone && this.visita.endereco && this.visita.dataVisita && this.visita.profissional){
-            this.visitaService.createVisita(this.visita).subscribe((data: any) => {
-                this.visita = data;
-                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Visita Criada', life: 3000 });
-                this.visitaDialog = false;
-                this.visitaLoading = false;
-                window.location.reload();
-            }, error => {
-                this.visitaLoading = false;
-                this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao criar visita', life: 3000 });
-            });
+            if(!this.visita._id){
+                this.visitaService.createVisita(this.visita).subscribe((data: any) => {
+                    this.visita = data;
+                    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Visita Criada', life: 3000 });
+                    this.visitaDialog = false;
+                    this.visitaLoading = false;
+                    window.location.reload();
+                }, error => {
+                    this.visitaLoading = false;
+                    this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao criar visita', life: 3000 });
+                });
+            }else{
+                this.visitaService.updateVisita(this.visita).subscribe((data: any) => {
+                    this.visita = data;
+                    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Visita Atualizada', life: 3000 });
+                    this.visitaDialog = false;
+                    this.visitaLoading = false;
+                    window.location.reload();
+                }, error => {
+                    this.visitaLoading = false;
+                    this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao atualizar visita', life: 3000 });
+                });
+            }
         }else{
             this.visitaLoading = false;
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Preencha todos os campos obrigatórios', life: 3000 });
         }
+    }
+
+    deleteVisita(){
+        this.visitaService.deleteVisita(this.visita._id).subscribe((data: any) => {
+            this.visita = data;
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Visita excluida', life: 3000 });
+            this.visitaDialog = false;
+            this.visitaLoading = false;
+            window.location.reload();
+        }, error => {
+            this.visitaLoading = false;
+            this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao excluir visita', life: 3000 });
+        });
     }
 
     validateEndereco(){
@@ -185,6 +211,7 @@ export class VisitaPageComponent implements OnInit {
 
     viewVisita(visita: VisitaDto) {
         this.visita = visita;
+        this.visita.dataVisita = new Date(this.visita.dataVisita as string) as Date
         this.cliente = visita.cliente ? visita.cliente : {};
         if(this.visita.endereco)
             this.populateEndereco(this.visita.endereco);

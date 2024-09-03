@@ -49,4 +49,20 @@ export class VisitaService extends BaseAdminService {
         return this.http.put(this.actionUrl + "/finalizar", visitaDto, options);
     }
 
+    updateVisita(visitaDto: VisitaDto){
+        let headers = this.getHttpHeaders();
+
+        let options = { headers: headers };
+
+        return this.http.patch(this.actionUrl + "/update", visitaDto, options);
+    }
+
+    deleteVisita(visitaId?: string){
+        let headers = this.getHttpHeaders();
+
+        let options = { headers: headers };
+
+        return this.http.delete(this.actionUrl + "/delete/" + visitaId, options);
+    }
+
 }

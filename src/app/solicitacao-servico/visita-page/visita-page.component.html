@@ -71,7 +71,7 @@
                         </td>
                         <td>
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-info mr-2" (click)="viewVisita(visita)"></button>
+                                <button pButton pRipple [icon]="visita.status === 'PENDENTE' ? 'pi pi-pencil' : 'pi pi-eye'" class="p-button-rounded mr-2" [class.p-button-warning]="visita.status === 'PENDENTE'" (click)="viewVisita(visita)"></button>
                                 <button pButton pRipple icon="pi pi-check" class="p-button-rounded p-button-success" (click)="finalizarVisita(visita)" *ngIf="visita.status === 'PENDENTE'"></button>
                                 <button pButton pRipple icon="pi pi-dollar" class="p-button-rounded p-button-success" (click)="onNewOrcamento(visita)" *ngIf="visita.status === 'EXECUTADA'"></button>
                             </div>
@@ -91,7 +91,7 @@
                     <div class="field col-6 mt-3 mt-3">
                         <span class="p-float-label">
                             <!-- <input type="text" id="inputNome" pInputText [(ngModel)]="cliente.nome" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !cliente.nome}" [disabled]="visitaViewMode"> -->
-                            <p-autoComplete inputId="inputNome" [suggestions]="nomeClientesFiltered" (completeMethod)="searchClientes($event)" (ngModelChange)="onClienteSelected($event)" [(ngModel)]="cliente.nome" [dropdown]="true" appendTo="body" [ngClass]="{'ng-invalid ng-dirty' : submitted && !cliente.nome}"></p-autoComplete>
+                            <p-autoComplete inputId="inputNome" [suggestions]="nomeClientesFiltered" (completeMethod)="searchClientes($event)" (ngModelChange)="onClienteSelected($event)" [(ngModel)]="cliente.nome" [dropdown]="true" appendTo="body" [ngClass]="{'ng-invalid ng-dirty' : submitted && !cliente.nome}" [disabled]="visitaViewMode"></p-autoComplete>
                             <label for="inputNome">Nome do cliente*</label>
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !cliente.nome">Insira um nome</small>
@@ -159,47 +159,47 @@
                     <div class="col-12 mt-3">
                         <h5>Detalhes Visita</h5>
                     </div>
-                    <div class="field lg:col-6 col-12 mt-3" *ngIf="!visitaViewMode">
+                    <div class="field lg:col-6 col-12 mt-3">
                         <span class="p-float-label">
-                            <p-calendar [showTime]="true" appendTo="body" dateFormat="dd/mm/yy" [showIcon]="true" id="inputDataVisita" [(ngModel)]="visita.dataVisita" [required] = true [ngClass]="{'ng-invalid ng-dirty' : submitted && !visita.dataVisita}" [disabled]="visitaViewMode"></p-calendar>
+                            <p-calendar [showTime]="true" appendTo="body" dateFormat="dd/mm/yy" [showIcon]="true" id="inputDataVisita" [(ngModel)]="visita.dataVisita" [required] = true [ngClass]="{'ng-invalid ng-dirty' : submitted && !visita.dataVisita}" [disabled]="visita.status!=='PENDENTE' && visita.status!==undefined"></p-calendar>
                             <label for="inputDataVisita">Data da visita*</label>
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !visita.dataVisita">Insira uma data</small>
                     </div>
-                    <div class="field col-6 mt-3" *ngIf="visitaViewMode">
+                    <!-- <div class="field col-6 mt-3" *ngIf="visitaViewMode">
                         <span class="p-float-label">
-                            <input type="text" pInputText id="inputDataVisita" [ngModel]="visita.dataVisita | date: 'dd/MM/yyyy'" [required] = true [ngClass]="{'ng-invalid ng-dirty' : submitted && !visita.dataVisita}" [disabled]="visitaViewMode">
+                            <input type="text" pInputText id="inputDataVisita" [ngModel]="visita.dataVisita | date: 'dd/MM/yyyy'" [required] = true [ngClass]="{'ng-invalid ng-dirty' : submitted && !visita.dataVisita}" [disabled]="visita.status!=='PENDENTE' && visita.status!==undefined">
                             <label for="inputDataVisita">Data da visita*</label>
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !visita.dataVisita">Insira uma data</small>
-                    </div>
+                    </div> -->
                     <div class="field-checkbox lg:col-3 col-12 mt-3">
                         <div class="field-radiobutton mr-3">
-                            <p-radioButton name="formaContato" value="SITE" [(ngModel)]="visita.formaContato" id="radioSite" [disabled]="visitaViewMode"></p-radioButton>
+                            <p-radioButton name="formaContato" value="SITE" [(ngModel)]="visita.formaContato" id="radioSite" [disabled]="visita.status!=='PENDENTE' && visita.status!==undefined"></p-radioButton>
                             <label for="radioSite">Site</label>
                         </div>
                         <div class="field-radiobutton mr-3">
-                            <p-radioButton name="formaContato" value="BALCÃO" [(ngModel)]="visita.formaContato" id="radioBalcao" [disabled]="visitaViewMode"></p-radioButton>
+                            <p-radioButton name="formaContato" value="BALCÃO" [(ngModel)]="visita.formaContato" id="radioBalcao" [disabled]="visita.status!=='PENDENTE' && visita.status!==undefined"></p-radioButton>
                             <label for="radioBalcao">Balcão</label>
                         </div>
                         <div class="field-radiobutton">
-                            <p-radioButton name="formaContato" value="TELEFONE" [(ngModel)]="visita.formaContato" id="radioTelefone" [disabled]="visitaViewMode"></p-radioButton>
+                            <p-radioButton name="formaContato" value="TELEFONE" [(ngModel)]="visita.formaContato" id="radioTelefone" [disabled]="visita.status!=='PENDENTE' && visita.status!==undefined"></p-radioButton>
                             <label for="city1">Telefone</label>
                         </div>
                     </div>
                     <div class="field-checkbox lg:col-3 col-6 mt-3">
-						<p-checkbox name="group1" [binary]="true" label="Enviar Notificações por WPP?" [(ngModel)]="visita.notificarWpp" id="checkNotificarWpp" [disabled]="visitaViewMode"></p-checkbox>
+						<p-checkbox name="group1" [binary]="true" label="Enviar Notificações por WPP?" [(ngModel)]="visita.notificarWpp" id="checkNotificarWpp" [disabled]="visita.status!=='PENDENTE' && visita.status!==undefined"></p-checkbox>
 					</div>
                     <div class="field col-6 mt-3">
                         <span class="p-float-label">
-                            <p-dropdown appendTo="body" inputId="inputVistoriador" [autoDisplayFirst]="false" [options]="profissionais" [(ngModel)]="visita.profissional" optionLabel="nome" [required]="true" [ngClass]="{'ng-invalid ng-dirty' : submitted && !visita.profissional}" [disabled]="visitaViewMode"></p-dropdown>
+                            <p-dropdown appendTo="body" inputId="inputVistoriador" [autoDisplayFirst]="false" [options]="profissionais" [(ngModel)]="visita.profissional" optionLabel="nome" [required]="true" [ngClass]="{'ng-invalid ng-dirty' : submitted && !visita.profissional}" [disabled]="visita.status!=='PENDENTE' && visita.status!==undefined"></p-dropdown>
                             <label for="inputVistoriador">Vistoriador</label>
                         </span>
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !visita.profissional">Insira um vistoriador</small>
                     </div>
                     <div class="field col-12 mt-3">
                         <span class="p-float-label">
-                            <textarea  rows="5" cols="30" id="inputObservacaoVisita" pInputTextarea [(ngModel)]="visita.observacao" [disabled]="visitaViewMode"></textarea>
+                            <textarea  rows="5" cols="30" id="inputObservacaoVisita" pInputTextarea [(ngModel)]="visita.observacao" [disabled]="visita.status!=='PENDENTE' && visita.status!==undefined"></textarea>
                             <label for="inputObservacaoVisita">Observação</label>
                         </span>
                     </div>
@@ -208,7 +208,8 @@
 
             <ng-template pTemplate="footer">
                 <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text p-button-secondary" *ngIf="!visitaViewMode" (click)="hideDialog()" [loading]="visitaLoading"></button>
-                <button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-text p-button-success" *ngIf="!visitaViewMode" (click)="saveVisita()" [loading]="visitaLoading"></button>
+                <button pButton pRipple label="Excluir" icon="pi pi-trash" class="p-button-text p-button-danger" *ngIf="visita.status==='PENDENTE'" (click)="deleteVisita()" [loading]="visitaLoading"></button>
+                <button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-text p-button-success" *ngIf="!visitaViewMode || visita.status==='PENDENTE'" (click)="saveVisita()" [loading]="visitaLoading"></button>
             </ng-template>
         </p-dialog>
 
@@ -342,7 +343,7 @@
             </ng-template>
         </p-dialog>
 
-        <p-dialog [(visible)]="buscarProfissionaisLoading || buscarVisitaLoading || buscarClientesLoading" header="Buscando registros..." [modal]="true" [style]="{ width: '450px' }" [closable]="false">
+        <p-dialog [visible]="buscarProfissionaisLoading || buscarVisitaLoading || buscarClientesLoading" header="Buscando registros..." [modal]="true" [style]="{ width: '450px' }" [closable]="false">
             <p-progressSpinner [style]="{ display: 'flex' }"></p-progressSpinner>
         </p-dialog>
     </div>
