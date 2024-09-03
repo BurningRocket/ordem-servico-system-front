@@ -19,16 +19,7 @@ export class VisitaService extends BaseAdminService {
 
         let options = { headers: headers };
 
-        return this.http.get(this.actionUrl + "/", options);
-    }
-
-    createVisita(visitaDto: VisitaDto) {
-
-        let headers = this.getHttpHeaders();
-
-        let options = { headers: headers };
-
-        return this.http.post(this.actionUrl + "/", visitaDto, options);
+        return this.http.get(this.actionUrl + "/findAll", options);
     }
 
     buscarTodosAbertos() {
@@ -38,6 +29,15 @@ export class VisitaService extends BaseAdminService {
         let options = { headers: headers };
 
         return this.http.get(this.actionUrl + "/findAllOpen", options);
+    }
+
+    createVisita(visitaDto: VisitaDto) {
+
+        let headers = this.getHttpHeaders();
+
+        let options = { headers: headers };
+
+        return this.http.post(this.actionUrl + "/create", visitaDto, options);
     }
 
     finalizarVisita(visitaDto: VisitaDto) {

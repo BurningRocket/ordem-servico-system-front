@@ -54,8 +54,10 @@ export class LoginComponent implements OnInit {
         this.submitted = true;
 
         this.service.login(this.formulario.value).subscribe((data: any) => {
+            const tokenPayload: TokenPayloadDto = this.tokenService.parseToken(data.token);
+
             this.router.navigate(['/']);
-            this.service.setToken(data.accessToken);
+            this.service.setToken(data.token);
             this.loginLoading = false;
         }, (error) => {
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: "Erro ao realizar login" });
